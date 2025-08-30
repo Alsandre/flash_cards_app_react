@@ -14,8 +14,8 @@ export class GroupRepository extends BaseRepository<Group> {
     return group || null;
   }
 
-  async create(entity: Omit<Group, "id">): Promise<Group> {
-    const id = this.generateId();
+  async create(entity: Omit<Group, "id">, fixedId?: string): Promise<Group> {
+    const id = fixedId || this.generateId();
     const group: Group = {
       ...entity,
       id,

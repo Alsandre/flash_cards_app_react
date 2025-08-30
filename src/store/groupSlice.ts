@@ -3,6 +3,7 @@ import type {StateCreator} from "zustand";
 import type {AppState, GroupSlice} from "../types/store";
 
 import {GroupRepository} from "../repositories/groupRepository";
+import {StarterPackService} from "../services/starterPackService";
 
 const groupRepo = new GroupRepository();
 
@@ -12,6 +13,9 @@ export const createGroupSlice: StateCreator<AppState, [], [], GroupSlice> = (set
   loadGroups: async () => {
     try {
       set({isLoading: true, error: null});
+
+      // Ensure starter pack exists first
+      await StarterPackService.ensureStarterPackExists();
 
       const groups = await groupRepo.getGroupsWithCardCounts();
 

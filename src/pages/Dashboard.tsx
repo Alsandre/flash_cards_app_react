@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import {Link} from "react-router-dom";
 import {useGroups, useLoadGroups, useDeleteGroup, useIsLoading, useError, useClearError} from "../store/appStore";
 import {Button, Card, LoadingSpinner} from "../components/ui";
+import {StarterPackService} from "../services/starterPackService";
 
 export const Dashboard: React.FC = () => {
   const groups = useGroups();
@@ -16,6 +17,12 @@ export const Dashboard: React.FC = () => {
   }, [loadGroups]);
 
   const handleDeleteGroup = async (groupId: string, groupName: string) => {
+    // Prevent deletion of starter pack
+    if (StarterPackService.isStarterPack(groupId)) {
+      alert("This special collection cannot be deleted! It's always here for you ❤️");
+      return;
+    }
+
     const confirmed = window.confirm(`Are you sure you want to delete "${groupName}"? This will also delete all cards in this group.`);
     if (confirmed) {
       try {
@@ -79,30 +86,52 @@ export const Dashboard: React.FC = () => {
         </Card>
       ) : (
         <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {groups.map((group) => (
-            <Card key={group.id} variant="interactive" className="group">
-              <div className="mb-4 flex items-start justify-between">
-                <div className="min-w-0 flex-1">
-                  <h3 className="truncate text-lg font-semibold text-neutral-900 dark:text-neutral-100">{group.name}</h3>
-                  <div className="mt-1 flex items-center space-x-2">
-                    <span className="inline-flex items-center rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-200">{group.cardCount} cards</span>
+          {groups.map((group) => {
+            const isStarterPack = StarterPackService.isStarterPack(group.id);
+            return (
+              <Card 
+                key={group.id} 
+                variant="interactive" 
+                className={`group ${isStarterPack ? 'ring-2 ring-pink-200 dark:ring-pink-800 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/50 dark:to-rose-950/50' : ''}`}
+              >
+                <div className="mb-4 flex items-start justify-between">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="truncate text-lg font-semibold text-neutral-900 dark:text-neutral-100">{group.name}</h3>
+                      {isStarterPack && <span className="text-pink-500">❤️</span>}
+                    </div>
+                    <div className="mt-1 flex items-center space-x-2">
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                        isStarterPack 
+                          ? 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200' 
+                          : 'bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200'
+                      }`}>
+                        {group.cardCount} cards
+                      </span>
+                      {isStarterPack && (
+                        <span className="inline-flex items-center rounded-full bg-rose-100 px-2.5 py-0.5 text-xs font-medium text-rose-800 dark:bg-rose-900 dark:text-rose-200">
+                          Special ✨
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-1 opacity-0 transition-opacity group-hover:opacity-100">
+                    <Button variant="ghost" size="sm" asChild className="h-8 w-8 p-0">
+                      <Link to={`/groups/${group.id}/edit`} title="Edit group">
+                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                      </Link>
+                    </Button>
+                    {!isStarterPack && (
+                      <Button variant="ghost" size="sm" onClick={() => handleDeleteGroup(group.id, group.name)} className="h-8 w-8 p-0 text-error-500 hover:text-error-600" title="Delete group">
+                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </Button>
+                    )}
                   </div>
                 </div>
-                <div className="flex items-center space-x-1 opacity-0 transition-opacity group-hover:opacity-100">
-                  <Button variant="ghost" size="sm" asChild className="h-8 w-8 p-0">
-                    <Link to={`/groups/${group.id}/edit`} title="Edit group">
-                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                    </Link>
-                  </Button>
-                  <Button variant="ghost" size="sm" onClick={() => handleDeleteGroup(group.id, group.name)} className="h-8 w-8 p-0 text-error-500 hover:text-error-600" title="Delete group">
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                  </Button>
-                </div>
-              </div>
 
               {/* Description */}
               {group.description && <p className="mb-4 line-clamp-2 text-sm text-neutral-600 dark:text-neutral-400">{group.description}</p>}
@@ -119,7 +148,8 @@ export const Dashboard: React.FC = () => {
                 )}
               </div>
             </Card>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
