@@ -5,15 +5,12 @@ import type {AppState, CardSlice} from "../types/store";
 import {CardRepository} from "../repositories/cardRepository";
 import {GroupRepository} from "../repositories/groupRepository";
 
-// Initialize repositories
 const cardRepo = new CardRepository();
 const groupRepo = new GroupRepository();
 
 export const createCardSlice: StateCreator<AppState, [], [], CardSlice> = (set, get) => ({
-  // Initial state
   cards: {},
 
-  // Card actions
   loadCards: async (groupId) => {
     try {
       set({isLoading: true, error: null});

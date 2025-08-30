@@ -9,7 +9,6 @@ function App() {
   const setTheme = useSetTheme();
 
   useEffect(() => {
-    // Initialize theme from localStorage or system preference
     const initialTheme = initializeTheme();
     setTheme(initialTheme);
   }, [setTheme]);

@@ -1,7 +1,7 @@
-// Group creation and editing form component
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useCreateGroup, useUpdateGroup, useClearError} from "../../store/appStore";
+import {Button, Card, Input, Textarea} from "../ui";
 import type {Group} from "../../types/entities";
 
 interface GroupFormProps {
@@ -65,6 +65,9 @@ export const GroupForm: React.FC<GroupFormProps> = ({group, mode}) => {
           name: formData.name.trim(),
           description: formData.description.trim() || undefined,
           studyCardCount: formData.studyCardCount,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          cardCount: 0,
         });
         navigate("/");
       } else if (group) {
@@ -91,75 +94,35 @@ export const GroupForm: React.FC<GroupFormProps> = ({group, mode}) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">{mode === "create" ? "Create New Group" : "Edit Group"}</h1>
+    <div className="mx-auto max-w-2xl px-1 sm:px-0">
+      <Card className="p-6">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">{mode === "create" ? "Create New Group" : "Edit Group"}</h1>
+          <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">{mode === "create" ? "Create a new flashcard group to organize your study materials" : "Update your group settings and preferences"}</p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Group Name */}
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Group Name *
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-100 ${errors.name ? "border-red-300 focus:border-red-500 focus:ring-red-500" : "border-gray-300 dark:border-gray-600 focus:border-blue-500"}`}
-              placeholder="Enter group name"
-              disabled={isSubmitting}
-            />
-            {errors.name && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.name}</p>}
-          </div>
+          <Input label="Group Name" type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} placeholder="Enter group name" error={errors.name} disabled={isSubmitting} required />
 
           {/* Description */}
-          <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Description
-            </label>
-            <textarea
-              id="description"
-              value={formData.description}
-              onChange={(e) => setFormData({...formData, description: e.target.value})}
-              rows={3}
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-100 ${errors.description ? "border-red-300 focus:border-red-500 focus:ring-red-500" : "border-gray-300 dark:border-gray-600 focus:border-blue-500"}`}
-              placeholder="Optional description for this group"
-              disabled={isSubmitting}
-            />
-            {errors.description && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.description}</p>}
-          </div>
+          <Textarea label="Description" value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} rows={3} placeholder="Optional description for this group" error={errors.description} disabled={isSubmitting} />
 
           {/* Study Card Count */}
-          <div>
-            <label htmlFor="studyCardCount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Cards per Study Session *
-            </label>
-            <input
-              type="number"
-              id="studyCardCount"
-              value={formData.studyCardCount}
-              onChange={(e) => setFormData({...formData, studyCardCount: parseInt(e.target.value) || 1})}
-              min="1"
-              max="100"
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-100 ${errors.studyCardCount ? "border-red-300 focus:border-red-500 focus:ring-red-500" : "border-gray-300 dark:border-gray-600 focus:border-blue-500"}`}
-              disabled={isSubmitting}
-            />
-            {errors.studyCardCount && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.studyCardCount}</p>}
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Number of cards to show in each study session (1-100)</p>
-          </div>
+          <Input label="Cards per Study Session" type="number" value={formData.studyCardCount.toString()} onChange={(e) => setFormData({...formData, studyCardCount: parseInt(e.target.value) || 1})} min="1" max="100" error={errors.studyCardCount} helperText="Number of cards to show in each study session (1-100)" disabled={isSubmitting} required />
 
           {/* Form Actions */}
-          <div className="flex space-x-4 pt-6">
-            <button type="submit" disabled={isSubmitting} className="flex-1 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white px-4 py-2 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-              {isSubmitting ? (mode === "create" ? "Creating..." : "Updating...") : mode === "create" ? "Create Group" : "Update Group"}
-            </button>
-            <button type="button" onClick={handleCancel} disabled={isSubmitting} className="flex-1 bg-gray-300 hover:bg-gray-400 disabled:bg-gray-200 text-gray-700 px-4 py-2 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-gray-200">
+          <div className="flex flex-col-reverse gap-3 pt-6 sm:flex-row">
+            <Button type="button" variant="secondary" onClick={handleCancel} disabled={isSubmitting} className="flex-1">
               Cancel
-            </button>
+            </Button>
+            <Button type="submit" disabled={isSubmitting} isLoading={isSubmitting} className="flex-1">
+              {mode === "create" ? "Create Group" : "Update Group"}
+            </Button>
           </div>
         </form>
-      </div>
+      </Card>
     </div>
   );
 };

@@ -1,7 +1,7 @@
-// Group detail page - manage cards within a group
 import React, {useEffect, useMemo} from "react";
 import {useParams, Link, useNavigate} from "react-router-dom";
 import {useAppStore} from "../store/appStore";
+import {Button, Card, LoadingSpinner} from "../components/ui";
 
 export const GroupDetail: React.FC = () => {
   const {groupId} = useParams<{groupId: string}>();
@@ -13,12 +13,10 @@ export const GroupDetail: React.FC = () => {
   const isLoading = useAppStore((state) => state.isLoading);
   const error = useAppStore((state) => state.error);
 
-  // Derive cards for this group
   const cards = useMemo(() => {
     return groupId ? allCards[groupId] || [] : [];
   }, [allCards, groupId]);
 
-  // Memoized actions
   const actions = useMemo(
     () => ({
       loadGroups: useAppStore.getState().loadGroups,
@@ -81,140 +79,187 @@ export const GroupDetail: React.FC = () => {
 
   if (!groupId) {
     return (
-      <div className="text-center py-12">
-        <p className="text-red-600">Invalid group ID</p>
-        <Link to="/" className="text-blue-500 hover:text-blue-700 underline">
-          Back to Dashboard
-        </Link>
-      </div>
+      <Card className="mx-auto max-w-md text-center py-12">
+        <h3 className="mb-2 text-lg font-medium text-neutral-900 dark:text-neutral-100">Invalid Group ID</h3>
+        <p className="mb-4 text-neutral-500 dark:text-neutral-400">The group ID provided is not valid.</p>
+        <Button asChild>
+          <Link to="/">Back to Dashboard</Link>
+        </Button>
+      </Card>
     );
   }
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-64">
-        <div className="text-gray-500">Loading group...</div>
+        <div className="flex items-center space-x-3 text-neutral-500 dark:text-neutral-400">
+          <LoadingSpinner size="md" />
+          <span>Loading group...</span>
+        </div>
       </div>
     );
   }
 
   if (!group) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-600">Group not found</p>
-        <Link to="/" className="text-blue-500 hover:text-blue-700 underline">
-          Back to Dashboard
-        </Link>
-      </div>
+      <Card className="mx-auto max-w-md text-center py-12">
+        <h3 className="mb-2 text-lg font-medium text-neutral-900 dark:text-neutral-100">Group not found</h3>
+        <p className="mb-4 text-neutral-500 dark:text-neutral-400">The requested group could not be found.</p>
+        <Button asChild>
+          <Link to="/">Back to Dashboard</Link>
+        </Button>
+      </Card>
     );
   }
 
   return (
     <div className="space-y-6">
+      {/* Breadcrumb */}
+      <nav className="flex items-center space-x-2 text-sm">
+        <Button variant="ghost" size="sm" asChild className="p-0 h-auto font-normal">
+          <Link to="/" className="flex items-center space-x-1 text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300">
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>Back to Dashboard</span>
+          </Link>
+        </Button>
+      </nav>
+
       {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <div className="flex items-center space-x-2 mb-2">
-            <Link to="/" className="text-gray-500 hover:text-gray-700">
-              ← Back
-            </Link>
+      <div className="flex flex-col space-y-4 sm:flex-row sm:items-start sm:justify-between sm:space-y-0">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">{group.name}</h1>
+          {group.description && <p className="mt-2 text-neutral-600 dark:text-neutral-400">{group.description}</p>}
+          <div className="mt-3 flex items-center space-x-4 text-sm text-neutral-500 dark:text-neutral-400">
+            <span className="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-medium text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200">{group.cardCount} cards</span>
+            <span>Study {group.studyCardCount} cards per session</span>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">{group.name}</h1>
-          {group.description && <p className="text-gray-600 mt-1">{group.description}</p>}
-          <p className="text-sm text-gray-500 mt-1">
-            {group.cardCount} cards • Study {group.studyCardCount} cards per session
-          </p>
         </div>
 
-        <div className="flex space-x-2">
-          <Link to={`/groups/${groupId}/cards/new`} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md font-medium transition-colors">
-            + Add Card
-          </Link>
+        <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0">
+          <Button asChild>
+            <Link to={`/groups/${groupId}/cards/new`}>+ Add Card</Link>
+          </Button>
           {group.cardCount > 0 && (
-            <Link to={`/study/${groupId}`} className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md font-medium transition-colors">
-              Start Study
-            </Link>
+            <Button variant="secondary" asChild>
+              <Link to={`/study/${groupId}`}>Start Study</Link>
+            </Button>
           )}
         </div>
       </div>
 
+      {/* Error Message */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-md p-4">
-          <p className="text-red-600 text-sm">{error}</p>
-          <button onClick={actions.clearError} className="text-red-500 hover:text-red-700 text-sm underline mt-1">
-            Dismiss
-          </button>
-        </div>
+        <Card className="border-error-200 bg-error-50 dark:border-error-800 dark:bg-error-900/20">
+          <div className="flex items-start justify-between">
+            <div className="flex items-start space-x-3">
+              <svg className="h-5 w-5 text-error-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p className="text-sm text-error-700 dark:text-error-300">{error}</p>
+            </div>
+            <Button variant="ghost" size="sm" onClick={actions.clearError} className="text-error-600 hover:text-error-700">
+              Dismiss
+            </Button>
+          </div>
+        </Card>
       )}
 
       {/* Cards List */}
       {cards.length === 0 ? (
-        <div className="text-center py-12">
-          <div className="text-gray-400 mb-4">
-            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        <Card className="text-center py-12">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
+            <svg className="h-8 w-8 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <p className="text-gray-500 mb-4">No cards in this group yet</p>
-          <Link to={`/groups/${groupId}/cards/new`} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md font-medium transition-colors">
-            Add Your First Card
-          </Link>
-        </div>
+          <h3 className="mb-2 text-lg font-medium text-neutral-900 dark:text-neutral-100">No cards yet</h3>
+          <p className="mb-6 text-neutral-500 dark:text-neutral-400">Get started by adding your first flashcard to this group</p>
+          <Button asChild>
+            <Link to={`/groups/${groupId}/cards/new`}>Add Your First Card</Link>
+          </Button>
+        </Card>
       ) : (
         <div className="space-y-3">
           {cards.map((card) => (
-            <div key={card.id} className="bg-white rounded-lg shadow p-4 hover:shadow-md transition-shadow">
+            <Card key={card.id} variant="interactive" className="group">
               <div className="flex items-start justify-between">
-                <div className="flex-1 min-w-0">
-                  <div className="grid md:grid-cols-2 gap-4">
+                <div className="min-w-0 flex-1">
+                  <div className="grid gap-4 md:grid-cols-2">
                     <div>
-                      <p className="text-sm font-medium text-gray-500 mb-1">Front</p>
-                      <p className="text-gray-900">{card.front}</p>
+                      <p className="mb-2 text-sm font-medium text-neutral-500 dark:text-neutral-400">Front</p>
+                      <p className="text-neutral-900 dark:text-neutral-100">{card.front}</p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-500 mb-1">Back</p>
-                      <p className="text-gray-900">{card.back}</p>
+                      <p className="mb-2 text-sm font-medium text-neutral-500 dark:text-neutral-400">Back</p>
+                      <p className="text-neutral-900 dark:text-neutral-100">{card.back}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-4 mt-3 text-xs text-gray-500">
-                    {card.lastRating && <span className={`px-2 py-1 rounded ${card.lastRating === "know" ? "bg-green-100 text-green-700" : card.lastRating === "doubt" ? "bg-yellow-100 text-yellow-700" : "bg-red-100 text-red-700"}`}>{card.lastRating.replace("_", " ")}</span>}
+                  {card.hint && (
+                    <div className="mt-4">
+                      <p className="mb-1 text-sm font-medium text-neutral-500 dark:text-neutral-400">Hint</p>
+                      <p className="text-sm text-neutral-600 dark:text-neutral-400">{card.hint}</p>
+                    </div>
+                  )}
+
+                  <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-neutral-500 dark:text-neutral-400">
+                    {card.lastRating && (
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${card.lastRating === "know" ? "bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200" : card.lastRating === "doubt" ? "bg-warning-100 text-warning-800 dark:bg-warning-900 dark:text-warning-200" : "bg-error-100 text-error-800 dark:bg-error-900 dark:text-error-200"}`}>
+                        {card.lastRating.replace("_", " ")}
+                      </span>
+                    )}
                     <span>Created {new Date(card.createdAt).toLocaleDateString()}</span>
                     {card.lastReviewedAt && <span>Last reviewed {new Date(card.lastReviewedAt).toLocaleDateString()}</span>}
                   </div>
                 </div>
 
-                <div className="flex space-x-2 ml-4">
-                  <Link to={`/groups/${groupId}/cards/${card.id}/edit`} className="text-gray-500 hover:text-gray-700 p-1" title="Edit card">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                  </Link>
-                  <button onClick={() => handleDeleteCard(card.id, card.front)} className="text-red-500 hover:text-red-700 p-1" title="Delete card">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="ml-4 flex items-center space-x-1 opacity-0 transition-opacity group-hover:opacity-100">
+                  <Button variant="ghost" size="sm" asChild className="h-8 w-8 p-0">
+                    <Link to={`/groups/${groupId}/cards/${card.id}/edit`} title="Edit card">
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </Link>
+                  </Button>
+                  <Button variant="ghost" size="sm" onClick={() => handleDeleteCard(card.id, card.front)} className="h-8 w-8 p-0 text-error-500 hover:text-error-600" title="Delete card">
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
-                  </button>
+                  </Button>
                 </div>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
       )}
 
       {/* Group Actions */}
-      <div className="border-t pt-6">
-        <div className="flex justify-between items-center">
-          <div>
-            <Link to={`/groups/${groupId}/edit`} className="text-gray-600 hover:text-gray-800 underline">
+      <Card className="border-t-0 bg-neutral-50 dark:bg-neutral-800/50">
+        <div className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+          <Button variant="ghost" size="sm" asChild>
+            <Link to={`/groups/${groupId}/edit`} className="justify-start">
+              <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
               Edit Group Settings
             </Link>
-          </div>
-          <button onClick={handleDeleteGroup} className="text-red-600 hover:text-red-800 text-sm underline">
+          </Button>
+          <Button variant="ghost" size="sm" onClick={handleDeleteGroup} className="justify-start text-error-600 hover:text-error-700 sm:justify-center">
+            <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
             Delete Group
-          </button>
+          </Button>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

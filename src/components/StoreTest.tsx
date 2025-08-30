@@ -10,7 +10,6 @@ export const StoreTest: React.FC = () => {
   const isLoading = useIsLoading();
   const error = useError();
 
-  // Individual action selectors
   const loadGroups = useLoadGroups();
   const createGroup = useCreateGroup();
   const loadCards = useLoadCards();

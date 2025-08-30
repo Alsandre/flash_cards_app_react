@@ -1,28 +1,21 @@
-// Study session management slice for Zustand store
 import type {StateCreator} from "zustand";
 import type {AppState, StudySlice} from "../types/store";
 
 import {SessionRepository} from "../repositories/sessionRepository";
 import {CardRepository} from "../repositories/cardRepository";
 
-// Initialize repositories
 const sessionRepo = new SessionRepository();
 const cardRepo = new CardRepository();
 
 export const createStudySlice: StateCreator<AppState, [], [], StudySlice> = (set, get) => ({
-  // Initial state
   currentSession: null,
-
-  // Study session actions
   startStudySession: async (groupId) => {
     try {
       set({isLoading: true, error: null});
 
-      // Check if there's already an active session for this group
       const existingSession = await sessionRepo.findActiveSession(groupId);
 
       if (existingSession) {
-        // Resume existing session
         set({
           currentSession: existingSession,
           isLoading: false,
@@ -30,7 +23,6 @@ export const createStudySlice: StateCreator<AppState, [], [], StudySlice> = (set
         return;
       }
 
-      // Get the group to determine study card count
       const groups = get().groups;
       const group = groups.find((g) => g.id === groupId);
 
@@ -38,14 +30,11 @@ export const createStudySlice: StateCreator<AppState, [], [], StudySlice> = (set
         throw new Error("Group not found");
       }
 
-      // Get cards for the study session
       const studyCards = await cardRepo.getCardsForStudySession(groupId, group.studyCardCount);
 
       if (studyCards.length === 0) {
         throw new Error("No cards available for study session");
       }
-
-      // Create new study session
       const newSession = await sessionRepo.create({
         groupId,
         totalCards: studyCards.length,
@@ -87,10 +76,7 @@ export const createStudySlice: StateCreator<AppState, [], [], StudySlice> = (set
     try {
       set({error: null});
 
-      // Update card rating
       await cardRepo.updateRating(cardId, rating);
-
-      // Update card in state
       const currentCards = get().cards;
       const updatedCards = {...currentCards};
 

@@ -4,14 +4,11 @@ import type {AppState, GroupSlice} from "../types/store";
 
 import {GroupRepository} from "../repositories/groupRepository";
 
-// Initialize repository
 const groupRepo = new GroupRepository();
 
 export const createGroupSlice: StateCreator<AppState, [], [], GroupSlice> = (set, get) => ({
-  // Initial state
   groups: [],
 
-  // Group actions
   loadGroups: async () => {
     try {
       set({isLoading: true, error: null});

@@ -1,21 +1,20 @@
-// Core data models as defined in foundation document
-
 export interface Group {
-  id: string; // UUID
+  id: string;
   name: string;
   description?: string;
-  studyCardCount: number; // X cards per session
+  studyCardCount: number;
   createdAt: Date;
   updatedAt: Date;
-  cardCount: number; // computed field
+  cardCount: number;
 }
 
 export interface Card {
-  id: string; // UUID
-  groupId: string; // foreign key
+  id: string;
+  groupId: string;
   front: string;
   back: string;
-  properties: Record<string, any>; // flexible properties for filtering
+  hint?: string;
+  properties: Record<string, any>;
   lastRating?: "dont_know" | "doubt" | "know";
   createdAt: Date;
   updatedAt: Date;
@@ -41,12 +40,11 @@ export interface CardRating {
 }
 
 export interface SyncMetadata {
-  key: string; // Primary key for sync metadata
+  key: string;
   lastSyncAt?: Date;
   localVersion: number;
   cloudVersion?: number;
-  conflicts: string[]; // array of conflicted entity IDs
+  conflicts: string[];
 }
 
-// Type for card ratings
 export type Rating = "dont_know" | "doubt" | "know";

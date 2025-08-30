@@ -1,7 +1,7 @@
-// Study session page - flashcard study interface
 import React, {useEffect, useState} from "react";
 import {useParams, useNavigate, Link} from "react-router-dom";
 import {useGroups, useAllCards, useCurrentSession, useStartStudySession, useUpdateSessionProgress, useRateCard, useCompleteSession, useLoadCards, useIsLoading, useError, useClearError} from "../store/appStore";
+import {Button, Card, LoadingSpinner} from "../components/ui";
 
 export const StudySession: React.FC = () => {
   const {groupId} = useParams<{groupId: string}>();
@@ -120,42 +120,48 @@ export const StudySession: React.FC = () => {
 
   if (!groupId) {
     return (
-      <div className="text-center py-12">
-        <p className="text-red-600">Invalid group ID</p>
-        <Link to="/" className="text-blue-500 hover:text-blue-700 underline">
-          Back to Dashboard
-        </Link>
-      </div>
+      <Card className="mx-auto max-w-md text-center py-12">
+        <h3 className="mb-2 text-lg font-medium text-neutral-900 dark:text-neutral-100">Invalid Group ID</h3>
+        <p className="mb-4 text-neutral-500 dark:text-neutral-400">The group ID provided is not valid.</p>
+        <Button asChild>
+          <Link to="/">Back to Dashboard</Link>
+        </Button>
+      </Card>
     );
   }
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-64">
-        <div className="text-gray-500">Starting study session...</div>
+        <div className="flex items-center space-x-3 text-neutral-500 dark:text-neutral-400">
+          <LoadingSpinner size="md" />
+          <span>Starting study session...</span>
+        </div>
       </div>
     );
   }
 
   if (!group) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-600">Group not found</p>
-        <Link to="/" className="text-blue-500 hover:text-blue-700 underline">
-          Back to Dashboard
-        </Link>
-      </div>
+      <Card className="mx-auto max-w-md text-center py-12">
+        <h3 className="mb-2 text-lg font-medium text-neutral-900 dark:text-neutral-100">Group not found</h3>
+        <p className="mb-4 text-neutral-500 dark:text-neutral-400">The requested group could not be found.</p>
+        <Button asChild>
+          <Link to="/">Back to Dashboard</Link>
+        </Button>
+      </Card>
     );
   }
 
   if (sessionCards.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-600">No cards available for study</p>
-        <Link to={`/groups/${groupId}`} className="text-blue-500 hover:text-blue-700 underline">
-          Back to Group
-        </Link>
-      </div>
+      <Card className="mx-auto max-w-md text-center py-12">
+        <h3 className="mb-2 text-lg font-medium text-neutral-900 dark:text-neutral-100">No cards available</h3>
+        <p className="mb-4 text-neutral-500 dark:text-neutral-400">This group doesn't have any cards to study yet.</p>
+        <Button asChild>
+          <Link to={`/groups/${groupId}`}>Back to Group</Link>
+        </Button>
+      </Card>
     );
   }
 
@@ -163,79 +169,133 @@ export const StudySession: React.FC = () => {
   const progress = ((currentCardIndex + 1) / sessionCards.length) * 100;
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="mx-auto max-w-4xl px-1 sm:px-0">
       {/* Header */}
       <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-xl font-semibold text-gray-900">Studying: {group.name}</h1>
-          <button onClick={handleEndSession} className="text-gray-500 hover:text-gray-700 text-sm underline">
+        <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+          <div>
+            <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">Studying: {group.name}</h1>
+            <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">Focus on each card and rate your knowledge honestly</p>
+          </div>
+          <Button variant="ghost" onClick={handleEndSession} className="text-error-600 hover:text-error-700">
             End Session
-          </button>
+          </Button>
         </div>
 
         {/* Progress Bar */}
-        <div className="mb-2">
-          <div className="flex justify-between text-sm text-gray-600 mb-1">
+        <Card className="mt-6 p-4">
+          <div className="mb-3 flex items-center justify-between text-sm text-neutral-600 dark:text-neutral-400">
             <span>
               Card {currentCardIndex + 1} of {sessionCards.length}
             </span>
             <span>{Math.round(progress)}% complete</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-blue-500 h-2 rounded-full transition-all duration-300" style={{width: `${progress}%`}} />
+          <div className="h-2 w-full overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-700">
+            <div className="h-full bg-primary-500 transition-all duration-500 ease-out" style={{width: `${progress}%`}} />
           </div>
-        </div>
+        </Card>
       </div>
 
+      {/* Error Message */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
-          <p className="text-red-600 text-sm">{error}</p>
-          <button onClick={clearError} className="text-red-500 hover:text-red-700 text-sm underline mt-1">
-            Dismiss
-          </button>
-        </div>
+        <Card className="mb-6 border-error-200 bg-error-50 dark:border-error-800 dark:bg-error-900/20">
+          <div className="flex items-start justify-between">
+            <div className="flex items-start space-x-3">
+              <svg className="h-5 w-5 text-error-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p className="text-sm text-error-700 dark:text-error-300">{error}</p>
+            </div>
+            <Button variant="ghost" size="sm" onClick={clearError} className="text-error-600 hover:text-error-700">
+              Dismiss
+            </Button>
+          </div>
+        </Card>
       )}
 
       {/* Flashcard */}
       <div className="mb-8">
-        <div onClick={handleCardFlip} className="bg-white rounded-lg shadow-lg p-8 min-h-64 flex items-center justify-center cursor-pointer hover:shadow-xl transition-shadow">
-          <div className="text-center">
-            <p className="text-sm font-medium text-gray-500 mb-4">{showBack ? "Back" : "Front"}</p>
-            <p className="text-2xl text-gray-900">{showBack ? currentCard.back : currentCard.front}</p>
-            {!showBack && <p className="text-sm text-gray-500 mt-4">Tap to reveal answer</p>}
+        <Card variant="flashcard" onClick={handleCardFlip} className="group min-h-80 cursor-pointer p-8 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] sm:min-h-96">
+          <div className="flex h-full flex-col items-center justify-center text-center">
+            <div className="mb-4 inline-flex items-center rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">{showBack ? "Back" : "Front"}</div>
+
+            <div className="flex-1 flex items-center justify-center">
+              <p className="text-card-lg font-medium leading-relaxed text-neutral-900 dark:text-neutral-100 sm:text-3xl">{showBack ? currentCard.back : currentCard.front}</p>
+            </div>
+
+            {currentCard.hint && !showBack && (
+              <div className="mt-6 rounded-lg bg-neutral-50 p-3 dark:bg-neutral-800/50">
+                <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-1">Hint</p>
+                <p className="text-sm text-neutral-600 dark:text-neutral-400">{currentCard.hint}</p>
+              </div>
+            )}
+
+            {!showBack && (
+              <div className="mt-6 flex items-center space-x-2 text-sm text-neutral-500 dark:text-neutral-400 group-hover:text-neutral-600 dark:group-hover:text-neutral-300 transition-colors">
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                </svg>
+                <span>Tap to reveal answer</span>
+              </div>
+            )}
           </div>
-        </div>
+        </Card>
       </div>
 
       {/* Navigation */}
-      <div className="flex justify-between mb-6">
-        <button onClick={handlePreviousCard} disabled={currentCardIndex === 0} className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 disabled:text-gray-400 disabled:cursor-not-allowed">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="mb-6 flex items-center justify-between sm:mb-8">
+        <Button variant="ghost" onClick={handlePreviousCard} disabled={currentCardIndex === 0} className="flex items-center space-x-1 min-h-[44px] px-3 sm:space-x-2 sm:px-4">
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
           </svg>
-          <span>Previous</span>
-        </button>
+          <span className="text-sm sm:text-base">Previous</span>
+        </Button>
 
-        <button onClick={handleNextCard} disabled={currentCardIndex === sessionCards.length - 1} className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 disabled:text-gray-400 disabled:cursor-not-allowed">
-          <span>Next</span>
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="flex items-center space-x-2 text-sm text-neutral-500 dark:text-neutral-400">
+          <div className="flex space-x-1">
+            {sessionCards.map((_, index) => (
+              <div key={index} className={`h-2 w-2 rounded-full transition-colors ${index === currentCardIndex ? "bg-primary-500" : index < currentCardIndex ? "bg-success-500" : "bg-neutral-300 dark:bg-neutral-600"}`} />
+            ))}
+          </div>
+        </div>
+
+        <Button variant="ghost" onClick={handleNextCard} disabled={currentCardIndex === sessionCards.length - 1} className="flex items-center space-x-1 min-h-[44px] px-3 sm:space-x-2 sm:px-4">
+          <span className="text-sm sm:text-base">Next</span>
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
           </svg>
-        </button>
+        </Button>
       </div>
 
       {/* Rating Buttons */}
       {showBack && (
-        <div className="grid grid-cols-3 gap-4">
-          <button onClick={() => handleRating("dont_know")} className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-            Don't Know
-          </button>
-          <button onClick={() => handleRating("doubt")} className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-            Doubt
-          </button>
-          <button onClick={() => handleRating("know")} className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-            Know
-          </button>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+          <Button onClick={() => handleRating("dont_know")} className="bg-error-500 hover:bg-error-600 active:bg-error-700 py-3 text-base font-medium min-h-[56px] sm:py-4">
+            <div className="flex flex-col items-center space-y-1 sm:space-y-1.5">
+              <svg className="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              <span className="text-sm sm:text-base">Don't Know</span>
+            </div>
+          </Button>
+
+          <Button onClick={() => handleRating("doubt")} className="bg-warning-500 hover:bg-warning-600 active:bg-warning-700 py-3 text-base font-medium min-h-[56px] sm:py-4">
+            <div className="flex flex-col items-center space-y-1 sm:space-y-1.5">
+              <svg className="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span className="text-sm sm:text-base">Doubt</span>
+            </div>
+          </Button>
+
+          <Button onClick={() => handleRating("know")} className="bg-success-500 hover:bg-success-600 active:bg-success-700 py-3 text-base font-medium min-h-[56px] sm:py-4">
+            <div className="flex flex-col items-center space-y-1 sm:space-y-1.5">
+              <svg className="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span className="text-sm sm:text-base">I Know</span>
+            </div>
+          </Button>
         </div>
       )}
     </div>

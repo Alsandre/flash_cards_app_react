@@ -15,32 +15,27 @@ export interface AppState {
   cards: Record<string, Card[]>; // grouped by groupId
   currentSession: StudySession | null;
 
-  // UI Actions
   setTheme: (theme: "light" | "dark") => void;
   setCurrentRoute: (route: string) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
 
-  // Group Actions
   loadGroups: () => Promise<void>;
   createGroup: (group: Omit<Group, "id">) => Promise<void>;
   updateGroup: (groupId: string, updates: Partial<Group>) => Promise<void>;
   deleteGroup: (groupId: string) => Promise<void>;
 
-  // Card Actions
   loadCards: (groupId: string) => Promise<void>;
   createCard: (card: Omit<Card, "id">) => Promise<void>;
   updateCard: (cardId: string, updates: Partial<Card>) => Promise<void>;
   deleteCard: (cardId: string) => Promise<void>;
 
-  // Study Session Actions
   startStudySession: (groupId: string) => Promise<void>;
   updateSessionProgress: (cardIndex: number) => Promise<void>;
   rateCard: (cardId: string, rating: "dont_know" | "doubt" | "know") => Promise<void>;
   completeSession: () => Promise<void>;
   resumeSession: (groupId: string) => Promise<void>;
 
-  // Utility Actions
   clearError: () => void;
   reset: () => void;
 }

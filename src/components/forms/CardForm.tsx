@@ -1,7 +1,7 @@
-// Reusable form component for creating and editing cards
 import React, {useState, useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useAppStore} from "../../store/appStore";
+import {Button, Card as UICard, Input, Textarea, LoadingSpinner} from "../ui";
 import type {Card} from "../../types/entities";
 
 interface CardFormProps {
@@ -30,7 +30,6 @@ export const CardForm: React.FC<CardFormProps> = ({mode, initialData}) => {
   const loadCards = useAppStore((state) => state.loadCards);
   const clearError = useAppStore((state) => state.clearError);
 
-  // Form state
   const [formData, setFormData] = useState<CardFormData>({
     front: initialData?.front || "",
     back: initialData?.back || "",
@@ -54,7 +53,6 @@ export const CardForm: React.FC<CardFormProps> = ({mode, initialData}) => {
     }
   }, [groupId, groups.length, cards.length, loadGroups, loadCards]);
 
-  // Update form data when card is loaded (edit mode)
   useEffect(() => {
     if (mode === "edit" && card) {
       setFormData({
@@ -65,7 +63,6 @@ export const CardForm: React.FC<CardFormProps> = ({mode, initialData}) => {
     }
   }, [mode, card]);
 
-  // Clear errors when error state changes
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => clearError(), 5000);
@@ -112,6 +109,9 @@ export const CardForm: React.FC<CardFormProps> = ({mode, initialData}) => {
           front: formData.front.trim(),
           back: formData.back.trim(),
           hint: formData.hint?.trim() || undefined,
+          properties: {},
+          createdAt: new Date(),
+          updatedAt: new Date(),
         });
       } else if (mode === "edit" && cardId) {
         await updateCard(cardId, {
@@ -138,7 +138,10 @@ export const CardForm: React.FC<CardFormProps> = ({mode, initialData}) => {
   if (isLoading && (!group || (mode === "edit" && !card))) {
     return (
       <div className="flex items-center justify-center min-h-64">
-        <div className="text-gray-500">Loading...</div>
+        <div className="flex items-center space-x-3 text-neutral-500 dark:text-neutral-400">
+          <LoadingSpinner size="md" />
+          <span>Loading...</span>
+        </div>
       </div>
     );
   }
@@ -146,108 +149,72 @@ export const CardForm: React.FC<CardFormProps> = ({mode, initialData}) => {
   // Group not found
   if (!group) {
     return (
-      <div className="text-center py-12">
-        <p className="text-red-600">Group not found</p>
-        <button onClick={() => navigate("/")} className="text-blue-500 hover:text-blue-700 underline">
-          Back to Dashboard
-        </button>
-      </div>
+      <UICard className="mx-auto max-w-md text-center py-12">
+        <h3 className="mb-2 text-lg font-medium text-neutral-900 dark:text-neutral-100">Group not found</h3>
+        <p className="mb-4 text-neutral-500 dark:text-neutral-400">The requested group could not be found.</p>
+        <Button onClick={() => navigate("/")}>Back to Dashboard</Button>
+      </UICard>
     );
   }
 
   // Card not found (edit mode)
   if (mode === "edit" && !card) {
     return (
-      <div className="text-center py-12">
-        <p className="text-red-600">Card not found</p>
-        <button onClick={() => navigate(`/groups/${groupId}`)} className="text-blue-500 hover:text-blue-700 underline">
-          Back to Group
-        </button>
-      </div>
+      <UICard className="mx-auto max-w-md text-center py-12">
+        <h3 className="mb-2 text-lg font-medium text-neutral-900 dark:text-neutral-100">Card not found</h3>
+        <p className="mb-4 text-neutral-500 dark:text-neutral-400">The requested card could not be found.</p>
+        <Button onClick={() => navigate(`/groups/${groupId}`)}>Back to Group</Button>
+      </UICard>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{mode === "create" ? "Add New Card" : "Edit Card"}</h1>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">{mode === "create" ? `Adding card to "${group.name}"` : `Editing card in "${group.name}"`}</p>
+    <div className="mx-auto max-w-2xl px-1 sm:px-0">
+      <UICard className="p-6">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">{mode === "create" ? "Add New Card" : "Edit Card"}</h1>
+          <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">{mode === "create" ? `Adding card to "${group.name}"` : `Editing card in "${group.name}"`}</p>
+        </div>
 
+        {/* Error Message */}
         {error && (
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-4 mb-6">
-            <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
-            <button onClick={clearError} className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-sm underline mt-1">
-              Dismiss
-            </button>
-          </div>
+          <UICard className="mb-6 border-error-200 bg-error-50 dark:border-error-800 dark:bg-error-900/20">
+            <div className="flex items-start justify-between">
+              <div className="flex items-start space-x-3">
+                <svg className="h-5 w-5 text-error-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p className="text-sm text-error-700 dark:text-error-300">{error}</p>
+              </div>
+              <Button variant="ghost" size="sm" onClick={clearError} className="text-error-600 hover:text-error-700">
+                Dismiss
+              </Button>
+            </div>
+          </UICard>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Front Side */}
-          <div>
-            <label htmlFor="front" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Front Side *
-            </label>
-            <textarea
-              id="front"
-              value={formData.front}
-              onChange={(e) => setFormData({...formData, front: e.target.value})}
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-100 ${errors.front ? "border-red-300 focus:border-red-500 focus:ring-red-500" : "border-gray-300 dark:border-gray-600 focus:border-blue-500"}`}
-              placeholder="Enter the question or prompt"
-              rows={3}
-              disabled={isSubmitting}
-            />
-            {errors.front && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.front}</p>}
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">What the user will see first (question, term, etc.)</p>
-          </div>
+          <Textarea label="Front Side" value={formData.front} onChange={(e) => setFormData({...formData, front: e.target.value})} placeholder="Enter the question or prompt" rows={3} error={errors.front} helperText="What the user will see first (question, term, etc.)" disabled={isSubmitting} required />
 
           {/* Back Side */}
-          <div>
-            <label htmlFor="back" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Back Side *
-            </label>
-            <textarea
-              id="back"
-              value={formData.back}
-              onChange={(e) => setFormData({...formData, back: e.target.value})}
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-100 ${errors.back ? "border-red-300 focus:border-red-500 focus:ring-red-500" : "border-gray-300 dark:border-gray-600 focus:border-blue-500"}`}
-              placeholder="Enter the answer or definition"
-              rows={4}
-              disabled={isSubmitting}
-            />
-            {errors.back && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.back}</p>}
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">The answer or information revealed when flipped</p>
-          </div>
+          <Textarea label="Back Side" value={formData.back} onChange={(e) => setFormData({...formData, back: e.target.value})} placeholder="Enter the answer or definition" rows={4} error={errors.back} helperText="The answer or information revealed when flipped" disabled={isSubmitting} required />
 
           {/* Hint (Optional) */}
-          <div>
-            <label htmlFor="hint" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Hint (Optional)
-            </label>
-            <input
-              type="text"
-              id="hint"
-              value={formData.hint}
-              onChange={(e) => setFormData({...formData, hint: e.target.value})}
-              className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-100 ${errors.hint ? "border-red-300 focus:border-red-500 focus:ring-red-500" : "border-gray-300 dark:border-gray-600 focus:border-blue-500"}`}
-              placeholder="Optional hint to help remember"
-              disabled={isSubmitting}
-            />
-            {errors.hint && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.hint}</p>}
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">A helpful clue (optional)</p>
-          </div>
+          <Input label="Hint (Optional)" type="text" value={formData.hint || ""} onChange={(e) => setFormData({...formData, hint: e.target.value})} placeholder="Optional hint to help remember" error={errors.hint} helperText="A helpful clue (optional)" disabled={isSubmitting} />
 
           {/* Form Actions */}
-          <div className="flex space-x-4 pt-6">
-            <button type="submit" disabled={isSubmitting} className="flex-1 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white px-4 py-2 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-              {isSubmitting ? (mode === "create" ? "Adding..." : "Updating...") : mode === "create" ? "Add Card" : "Update Card"}
-            </button>
-            <button type="button" onClick={handleCancel} disabled={isSubmitting} className="flex-1 bg-gray-300 hover:bg-gray-400 disabled:bg-gray-200 text-gray-700 px-4 py-2 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-gray-200">
+          <div className="flex flex-col-reverse gap-3 pt-6 sm:flex-row">
+            <Button type="button" variant="secondary" onClick={handleCancel} disabled={isSubmitting} className="flex-1">
               Cancel
-            </button>
+            </Button>
+            <Button type="submit" disabled={isSubmitting} isLoading={isSubmitting} className="flex-1">
+              {mode === "create" ? "Add Card" : "Update Card"}
+            </Button>
           </div>
         </form>
-      </div>
+      </UICard>
     </div>
   );
 };
