@@ -1,7 +1,7 @@
 // Card management slice for Zustand store
 import type {StateCreator} from "zustand";
 import type {AppState, CardSlice} from "../types/store";
-import type {Card} from "../types/entities";
+
 import {CardRepository} from "../repositories/cardRepository";
 import {GroupRepository} from "../repositories/groupRepository";
 
@@ -16,32 +16,28 @@ export const createCardSlice: StateCreator<AppState, [], [], CardSlice> = (set, 
   // Card actions
   loadCards: async (groupId) => {
     try {
-      set({isLoading: true, error: null}, false, "loadCards/start");
+      set({isLoading: true, error: null});
 
       const cards = await cardRepo.findByGroupId(groupId);
       const currentCards = get().cards;
 
-      set(
-        {
-          cards: {
-            ...currentCards,
-            [groupId]: cards,
-          },
-          isLoading: false,
+      set({
+        cards: {
+          ...currentCards,
+          [groupId]: cards,
         },
-        false,
-        "loadCards/success"
-      );
+        isLoading: false,
+      });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to load cards";
-      set({error: errorMessage, isLoading: false}, false, "loadCards/error");
+      set({error: errorMessage, isLoading: false});
       throw error;
     }
   },
 
   createCard: async (cardData) => {
     try {
-      set({isLoading: true, error: null}, false, "createCard/start");
+      set({isLoading: true, error: null});
 
       const newCard = await cardRepo.create(cardData);
       const currentCards = get().cards;
@@ -53,29 +49,24 @@ export const createCardSlice: StateCreator<AppState, [], [], CardSlice> = (set, 
         [cardData.groupId]: [newCard, ...groupCards],
       };
 
-      // Update group card count in state
-      const currentGroups = get().groups;
-      const updatedGroups = currentGroups.map((group) => (group.id === cardData.groupId ? {...group, cardCount: group.cardCount + 1} : group));
+      // Update group card count in database and reload groups
+      const updatedGroups = await groupRepo.getGroupsWithCardCounts();
 
-      set(
-        {
-          cards: updatedCards,
-          groups: updatedGroups,
-          isLoading: false,
-        },
-        false,
-        "createCard/success"
-      );
+      set({
+        cards: updatedCards,
+        groups: updatedGroups,
+        isLoading: false,
+      });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to create card";
-      set({error: errorMessage, isLoading: false}, false, "createCard/error");
+      set({error: errorMessage, isLoading: false});
       throw error;
     }
   },
 
   updateCard: async (cardId, updates) => {
     try {
-      set({isLoading: true, error: null}, false, "updateCard/start");
+      set({isLoading: true, error: null});
 
       const updatedCard = await cardRepo.update(cardId, updates);
       const currentCards = get().cards;
@@ -92,24 +83,20 @@ export const createCardSlice: StateCreator<AppState, [], [], CardSlice> = (set, 
         }
       }
 
-      set(
-        {
-          cards: updatedCards,
-          isLoading: false,
-        },
-        false,
-        "updateCard/success"
-      );
+      set({
+        cards: updatedCards,
+        isLoading: false,
+      });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to update card";
-      set({error: errorMessage, isLoading: false}, false, "updateCard/error");
+      set({error: errorMessage, isLoading: false});
       throw error;
     }
   },
 
   deleteCard: async (cardId) => {
     try {
-      set({isLoading: true, error: null}, false, "deleteCard/start");
+      set({isLoading: true, error: null});
 
       // Find the card to get its groupId before deletion
       const currentCards = get().cards;
@@ -133,22 +120,17 @@ export const createCardSlice: StateCreator<AppState, [], [], CardSlice> = (set, 
       const updatedCards = {...currentCards};
       updatedCards[cardGroupId] = updatedCards[cardGroupId].filter((card) => card.id !== cardId);
 
-      // Update group card count in state
-      const currentGroups = get().groups;
-      const updatedGroups = currentGroups.map((group) => (group.id === cardGroupId ? {...group, cardCount: Math.max(0, group.cardCount - 1)} : group));
+      // Update group card count in database and reload groups
+      const updatedGroups = await groupRepo.getGroupsWithCardCounts();
 
-      set(
-        {
-          cards: updatedCards,
-          groups: updatedGroups,
-          isLoading: false,
-        },
-        false,
-        "deleteCard/success"
-      );
+      set({
+        cards: updatedCards,
+        groups: updatedGroups,
+        isLoading: false,
+      });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to delete card";
-      set({error: errorMessage, isLoading: false}, false, "deleteCard/error");
+      set({error: errorMessage, isLoading: false});
       throw error;
     }
   },

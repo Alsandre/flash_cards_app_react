@@ -41,7 +41,25 @@ workflow_steps:
       required: true
       description: "Mark when foundation document needs updates"
 
+    - action: "add_debug_logs"
+      trigger: "debugging_or_testing_needed"
+      required: false
+      description: "Add temporary console.log, debug statements, or test components for development verification"
+
   task_completion:
+    - action: "verify_acceptance_criteria"
+      required: true
+      description: "Test all acceptance criteria manually and verify functionality"
+
+    - action: "mcp_verification"
+      required: true
+      description: "Use CCK MCP tools (get_error_analysis, get_debug_context) to verify no console errors and proper application state"
+      tools: ["mcp_cck-flash_cards_app_react_get_error_analysis", "mcp_cck-flash_cards_app_react_get_debug_context"]
+
+    - action: "cleanup_debug_logs"
+      required: true
+      description: "Remove temporary console.log statements, debug components, and test code added during development"
+
     - action: "mark_task_complete"
       required: true
       description: "Move task from in_progress to completed with timestamp"
@@ -136,12 +154,25 @@ ai_agent_instructions: |
   2. Verify current task aligns with foundation document
   3. Update progress incrementally as work progresses
   4. Log all architectural decisions immediately
-  5. Mark tasks complete only when acceptance criteria are fully met
-  6. Set clear context for next session before ending
-  7. Update foundation document if architectural changes were made
+  5. Add temporary debug logs/components when needed for development verification
+  6. Before marking tasks complete:
+     a. Test all acceptance criteria manually
+     b. Use CCK MCP tools to verify no console errors:
+        - mcp_cck-flash_cards_app_react_get_error_analysis
+        - mcp_cck-flash_cards_app_react_get_debug_context
+     c. Clean up all temporary debug logs and test components
+  7. Mark tasks complete only when acceptance criteria are fully met AND MCP verification passes
+  8. Set clear context for next session before ending
+  9. Update foundation document if architectural changes were made
 
   The progress.yml file is your persistent memory and state manager.
   Treat it as the authoritative source for what to work on next.
+
+  CCK MCP Integration:
+  - Use MCP tools as your primary testing verification method
+  - Always check for console errors before task completion
+  - MCP provides real-time application state and error monitoring
+  - Clean code means zero console errors in MCP reports
 
   If there's ever a conflict between what the user asks for and what
   progress.yml indicates, clarify with the user while showing the

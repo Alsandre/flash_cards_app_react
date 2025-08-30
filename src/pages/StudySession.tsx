@@ -1,14 +1,15 @@
 // Study session page - flashcard study interface
 import React, {useEffect, useState} from "react";
 import {useParams, useNavigate, Link} from "react-router-dom";
-import {useGroups, useCards, useCurrentSession, useStartStudySession, useUpdateSessionProgress, useRateCard, useCompleteSession, useLoadCards, useIsLoading, useError, useClearError} from "../store/appStore";
+import {useGroups, useAllCards, useCurrentSession, useStartStudySession, useUpdateSessionProgress, useRateCard, useCompleteSession, useLoadCards, useIsLoading, useError, useClearError} from "../store/appStore";
 
 export const StudySession: React.FC = () => {
   const {groupId} = useParams<{groupId: string}>();
   const navigate = useNavigate();
 
   const groups = useGroups();
-  const cards = useCards(groupId);
+  const allCards = useAllCards();
+  const cards = groupId ? allCards[groupId] || [] : [];
   const currentSession = useCurrentSession();
   const isLoading = useIsLoading();
   const error = useError();

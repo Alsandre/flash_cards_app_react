@@ -1,11 +1,11 @@
 // Test component for Zustand store integration
 import React, {useEffect} from "react";
-import {useAppStore, useGroups, useCards, useCurrentSession, useIsLoading, useError, useLoadGroups, useCreateGroup, useLoadCards, useCreateCard, useStartStudySession, useCompleteSession, useSetTheme, useClearError} from "../store/appStore";
+import {useAppStore, useGroups, useAllCards, useCurrentSession, useIsLoading, useError, useLoadGroups, useCreateGroup, useLoadCards, useCreateCard, useStartStudySession, useCompleteSession, useSetTheme, useClearError} from "../store/appStore";
 
 export const StoreTest: React.FC = () => {
   // State selectors
   const groups = useGroups();
-  const cards = useCards();
+  const allCards = useAllCards();
   const currentSession = useCurrentSession();
   const isLoading = useIsLoading();
   const error = useError();

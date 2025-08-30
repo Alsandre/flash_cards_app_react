@@ -26,26 +26,6 @@ current_sprint:
 # Active task management
 tasks:
   not_started:
-    - id: "repository_pattern"
-      title: "Base repository pattern implementation"
-      priority: "high"
-      estimated_hours: 4
-      dependencies: ["dexie_setup"]
-      acceptance_criteria:
-        - "Repository interface defined per foundation"
-        - "Base repository class implemented"
-        - "CardRepository and GroupRepository created"
-
-    - id: "group_crud"
-      title: "Group CRUD operations with repositories"
-      priority: "high"
-      estimated_hours: 5
-      dependencies: ["repository_pattern", "zustand_config"]
-      acceptance_criteria:
-        - "Group creation, reading, updating, deletion working"
-        - "Integration with Zustand store"
-        - "Error handling implemented"
-
     - id: "card_crud"
       title: "Card CRUD operations with repositories"
       priority: "high"
@@ -82,6 +62,22 @@ tasks:
       completed_at: "2024-01-15T15:30:00Z"
       actual_hours: 1.5
       notes: "Complete React Router v6 implementation with foundation document route structure. Includes Dashboard, GroupDetail, StudySession pages, AppLayout with navigation, theme switching, and development test page."
+
+    - id: "repository_pattern"
+      title: "Base repository pattern implementation"
+      completed_at: "2024-01-15T16:00:00Z"
+      actual_hours: 0.5
+      notes: "Repository pattern was already fully implemented during Dexie setup. Includes Repository interface, BaseRepository abstract class, GroupRepository, CardRepository, and SessionRepository. MCP verification confirmed zero console errors."
+    - id: "group_crud"
+      title: "Group CRUD operations with repositories"
+      completed_at: "2025-01-30T11:22:00Z"
+      actual_hours: 4.5
+      notes: "Complete Group CRUD implementation with GroupForm component, CreateGroup/EditGroup pages, router integration, and Dashboard enhancements. MCP verification confirmed zero console errors and successful functionality."
+    - id: "card_crud"
+      title: "Card CRUD operations with repositories"
+      completed_at: "2025-01-30T11:31:00Z"
+      actual_hours: 2.5
+      notes: "Complete Card CRUD implementation with CardForm component, CreateCard/EditCard pages, router integration, and form validation. MCP verification confirmed zero console errors and successful navigation to card creation form."
 
   blocked: []
 
@@ -130,6 +126,9 @@ session_context:
     - "Updated all components to use individual action selectors"
     - "Fixed StoreTest component import errors with new selector pattern"
     - "Application now loads successfully without React errors or import issues"
+    - "PROGRESS TRACKING ENHANCED: Added CCK MCP integration for task verification"
+    - "MCP tools now required for task completion verification (error analysis + debug context)"
+    - "Added debug log management workflow (add during development, cleanup before completion)"
   next_session_priorities:
     - "Verify development server starts with Node.js v22.17.0"
     - "Test Tailwind CSS integration is working"

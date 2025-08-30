@@ -8,6 +8,10 @@ import {StudySession} from "../pages/StudySession";
 import {Stats} from "../pages/Stats";
 import {Settings} from "../pages/Settings";
 import {DevTest} from "../pages/DevTest";
+import {CreateGroup} from "../pages/CreateGroup";
+import {EditGroup} from "../pages/EditGroup";
+import {CreateCard} from "../pages/CreateCard";
+import {EditCard} from "../pages/EditCard";
 
 // Placeholder components for routes not yet implemented
 const NotFound: React.FC = () => (
@@ -40,19 +44,19 @@ const router = createBrowserRouter([
       },
       {
         path: "groups/:groupId/cards/new",
-        element: <ComingSoon feature="Add Card" />,
+        element: <CreateCard />,
       },
       {
         path: "groups/:groupId/cards/:cardId/edit",
-        element: <ComingSoon feature="Edit Card" />,
+        element: <EditCard />,
       },
       {
         path: "groups/:groupId/edit",
-        element: <ComingSoon feature="Edit Group" />,
+        element: <EditGroup />,
       },
       {
         path: "groups/new",
-        element: <ComingSoon feature="Create Group" />,
+        element: <CreateGroup />,
       },
       {
         path: "study/:groupId",

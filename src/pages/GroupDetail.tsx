@@ -1,33 +1,58 @@
 // Group detail page - manage cards within a group
-import React, {useEffect} from "react";
+import React, {useEffect, useMemo} from "react";
 import {useParams, Link, useNavigate} from "react-router-dom";
-import {useGroups, useCards, useLoadGroups, useDeleteGroup, useLoadCards, useDeleteCard, useIsLoading, useError, useClearError} from "../store/appStore";
+import {useAppStore} from "../store/appStore";
 
 export const GroupDetail: React.FC = () => {
   const {groupId} = useParams<{groupId: string}>();
   const navigate = useNavigate();
 
-  const groups = useGroups();
-  const cards = useCards(groupId);
-  const isLoading = useIsLoading();
-  const error = useError();
+  // Use simple selectors to prevent re-renders
+  const groups = useAppStore((state) => state.groups);
+  const allCards = useAppStore((state) => state.cards);
+  const isLoading = useAppStore((state) => state.isLoading);
+  const error = useAppStore((state) => state.error);
 
-  const loadGroups = useLoadGroups();
-  const deleteGroup = useDeleteGroup();
-  const loadCards = useLoadCards();
-  const deleteCard = useDeleteCard();
-  const clearError = useClearError();
+  // Derive cards for this group
+  const cards = useMemo(() => {
+    return groupId ? allCards[groupId] || [] : [];
+  }, [allCards, groupId]);
 
-  const group = groups.find((g) => g.id === groupId);
+  // Memoized actions
+  const actions = useMemo(
+    () => ({
+      loadGroups: useAppStore.getState().loadGroups,
+      loadCards: useAppStore.getState().loadCards,
+      deleteGroup: useAppStore.getState().deleteGroup,
+      deleteCard: useAppStore.getState().deleteCard,
+      clearError: useAppStore.getState().clearError,
+    }),
+    []
+  );
+
+  const group = useMemo(() => groups.find((g) => g.id === groupId), [groups, groupId]);
 
   useEffect(() => {
-    if (groupId) {
-      loadCards(groupId);
-    }
-    if (groups.length === 0) {
-      loadGroups();
-    }
-  }, [groupId, loadCards, loadGroups, groups.length]);
+    const loadData = async () => {
+      if (!groupId) return;
+
+      try {
+        const store = useAppStore.getState();
+
+        // Load groups if not loaded
+        if (groups.length === 0) {
+          await store.loadGroups();
+        }
+
+        // Load cards for this group
+        await store.loadCards(groupId);
+      } catch (err) {
+        console.error("Failed to load data:", err);
+      }
+    };
+
+    loadData();
+  }, [groupId, groups.length]);
 
   const handleDeleteGroup = async () => {
     if (!groupId || !group) return;
@@ -35,7 +60,7 @@ export const GroupDetail: React.FC = () => {
     const confirmed = window.confirm(`Are you sure you want to delete "${group.name}"? This will also delete all cards in this group.`);
     if (confirmed) {
       try {
-        await deleteGroup(groupId);
+        await actions.deleteGroup(groupId);
         navigate("/");
       } catch (error) {
         console.error("Failed to delete group:", error);
@@ -47,7 +72,7 @@ export const GroupDetail: React.FC = () => {
     const confirmed = window.confirm(`Are you sure you want to delete the card "${cardFront}"?`);
     if (confirmed) {
       try {
-        await deleteCard(cardId);
+        await actions.deleteCard(cardId);
       } catch (error) {
         console.error("Failed to delete card:", error);
       }
@@ -65,7 +90,7 @@ export const GroupDetail: React.FC = () => {
     );
   }
 
-  if (isLoading && !group) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-64">
         <div className="text-gray-500">Loading group...</div>
@@ -116,7 +141,7 @@ export const GroupDetail: React.FC = () => {
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-md p-4">
           <p className="text-red-600 text-sm">{error}</p>
-          <button onClick={clearError} className="text-red-500 hover:text-red-700 text-sm underline mt-1">
+          <button onClick={actions.clearError} className="text-red-500 hover:text-red-700 text-sm underline mt-1">
             Dismiss
           </button>
         </div>

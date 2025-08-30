@@ -1,17 +1,17 @@
 {
-  "timestamp": "2025-08-30T10:31:58.470Z",
+  "timestamp": "2025-08-30T11:58:04.653Z",
   "type": "cursor_context",
   "framework": "react",
   "stateManager": "none",
   "data": {
     "app": {
-      "url": "http://localhost:5173/groups/new",
-      "pathname": "/groups/new",
+      "url": "http://localhost:5173/groups/c92f27a4-a60a-49e0-ae35-89d0935d01f7/cards/new",
+      "pathname": "/groups/c92f27a4-a60a-49e0-ae35-89d0935d01f7/cards/new",
       "title": "Vite + React + TS",
       "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
       "viewport": {
-        "width": 1571,
-        "height": 871
+        "width": 1200,
+        "height": 948
       }
     },
     "state": {
@@ -21,70 +21,1339 @@
     },
     "stateChanges": [
       {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.285Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.285Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.285Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.285Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.285Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.285Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.285Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.285Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.285Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.285Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.285Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.285Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.285Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.285Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.286Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.286Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.286Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.286Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.286Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.286Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.286Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.286Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.286Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:57:50.286Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
         "type": "dom_mutation",
-        "timestamp": "2025-08-30T10:31:32.562Z",
+        "timestamp": "2025-08-30T11:57:58.872Z",
         "changes": [
+          {
+            "type": "dom_node_added",
+            "tagName": "vite-error-overlay",
+            "className": "",
+            "id": "",
+            "target": "html > body:nth-child(2)"
+          }
+        ]
+      },
+      {
+        "type": "dom_mutation",
+        "timestamp": "2025-08-30T11:57:58.879Z",
+        "changes": [
+          {
+            "type": "dom_node_removed",
+            "tagName": "vite-error-overlay",
+            "className": "",
+            "id": "",
+            "target": "html > body:nth-child(2)"
+          },
+          {
+            "type": "dom_node_added",
+            "tagName": "vite-error-overlay",
+            "className": "",
+            "id": "",
+            "target": "html > body:nth-child(2)"
+          }
+        ]
+      },
+      {
+        "type": "dom_mutation",
+        "timestamp": "2025-08-30T11:57:58.885Z",
+        "changes": [
+          {
+            "type": "dom_node_removed",
+            "tagName": "vite-error-overlay",
+            "className": "",
+            "id": "",
+            "target": "html > body:nth-child(2)"
+          },
+          {
+            "type": "dom_node_added",
+            "tagName": "vite-error-overlay",
+            "className": "",
+            "id": "",
+            "target": "html > body:nth-child(2)"
+          }
+        ]
+      },
+      {
+        "type": "dom_mutation",
+        "timestamp": "2025-08-30T11:57:59.769Z",
+        "changes": [
+          {
+            "type": "dom_node_removed",
+            "tagName": "vite-error-overlay",
+            "className": "",
+            "id": "",
+            "target": "html > body:nth-child(2)"
+          }
+        ]
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.431Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.431Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.431Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.431Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "storage_change",
+        "timestamp": "2025-08-30T11:58:00.431Z",
+        "storageType": "localStorage",
+        "operation": "setItem",
+        "key": "flashcard-theme",
+        "oldValue": "light",
+        "newValue": "light"
+      },
+      {
+        "type": "dom_mutation",
+        "timestamp": "2025-08-30T11:58:00.439Z",
+        "changes": [
+          {
+            "type": "dom_node_removed",
+            "tagName": "h2",
+            "className": "",
+            "id": "",
+            "target": "#root"
+          },
+          {
+            "type": "dom_node_removed",
+            "tagName": "h3",
+            "className": "",
+            "id": "",
+            "target": "#root"
+          },
+          {
+            "type": "dom_node_removed",
+            "tagName": "pre",
+            "className": "",
+            "id": "",
+            "target": "#root"
+          },
+          {
+            "type": "dom_node_removed",
+            "tagName": "p",
+            "className": "",
+            "id": "",
+            "target": "#root"
+          },
+          {
+            "type": "dom_node_removed",
+            "tagName": "p",
+            "className": "",
+            "id": "",
+            "target": "#root"
+          },
           {
             "type": "dom_node_added",
             "tagName": "div",
             "className": "min-h-screen ",
             "id": "",
             "target": "#root"
-          }
-        ]
-      },
-      {
-        "type": "storage_change",
-        "timestamp": "2025-08-30T10:31:32.563Z",
-        "storageType": "localStorage",
-        "operation": "setItem",
-        "key": "flashcard-theme",
-        "oldValue": "dark",
-        "newValue": "dark"
-      },
-      {
-        "type": "storage_change",
-        "timestamp": "2025-08-30T10:31:32.563Z",
-        "storageType": "localStorage",
-        "operation": "setItem",
-        "key": "flashcard-theme",
-        "oldValue": "dark",
-        "newValue": "dark"
-      },
-      {
-        "type": "dom_mutation",
-        "timestamp": "2025-08-30T10:31:32.566Z",
-        "changes": [
-          {
-            "type": "dom_attribute_changed",
-            "attributeName": "d",
-            "target": "svg > path:nth-child(1)",
-            "oldValue": "M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z",
-            "newValue": "M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
           },
           {
-            "type": "dom_attribute_changed",
-            "attributeName": "title",
-            "target": "button.p-2.text-gray-600",
-            "oldValue": "Switch to dark theme",
-            "newValue": "Switch to light theme"
+            "type": "dom_node_removed",
+            "tagName": "p",
+            "className": "text-red-600",
+            "id": "",
+            "target": "div.flex.items-center"
+          },
+          {
+            "type": "dom_node_removed",
+            "tagName": "button",
+            "className": "text-blue-500 hover:text-blue-700 underline",
+            "id": "",
+            "target": "div.flex.items-center"
+          },
+          {
+            "type": "dom_node_added",
+            "tagName": "div",
+            "className": "text-gray-500",
+            "id": "",
+            "target": "div.flex.items-center"
           },
           {
             "type": "dom_attribute_changed",
             "attributeName": "class",
-            "target": "div.min-h-screen.dark",
-            "oldValue": "min-h-screen ",
-            "newValue": "min-h-screen dark"
+            "target": "div.flex.items-center",
+            "oldValue": "text-center py-12",
+            "newValue": "flex items-center justify-center min-h-64"
           }
         ]
       },
       {
-        "type": "object",
-        "timestamp": "2025-08-30T10:31:43.474Z",
-        "globalName": "sessionStorage"
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.439Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.439Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.439Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.439Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.440Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.441Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.441Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.441Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.441Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.441Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.441Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.441Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.441Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.441Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
+      },
+      {
+        "type": "global_property_defined",
+        "timestamp": "2025-08-30T11:58:00.441Z",
+        "propertyName": "Promise",
+        "descriptor": {
+          "configurable": true,
+          "enumerable": false,
+          "writable": true,
+          "hasValue": true,
+          "hasGetter": false,
+          "hasSetter": false
+        }
       }
     ],
     "globalState": {
+      "Promise": {
+        "type": "function",
+        "isObject": false,
+        "hasLength": 1,
+        "keys": null
+      },
       "sessionStorage": {
         "type": "object",
         "isObject": true,
@@ -95,119 +1364,504 @@
     },
     "console": [
       {
-        "level": "log",
-        "message": "🔗 MCP Context Bridge: Enhanced printContext for automatic saving",
-        "timestamp": "2025-08-30T10:31:32.567Z"
-      },
-      {
-        "level": "log",
-        "message": "🤖 FULLY AUTOMATIC MCP Context Bridge enabled",
-        "timestamp": "2025-08-30T10:31:32.567Z"
-      },
-      {
-        "level": "log",
-        "message": "📡 Auto-saving on: clicks, inputs, errors, page load, and every 5 seconds",
-        "timestamp": "2025-08-30T10:31:32.567Z"
-      },
-      {
-        "level": "log",
-        "message": "🚀 No manual commands needed - Cursor AI gets live context automatically!",
-        "timestamp": "2025-08-30T10:31:32.567Z"
-      },
-      {
-        "level": "log",
-        "message": "✅ Context Bridge loaded",
-        "timestamp": "2025-08-30T10:31:32.567Z"
-      },
-      {
-        "level": "log",
-        "message": "✅ Context saved (load): /Users/lekso/code/Code_Personal/flash_cards_app_react/cck/debug_data/context/cck.json",
-        "timestamp": "2025-08-30T10:31:32.569Z"
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T11:57:24.785Z"
       },
       {
         "level": "debug",
         "message": "[vite] hot updated: /src/index.css",
-        "timestamp": "2025-08-30T10:31:32.599Z"
+        "timestamp": "2025-08-30T11:57:29.682Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T11:57:34.761Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T11:57:39.771Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T11:57:44.790Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T11:57:49.683Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T11:57:49.800Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/StoreTest.tsx",
+        "timestamp": "2025-08-30T11:57:49.800Z"
       },
       {
         "level": "debug",
         "message": "[vite] hot updated: /src/App.tsx",
-        "timestamp": "2025-08-30T10:31:35.589Z"
+        "timestamp": "2025-08-30T11:57:49.800Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/Dashboard.tsx",
+        "timestamp": "2025-08-30T11:57:49.800Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/Settings.tsx",
+        "timestamp": "2025-08-30T11:57:49.801Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/layout/AppLayout.tsx",
+        "timestamp": "2025-08-30T11:57:49.801Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/GroupDetail.tsx",
+        "timestamp": "2025-08-30T11:57:49.801Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/StudySession.tsx",
+        "timestamp": "2025-08-30T11:57:49.801Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/EditGroup.tsx",
+        "timestamp": "2025-08-30T11:57:49.801Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/forms/GroupForm.tsx",
+        "timestamp": "2025-08-30T11:57:49.801Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/forms/CardForm.tsx",
+        "timestamp": "2025-08-30T11:57:49.801Z"
+      },
+      {
+        "level": "error",
+        "message": "Error handled by React Router default ErrorBoundary: {}",
+        "timestamp": "2025-08-30T11:57:49.828Z"
+      },
+      {
+        "level": "error",
+        "message": "Error handled by React Router default ErrorBoundary: {}",
+        "timestamp": "2025-08-30T11:57:49.829Z"
+      },
+      {
+        "level": "error",
+        "message": "%o\n\n%s\n\n%s\n {} The above error occurred in the <CardForm> component. React will try to recreate this component tree from scratch using the error boundary you provided, RenderErrorBoundary.",
+        "timestamp": "2025-08-30T11:57:49.829Z"
+      },
+      {
+        "level": "error",
+        "message": "React Router caught the following error during render {}",
+        "timestamp": "2025-08-30T11:57:49.829Z"
       },
       {
         "level": "debug",
         "message": "[vite] hot updated: /src/index.css",
-        "timestamp": "2025-08-30T10:31:35.589Z"
+        "timestamp": "2025-08-30T11:57:49.963Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/StoreTest.tsx",
+        "timestamp": "2025-08-30T11:57:49.963Z"
       },
       {
         "level": "debug",
         "message": "[vite] hot updated: /src/App.tsx",
-        "timestamp": "2025-08-30T10:31:36.088Z"
+        "timestamp": "2025-08-30T11:57:49.963Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/Dashboard.tsx",
+        "timestamp": "2025-08-30T11:57:49.963Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/Settings.tsx",
+        "timestamp": "2025-08-30T11:57:49.963Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/layout/AppLayout.tsx",
+        "timestamp": "2025-08-30T11:57:49.963Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/GroupDetail.tsx",
+        "timestamp": "2025-08-30T11:57:49.963Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/StudySession.tsx",
+        "timestamp": "2025-08-30T11:57:49.963Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/EditGroup.tsx",
+        "timestamp": "2025-08-30T11:57:49.963Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/forms/GroupForm.tsx",
+        "timestamp": "2025-08-30T11:57:49.963Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/forms/CardForm.tsx",
+        "timestamp": "2025-08-30T11:57:49.963Z"
+      },
+      {
+        "level": "error",
+        "message": "Error handled by React Router default ErrorBoundary: {}",
+        "timestamp": "2025-08-30T11:57:49.990Z"
+      },
+      {
+        "level": "error",
+        "message": "Error handled by React Router default ErrorBoundary: {}",
+        "timestamp": "2025-08-30T11:57:49.990Z"
+      },
+      {
+        "level": "error",
+        "message": "%o\n\n%s\n\n%s\n {} The above error occurred in the <CardForm> component. React will try to recreate this component tree from scratch using the error boundary you provided, RenderErrorBoundary.",
+        "timestamp": "2025-08-30T11:57:49.991Z"
+      },
+      {
+        "level": "error",
+        "message": "React Router caught the following error during render {}",
+        "timestamp": "2025-08-30T11:57:49.991Z"
       },
       {
         "level": "debug",
         "message": "[vite] hot updated: /src/index.css",
-        "timestamp": "2025-08-30T10:31:36.088Z"
+        "timestamp": "2025-08-30T11:57:50.252Z"
       },
       {
         "level": "debug",
-        "message": "[vite] hot updated: /src/index.css",
-        "timestamp": "2025-08-30T10:31:38.603Z"
+        "message": "[vite] hot updated: /src/components/StoreTest.tsx",
+        "timestamp": "2025-08-30T11:57:50.252Z"
       },
       {
         "level": "debug",
         "message": "[vite] hot updated: /src/App.tsx",
-        "timestamp": "2025-08-30T10:31:41.607Z"
+        "timestamp": "2025-08-30T11:57:50.252Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/Dashboard.tsx",
+        "timestamp": "2025-08-30T11:57:50.252Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/Settings.tsx",
+        "timestamp": "2025-08-30T11:57:50.252Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/layout/AppLayout.tsx",
+        "timestamp": "2025-08-30T11:57:50.252Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/GroupDetail.tsx",
+        "timestamp": "2025-08-30T11:57:50.252Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/StudySession.tsx",
+        "timestamp": "2025-08-30T11:57:50.252Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/EditGroup.tsx",
+        "timestamp": "2025-08-30T11:57:50.252Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/forms/GroupForm.tsx",
+        "timestamp": "2025-08-30T11:57:50.252Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/forms/CardForm.tsx",
+        "timestamp": "2025-08-30T11:57:50.252Z"
+      },
+      {
+        "level": "error",
+        "message": "Error handled by React Router default ErrorBoundary: {}",
+        "timestamp": "2025-08-30T11:57:50.279Z"
+      },
+      {
+        "level": "error",
+        "message": "Error handled by React Router default ErrorBoundary: {}",
+        "timestamp": "2025-08-30T11:57:50.279Z"
+      },
+      {
+        "level": "error",
+        "message": "%o\n\n%s\n\n%s\n {} The above error occurred in the <CardForm> component. React will try to recreate this component tree from scratch using the error boundary you provided, RenderErrorBoundary.",
+        "timestamp": "2025-08-30T11:57:50.279Z"
+      },
+      {
+        "level": "error",
+        "message": "React Router caught the following error during render {}",
+        "timestamp": "2025-08-30T11:57:50.279Z"
       },
       {
         "level": "debug",
         "message": "[vite] hot updated: /src/index.css",
-        "timestamp": "2025-08-30T10:31:41.607Z"
+        "timestamp": "2025-08-30T11:57:50.318Z"
       },
       {
         "level": "debug",
-        "message": "[vite] hot updated: /src/index.css",
-        "timestamp": "2025-08-30T10:31:43.606Z"
-      },
-      {
-        "level": "debug",
-        "message": "[vite] hot updated: /src/index.css",
-        "timestamp": "2025-08-30T10:31:48.605Z"
+        "message": "[vite] hot updated: /src/components/StoreTest.tsx",
+        "timestamp": "2025-08-30T11:57:50.318Z"
       },
       {
         "level": "debug",
         "message": "[vite] hot updated: /src/App.tsx",
-        "timestamp": "2025-08-30T10:31:53.199Z"
+        "timestamp": "2025-08-30T11:57:50.318Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/Dashboard.tsx",
+        "timestamp": "2025-08-30T11:57:50.318Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/Settings.tsx",
+        "timestamp": "2025-08-30T11:57:50.318Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/layout/AppLayout.tsx",
+        "timestamp": "2025-08-30T11:57:50.318Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/GroupDetail.tsx",
+        "timestamp": "2025-08-30T11:57:50.318Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/StudySession.tsx",
+        "timestamp": "2025-08-30T11:57:50.318Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/EditGroup.tsx",
+        "timestamp": "2025-08-30T11:57:50.318Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/forms/GroupForm.tsx",
+        "timestamp": "2025-08-30T11:57:50.318Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/forms/CardForm.tsx",
+        "timestamp": "2025-08-30T11:57:50.318Z"
       },
       {
         "level": "debug",
         "message": "[vite] hot updated: /src/index.css",
-        "timestamp": "2025-08-30T10:31:53.199Z"
+        "timestamp": "2025-08-30T11:57:54.790Z"
+      },
+      {
+        "level": "error",
+        "message": "[vite] Failed to reload /src/pages/StudySession.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)",
+        "timestamp": "2025-08-30T11:57:58.871Z"
+      },
+      {
+        "level": "error",
+        "message": "[vite] Failed to reload /src/components/layout/AppLayout.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)",
+        "timestamp": "2025-08-30T11:57:58.871Z"
+      },
+      {
+        "level": "error",
+        "message": "[vite] Failed to reload /src/pages/Settings.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)",
+        "timestamp": "2025-08-30T11:57:58.871Z"
+      },
+      {
+        "level": "error",
+        "message": "[vite] Failed to reload /src/components/StoreTest.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)",
+        "timestamp": "2025-08-30T11:57:58.871Z"
+      },
+      {
+        "level": "error",
+        "message": "[vite] Failed to reload /src/components/forms/GroupForm.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)",
+        "timestamp": "2025-08-30T11:57:58.871Z"
+      },
+      {
+        "level": "error",
+        "message": "[vite] Failed to reload /src/components/forms/CardForm.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)",
+        "timestamp": "2025-08-30T11:57:58.871Z"
+      },
+      {
+        "level": "error",
+        "message": "[vite] Failed to reload /src/pages/Dashboard.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)",
+        "timestamp": "2025-08-30T11:57:58.871Z"
+      },
+      {
+        "level": "error",
+        "message": "[vite] Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)",
+        "timestamp": "2025-08-30T11:57:58.871Z"
+      },
+      {
+        "level": "error",
+        "message": "[vite] Failed to reload /src/pages/GroupDetail.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)",
+        "timestamp": "2025-08-30T11:57:58.871Z"
+      },
+      {
+        "level": "error",
+        "message": "[vite] Failed to reload /src/pages/EditGroup.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)",
+        "timestamp": "2025-08-30T11:57:58.871Z"
       },
       {
         "level": "debug",
         "message": "[vite] hot updated: /src/index.css",
-        "timestamp": "2025-08-30T10:31:53.599Z"
+        "timestamp": "2025-08-30T11:57:58.871Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/StoreTest.tsx",
+        "timestamp": "2025-08-30T11:57:58.871Z"
       },
       {
         "level": "debug",
         "message": "[vite] hot updated: /src/App.tsx",
-        "timestamp": "2025-08-30T10:31:53.606Z"
+        "timestamp": "2025-08-30T11:57:58.872Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/Dashboard.tsx",
+        "timestamp": "2025-08-30T11:57:58.872Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/Settings.tsx",
+        "timestamp": "2025-08-30T11:57:58.872Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/layout/AppLayout.tsx",
+        "timestamp": "2025-08-30T11:57:58.872Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/GroupDetail.tsx",
+        "timestamp": "2025-08-30T11:57:58.872Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/StudySession.tsx",
+        "timestamp": "2025-08-30T11:57:58.872Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/EditGroup.tsx",
+        "timestamp": "2025-08-30T11:57:58.872Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/forms/GroupForm.tsx",
+        "timestamp": "2025-08-30T11:57:58.872Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/forms/CardForm.tsx",
+        "timestamp": "2025-08-30T11:57:58.872Z"
       },
       {
         "level": "debug",
         "message": "[vite] hot updated: /src/index.css",
-        "timestamp": "2025-08-30T10:31:53.606Z"
+        "timestamp": "2025-08-30T11:57:59.786Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T11:58:00.410Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/StoreTest.tsx",
+        "timestamp": "2025-08-30T11:58:00.410Z"
       },
       {
         "level": "debug",
         "message": "[vite] hot updated: /src/App.tsx",
-        "timestamp": "2025-08-30T10:31:53.756Z"
+        "timestamp": "2025-08-30T11:58:00.410Z"
       },
       {
         "level": "debug",
-        "message": "[vite] hot updated: /src/index.css",
-        "timestamp": "2025-08-30T10:31:53.756Z"
+        "message": "[vite] hot updated: /src/pages/Dashboard.tsx",
+        "timestamp": "2025-08-30T11:58:00.410Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/Settings.tsx",
+        "timestamp": "2025-08-30T11:58:00.410Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/layout/AppLayout.tsx",
+        "timestamp": "2025-08-30T11:58:00.410Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/GroupDetail.tsx",
+        "timestamp": "2025-08-30T11:58:00.410Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/StudySession.tsx",
+        "timestamp": "2025-08-30T11:58:00.410Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/pages/EditGroup.tsx",
+        "timestamp": "2025-08-30T11:58:00.410Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/forms/GroupForm.tsx",
+        "timestamp": "2025-08-30T11:58:00.410Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/components/forms/CardForm.tsx",
+        "timestamp": "2025-08-30T11:58:00.410Z"
+      },
+      {
+        "level": "error",
+        "message": "Error handled by React Router default ErrorBoundary: {}",
+        "timestamp": "2025-08-30T11:58:00.438Z"
+      },
+      {
+        "level": "error",
+        "message": "Error handled by React Router default ErrorBoundary: {}",
+        "timestamp": "2025-08-30T11:58:00.438Z"
+      },
+      {
+        "level": "error",
+        "message": "%o\n\n%s\n\n%s\n {} The above error occurred in the <CardForm> component. React will try to recreate this component tree from scratch using the error boundary you provided, RenderErrorBoundary.",
+        "timestamp": "2025-08-30T11:58:00.438Z"
+      },
+      {
+        "level": "error",
+        "message": "React Router caught the following error during render {}",
+        "timestamp": "2025-08-30T11:58:00.439Z"
       }
     ],
     "network": [
@@ -218,7 +1872,7 @@
         "status": 200,
         "statusText": "OK",
         "duration": 2,
-        "timestamp": "2025-08-30T10:31:32.568Z"
+        "timestamp": "2025-08-30T11:54:39.648Z"
       },
       {
         "type": "fetch",
@@ -226,8 +1880,8 @@
         "url": "http://localhost:8889/save-context-local",
         "status": 200,
         "statusText": "OK",
-        "duration": 6,
-        "timestamp": "2025-08-30T10:31:38.476Z"
+        "duration": 8,
+        "timestamp": "2025-08-30T11:54:43.572Z"
       },
       {
         "type": "fetch",
@@ -235,8 +1889,8 @@
         "url": "http://localhost:8889/save-context-local",
         "status": 200,
         "statusText": "OK",
-        "duration": 6,
-        "timestamp": "2025-08-30T10:31:43.481Z"
+        "duration": 3,
+        "timestamp": "2025-08-30T11:54:44.651Z"
       },
       {
         "type": "fetch",
@@ -244,8 +1898,71 @@
         "url": "http://localhost:8889/save-context-local",
         "status": 200,
         "statusText": "OK",
-        "duration": 4,
-        "timestamp": "2025-08-30T10:31:48.474Z"
+        "duration": 8,
+        "timestamp": "2025-08-30T11:54:48.680Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 3,
+        "timestamp": "2025-08-30T11:54:54.651Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 3,
+        "timestamp": "2025-08-30T11:54:59.652Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 3,
+        "timestamp": "2025-08-30T11:55:04.652Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 2,
+        "timestamp": "2025-08-30T11:55:09.652Z"
+      },
+      {
+        "type": "fetch",
+        "method": "GET",
+        "url": "http://localhost:8889/health",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 1,
+        "timestamp": "2025-08-30T11:55:09.652Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 3,
+        "timestamp": "2025-08-30T11:55:14.653Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 3,
+        "timestamp": "2025-08-30T11:55:19.652Z"
       },
       {
         "type": "fetch",
@@ -254,36 +1971,360 @@
         "status": 200,
         "statusText": "OK",
         "duration": 5,
-        "timestamp": "2025-08-30T10:31:53.477Z"
+        "timestamp": "2025-08-30T11:55:24.654Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 2,
+        "timestamp": "2025-08-30T11:55:29.652Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 2,
+        "timestamp": "2025-08-30T11:55:34.652Z"
+      },
+      {
+        "type": "fetch",
+        "method": "GET",
+        "url": "http://localhost:8889/health",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 1,
+        "timestamp": "2025-08-30T11:55:39.652Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 3,
+        "timestamp": "2025-08-30T11:55:39.653Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 2,
+        "timestamp": "2025-08-30T11:55:44.652Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 3,
+        "timestamp": "2025-08-30T11:55:49.653Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 4,
+        "timestamp": "2025-08-30T11:55:54.655Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 2,
+        "timestamp": "2025-08-30T11:55:59.653Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 3,
+        "timestamp": "2025-08-30T11:56:04.653Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 2,
+        "timestamp": "2025-08-30T11:56:09.653Z"
+      },
+      {
+        "type": "fetch",
+        "method": "GET",
+        "url": "http://localhost:8889/health",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 1,
+        "timestamp": "2025-08-30T11:56:09.653Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 3,
+        "timestamp": "2025-08-30T11:56:14.654Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 6,
+        "timestamp": "2025-08-30T11:56:19.657Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 3,
+        "timestamp": "2025-08-30T11:56:24.654Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 6,
+        "timestamp": "2025-08-30T11:56:29.657Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 3,
+        "timestamp": "2025-08-30T11:56:34.653Z"
+      },
+      {
+        "type": "fetch",
+        "method": "GET",
+        "url": "http://localhost:8889/health",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 3,
+        "timestamp": "2025-08-30T11:56:39.656Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 6,
+        "timestamp": "2025-08-30T11:56:39.657Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 2,
+        "timestamp": "2025-08-30T11:56:44.654Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 7,
+        "timestamp": "2025-08-30T11:56:49.658Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 2,
+        "timestamp": "2025-08-30T11:56:54.653Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 7,
+        "timestamp": "2025-08-30T11:56:59.660Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 5,
+        "timestamp": "2025-08-30T11:57:04.658Z"
+      },
+      {
+        "type": "fetch",
+        "method": "GET",
+        "url": "http://localhost:8889/health",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 3,
+        "timestamp": "2025-08-30T11:57:09.658Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 7,
+        "timestamp": "2025-08-30T11:57:09.659Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 3,
+        "timestamp": "2025-08-30T11:57:14.656Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 8,
+        "timestamp": "2025-08-30T11:57:19.659Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 8,
+        "timestamp": "2025-08-30T11:57:24.661Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 3,
+        "timestamp": "2025-08-30T11:57:29.655Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 7,
+        "timestamp": "2025-08-30T11:57:34.661Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 2,
+        "timestamp": "2025-08-30T11:57:39.655Z"
+      },
+      {
+        "type": "fetch",
+        "method": "GET",
+        "url": "http://localhost:8889/health",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 1,
+        "timestamp": "2025-08-30T11:57:39.655Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 5,
+        "timestamp": "2025-08-30T11:57:44.658Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 2,
+        "timestamp": "2025-08-30T11:57:49.656Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 8,
+        "timestamp": "2025-08-30T11:57:54.662Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 2,
+        "timestamp": "2025-08-30T11:57:59.655Z"
       }
     ],
     "websocket": [],
     "errors": [],
     "performance": {
       "memory": {
-        "used": 12.85,
-        "total": 15.08,
+        "used": 43.01,
+        "total": 47.06,
         "limit": 4095.75
       },
       "timing": {
-        "domLoad": 76,
-        "pageLoad": 76,
-        "domReady": 76,
-        "firstByte": 7
+        "domLoad": 50,
+        "pageLoad": 50,
+        "domReady": 50,
+        "firstByte": 4
       },
       "navigation": {
-        "type": "reload",
+        "type": "navigate",
         "redirectCount": 0,
-        "domInteractive": 12.700000002980232,
-        "domComplete": 76.20000000298023
+        "domInteractive": 10.5,
+        "domComplete": 50
       }
     },
     "components": {}
   },
   "_meta": {
     "trigger": "interval",
-    "timestamp": "2025-08-30T10:31:58.471Z",
-    "url": "http://localhost:5173/groups/new",
+    "timestamp": "2025-08-30T11:58:04.653Z",
+    "url": "http://localhost:5173/groups/c92f27a4-a60a-49e0-ae35-89d0935d01f7/cards/new",
     "retryCount": 0
   }
 }

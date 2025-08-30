@@ -19,22 +19,18 @@ export const useAppStore = create<AppState>()(
 
       // Global actions
       reset: () => {
-        set(
-          {
-            // Reset UI state
-            theme: "light",
-            currentRoute: "/",
-            isLoading: false,
-            error: null,
+        set({
+          // Reset UI state
+          theme: "light",
+          currentRoute: "/",
+          isLoading: false,
+          error: null,
 
-            // Reset data state
-            groups: [],
-            cards: {},
-            currentSession: null,
-          },
-          false,
-          "reset"
-        );
+          // Reset data state
+          groups: [],
+          cards: {},
+          currentSession: null,
+        });
       },
     }),
     {
@@ -46,7 +42,7 @@ export const useAppStore = create<AppState>()(
 // Selector hooks for better performance
 export const useTheme = () => useAppStore((state) => state.theme);
 export const useGroups = () => useAppStore((state) => state.groups);
-export const useCards = (groupId?: string) => useAppStore((state) => (groupId ? state.cards[groupId] || [] : state.cards));
+export const useAllCards = () => useAppStore((state) => state.cards);
 export const useCurrentSession = () => useAppStore((state) => state.currentSession);
 export const useIsLoading = () => useAppStore((state) => state.isLoading);
 export const useError = () => useAppStore((state) => state.error);

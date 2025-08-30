@@ -2,7 +2,7 @@
 import type {StateCreator} from "zustand";
 import type {AppState, UISlice} from "../types/store";
 
-export const createUISlice: StateCreator<AppState, [], [], UISlice> = (set, get) => ({
+export const createUISlice: StateCreator<AppState, [], [], UISlice> = (set) => ({
   // Initial UI state
   theme: "light",
   currentRoute: "/",
@@ -11,25 +11,25 @@ export const createUISlice: StateCreator<AppState, [], [], UISlice> = (set, get)
 
   // UI actions
   setTheme: (theme) => {
-    set({theme}, false, "setTheme");
+    set({theme});
     // Persist theme preference to localStorage
     localStorage.setItem("flashcard-theme", theme);
   },
 
   setCurrentRoute: (route) => {
-    set({currentRoute: route}, false, "setCurrentRoute");
+    set({currentRoute: route});
   },
 
   setLoading: (loading) => {
-    set({isLoading: loading}, false, "setLoading");
+    set({isLoading: loading});
   },
 
   setError: (error) => {
-    set({error}, false, "setError");
+    set({error});
   },
 
   clearError: () => {
-    set({error: null}, false, "clearError");
+    set({error: null});
   },
 });
 

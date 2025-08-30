@@ -1,7 +1,7 @@
 // Study session management slice for Zustand store
 import type {StateCreator} from "zustand";
 import type {AppState, StudySlice} from "../types/store";
-import type {StudySession, Rating} from "../types/entities";
+
 import {SessionRepository} from "../repositories/sessionRepository";
 import {CardRepository} from "../repositories/cardRepository";
 
@@ -16,21 +16,17 @@ export const createStudySlice: StateCreator<AppState, [], [], StudySlice> = (set
   // Study session actions
   startStudySession: async (groupId) => {
     try {
-      set({isLoading: true, error: null}, false, "startStudySession/start");
+      set({isLoading: true, error: null});
 
       // Check if there's already an active session for this group
       const existingSession = await sessionRepo.findActiveSession(groupId);
 
       if (existingSession) {
         // Resume existing session
-        set(
-          {
-            currentSession: existingSession,
-            isLoading: false,
-          },
-          false,
-          "startStudySession/resume"
-        );
+        set({
+          currentSession: existingSession,
+          isLoading: false,
+        });
         return;
       }
 
@@ -55,19 +51,16 @@ export const createStudySlice: StateCreator<AppState, [], [], StudySlice> = (set
         totalCards: studyCards.length,
         currentCardIndex: 0,
         isCompleted: false,
+        startedAt: new Date(),
       });
 
-      set(
-        {
-          currentSession: newSession,
-          isLoading: false,
-        },
-        false,
-        "startStudySession/success"
-      );
+      set({
+        currentSession: newSession,
+        isLoading: false,
+      });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to start study session";
-      set({error: errorMessage, isLoading: false}, false, "startStudySession/error");
+      set({error: errorMessage, isLoading: false});
       throw error;
     }
   },
@@ -82,17 +75,17 @@ export const createStudySlice: StateCreator<AppState, [], [], StudySlice> = (set
 
       const updatedSession = await sessionRepo.updateProgress(currentSession.id, cardIndex);
 
-      set({currentSession: updatedSession}, false, "updateSessionProgress/success");
+      set({currentSession: updatedSession});
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to update session progress";
-      set({error: errorMessage}, false, "updateSessionProgress/error");
+      set({error: errorMessage});
       throw error;
     }
   },
 
   rateCard: async (cardId, rating) => {
     try {
-      set({error: null}, false, "rateCard/start");
+      set({error: null});
 
       // Update card rating
       await cardRepo.updateRating(cardId, rating);
@@ -119,10 +112,10 @@ export const createStudySlice: StateCreator<AppState, [], [], StudySlice> = (set
         }
       }
 
-      set({cards: updatedCards}, false, "rateCard/success");
+      set({cards: updatedCards});
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to rate card";
-      set({error: errorMessage}, false, "rateCard/error");
+      set({error: errorMessage});
       throw error;
     }
   },
@@ -137,17 +130,17 @@ export const createStudySlice: StateCreator<AppState, [], [], StudySlice> = (set
 
       await sessionRepo.completeSession(currentSession.id);
 
-      set({currentSession: null}, false, "completeSession/success");
+      set({currentSession: null});
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to complete session";
-      set({error: errorMessage}, false, "completeSession/error");
+      set({error: errorMessage});
       throw error;
     }
   },
 
   resumeSession: async (groupId) => {
     try {
-      set({isLoading: true, error: null}, false, "resumeSession/start");
+      set({isLoading: true, error: null});
 
       const activeSession = await sessionRepo.findActiveSession(groupId);
 
@@ -155,17 +148,13 @@ export const createStudySlice: StateCreator<AppState, [], [], StudySlice> = (set
         throw new Error("No active session found for this group");
       }
 
-      set(
-        {
-          currentSession: activeSession,
-          isLoading: false,
-        },
-        false,
-        "resumeSession/success"
-      );
+      set({
+        currentSession: activeSession,
+        isLoading: false,
+      });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to resume session";
-      set({error: errorMessage, isLoading: false}, false, "resumeSession/error");
+      set({error: errorMessage, isLoading: false});
       throw error;
     }
   },
