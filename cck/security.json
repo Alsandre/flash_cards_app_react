@@ -1,0 +1,17 @@
+{
+  "allowShell": false,
+  "allowWrite": false,
+  "allowNetwork": false,
+  "allowedPaths": [
+    "src/",
+    "logs/",
+    "cck/debug_data/"
+  ],
+  "requireConfirmation": true,
+  "auditEnabled": true,
+  "networkAllowlist": [
+    "localhost",
+    "127.0.0.1"
+  ],
+  "maxFileSize": 10485760
+}

@@ -1,0 +1,289 @@
+{
+  "timestamp": "2025-08-30T10:31:58.470Z",
+  "type": "cursor_context",
+  "framework": "react",
+  "stateManager": "none",
+  "data": {
+    "app": {
+      "url": "http://localhost:5173/groups/new",
+      "pathname": "/groups/new",
+      "title": "Vite + React + TS",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "viewport": {
+        "width": 1571,
+        "height": 871
+      }
+    },
+    "state": {
+      "manager": "none",
+      "data": null,
+      "vue": null
+    },
+    "stateChanges": [
+      {
+        "type": "dom_mutation",
+        "timestamp": "2025-08-30T10:31:32.562Z",
+        "changes": [
+          {
+            "type": "dom_node_added",
+            "tagName": "div",
+            "className": "min-h-screen ",
+            "id": "",
+            "target": "#root"
+          }
+        ]
+      },
+      {
+        "type": "storage_change",
+        "timestamp": "2025-08-30T10:31:32.563Z",
+        "storageType": "localStorage",
+        "operation": "setItem",
+        "key": "flashcard-theme",
+        "oldValue": "dark",
+        "newValue": "dark"
+      },
+      {
+        "type": "storage_change",
+        "timestamp": "2025-08-30T10:31:32.563Z",
+        "storageType": "localStorage",
+        "operation": "setItem",
+        "key": "flashcard-theme",
+        "oldValue": "dark",
+        "newValue": "dark"
+      },
+      {
+        "type": "dom_mutation",
+        "timestamp": "2025-08-30T10:31:32.566Z",
+        "changes": [
+          {
+            "type": "dom_attribute_changed",
+            "attributeName": "d",
+            "target": "svg > path:nth-child(1)",
+            "oldValue": "M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z",
+            "newValue": "M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+          },
+          {
+            "type": "dom_attribute_changed",
+            "attributeName": "title",
+            "target": "button.p-2.text-gray-600",
+            "oldValue": "Switch to dark theme",
+            "newValue": "Switch to light theme"
+          },
+          {
+            "type": "dom_attribute_changed",
+            "attributeName": "class",
+            "target": "div.min-h-screen.dark",
+            "oldValue": "min-h-screen ",
+            "newValue": "min-h-screen dark"
+          }
+        ]
+      },
+      {
+        "type": "object",
+        "timestamp": "2025-08-30T10:31:43.474Z",
+        "globalName": "sessionStorage"
+      }
+    ],
+    "globalState": {
+      "sessionStorage": {
+        "type": "object",
+        "isObject": true,
+        "hasLength": 0,
+        "keys": [],
+        "sample": {}
+      }
+    },
+    "console": [
+      {
+        "level": "log",
+        "message": "🔗 MCP Context Bridge: Enhanced printContext for automatic saving",
+        "timestamp": "2025-08-30T10:31:32.567Z"
+      },
+      {
+        "level": "log",
+        "message": "🤖 FULLY AUTOMATIC MCP Context Bridge enabled",
+        "timestamp": "2025-08-30T10:31:32.567Z"
+      },
+      {
+        "level": "log",
+        "message": "📡 Auto-saving on: clicks, inputs, errors, page load, and every 5 seconds",
+        "timestamp": "2025-08-30T10:31:32.567Z"
+      },
+      {
+        "level": "log",
+        "message": "🚀 No manual commands needed - Cursor AI gets live context automatically!",
+        "timestamp": "2025-08-30T10:31:32.567Z"
+      },
+      {
+        "level": "log",
+        "message": "✅ Context Bridge loaded",
+        "timestamp": "2025-08-30T10:31:32.567Z"
+      },
+      {
+        "level": "log",
+        "message": "✅ Context saved (load): /Users/lekso/code/Code_Personal/flash_cards_app_react/cck/debug_data/context/cck.json",
+        "timestamp": "2025-08-30T10:31:32.569Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T10:31:32.599Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/App.tsx",
+        "timestamp": "2025-08-30T10:31:35.589Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T10:31:35.589Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/App.tsx",
+        "timestamp": "2025-08-30T10:31:36.088Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T10:31:36.088Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T10:31:38.603Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/App.tsx",
+        "timestamp": "2025-08-30T10:31:41.607Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T10:31:41.607Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T10:31:43.606Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T10:31:48.605Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/App.tsx",
+        "timestamp": "2025-08-30T10:31:53.199Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T10:31:53.199Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T10:31:53.599Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/App.tsx",
+        "timestamp": "2025-08-30T10:31:53.606Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T10:31:53.606Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/App.tsx",
+        "timestamp": "2025-08-30T10:31:53.756Z"
+      },
+      {
+        "level": "debug",
+        "message": "[vite] hot updated: /src/index.css",
+        "timestamp": "2025-08-30T10:31:53.756Z"
+      }
+    ],
+    "network": [
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 2,
+        "timestamp": "2025-08-30T10:31:32.568Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 6,
+        "timestamp": "2025-08-30T10:31:38.476Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 6,
+        "timestamp": "2025-08-30T10:31:43.481Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 4,
+        "timestamp": "2025-08-30T10:31:48.474Z"
+      },
+      {
+        "type": "fetch",
+        "method": "POST",
+        "url": "http://localhost:8889/save-context-local",
+        "status": 200,
+        "statusText": "OK",
+        "duration": 5,
+        "timestamp": "2025-08-30T10:31:53.477Z"
+      }
+    ],
+    "websocket": [],
+    "errors": [],
+    "performance": {
+      "memory": {
+        "used": 12.85,
+        "total": 15.08,
+        "limit": 4095.75
+      },
+      "timing": {
+        "domLoad": 76,
+        "pageLoad": 76,
+        "domReady": 76,
+        "firstByte": 7
+      },
+      "navigation": {
+        "type": "reload",
+        "redirectCount": 0,
+        "domInteractive": 12.700000002980232,
+        "domComplete": 76.20000000298023
+      }
+    },
+    "components": {}
+  },
+  "_meta": {
+    "trigger": "interval",
+    "timestamp": "2025-08-30T10:31:58.471Z",
+    "url": "http://localhost:5173/groups/new",
+    "retryCount": 0
+  }
+}
