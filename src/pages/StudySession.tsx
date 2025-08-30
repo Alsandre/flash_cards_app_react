@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useMemo} from "react";
 import {useParams, useNavigate, Link} from "react-router-dom";
 import {useGroups, useAllCards, useCurrentSession, useStartStudySession, useUpdateSessionProgress, useRateCard, useCompleteSession, useLoadCards, useIsLoading, useError, useClearError} from "../store/appStore";
 import {Button, Card, LoadingSpinner} from "../components/ui";
+import type {Card as CardType} from "../types/entities";
 
 export const StudySession: React.FC = () => {
   const {groupId} = useParams<{groupId: string}>();
@@ -9,8 +10,11 @@ export const StudySession: React.FC = () => {
 
   const groups = useGroups();
   const allCards = useAllCards();
-  const cards = groupId ? allCards[groupId] || [] : [];
   const currentSession = useCurrentSession();
+
+  const cards = useMemo(() => {
+    return groupId ? allCards[groupId] || [] : [];
+  }, [allCards, groupId]);
   const isLoading = useIsLoading();
   const error = useError();
 
@@ -23,7 +27,7 @@ export const StudySession: React.FC = () => {
 
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [showBack, setShowBack] = useState(false);
-  const [sessionCards, setSessionCards] = useState<any[]>([]);
+  const [sessionCards, setSessionCards] = useState<CardType[]>([]);
 
   const group = groups.find((g) => g.id === groupId);
 

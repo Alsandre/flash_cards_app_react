@@ -24,6 +24,8 @@ export async function testDatabaseSetup(): Promise<void> {
       description: "Basic German words for testing",
       studyCardCount: 10,
       cardCount: 0,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
     console.log("✅ Group created:", testGroup.name);
 
@@ -46,6 +48,8 @@ export async function testDatabaseSetup(): Promise<void> {
       front: "Hallo",
       back: "Hello",
       properties: {difficulty: "easy"},
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
     console.log("✅ Card 1 created:", testCard1.front);
 
@@ -54,6 +58,8 @@ export async function testDatabaseSetup(): Promise<void> {
       front: "Danke",
       back: "Thank you",
       properties: {difficulty: "easy"},
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
     console.log("✅ Card 2 created:", testCard2.front);
 

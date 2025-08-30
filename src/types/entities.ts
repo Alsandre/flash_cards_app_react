@@ -14,7 +14,7 @@ export interface Card {
   front: string;
   back: string;
   hint?: string;
-  properties: Record<string, any>;
+  properties: Record<string, unknown>;
   lastRating?: "dont_know" | "doubt" | "know";
   createdAt: Date;
   updatedAt: Date;
