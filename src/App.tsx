@@ -3,13 +3,7 @@ import {AppRouter} from "./router/AppRouter";
 import {useTheme, useSetTheme} from "./store/appStore";
 import {initializeTheme} from "./store/uiSlice";
 
-// Development-only CCK import
-if (import.meta.env.DEV) {
-  const cckModule = "@codevelop-technologies/cck/setup";
-  import(/* @vite-ignore */ cckModule).catch(() => {
-    // Silently fail if CCK is not available in production
-  });
-}
+// CCK import removed for production-ready master branch
 
 function App() {
   const theme = useTheme();

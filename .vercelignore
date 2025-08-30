@@ -1,0 +1,2 @@
+# Ignore CCK during Vercel builds
+node_modules/@codevelop-technologies/
