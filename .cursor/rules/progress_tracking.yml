@@ -1,0 +1,162 @@
+# Progress Tracking Enforcement Rule
+# This rule ensures the AI agent follows the circular chain workflow:
+# Rules → Progress → Foundation → Rules
+
+rule_name: "progress_tracking_workflow"
+version: "1.0"
+priority: "critical"
+applies_to: "all_development_sessions"
+
+# Core workflow enforcement
+workflow_steps:
+  session_start:
+    - action: "read_progress_document"
+      file: "progress.yml"
+      required: true
+      description: "Load current development state and context"
+
+    - action: "verify_foundation_alignment"
+      file: "flashcard_demo_v1.md"
+      required: true
+      description: "Ensure current tasks align with architectural foundation"
+
+    - action: "identify_next_task"
+      source: "progress.yml:tasks"
+      required: true
+      description: "Determine next actionable task based on dependencies and priorities"
+
+  during_development:
+    - action: "update_task_progress"
+      frequency: "after_each_significant_change"
+      required: true
+      description: "Update progress.yml with current task status and completion percentage"
+
+    - action: "log_decisions"
+      trigger: "architectural_or_technical_decision"
+      required: true
+      description: "Record decisions in progress.yml:session_context:recent_decisions"
+
+    - action: "flag_foundation_updates"
+      trigger: "deviation_from_foundation_or_new_feature"
+      required: true
+      description: "Mark when foundation document needs updates"
+
+  task_completion:
+    - action: "mark_task_complete"
+      required: true
+      description: "Move task from in_progress to completed with timestamp"
+
+    - action: "update_metrics"
+      required: true
+      description: "Update completion metrics and velocity tracking"
+
+    - action: "check_dependencies"
+      required: true
+      description: "Unlock dependent tasks that can now be started"
+
+  session_end:
+    - action: "update_session_context"
+      required: true
+      description: "Set context for next session including priorities and current state"
+
+    - action: "sync_foundation_if_needed"
+      condition: "foundation_updates_flagged"
+      required: true
+      description: "Update foundation document if architectural changes were made"
+
+# Behavioral guidelines
+behavioral_rules:
+  progress_document_authority:
+    description: "progress.yml is the single source of truth for current development state"
+    enforcement: "always_check_progress_before_starting_work"
+
+  foundation_alignment:
+    description: "All implementation must align with flashcard_demo_v1.md specifications"
+    enforcement: "verify_alignment_before_major_changes"
+
+  task_granularity:
+    description: "Break down large tasks into smaller, trackable subtasks"
+    enforcement: "if_task_exceeds_4_hours_estimated_split_it"
+
+  decision_logging:
+    description: "All architectural and technical decisions must be recorded"
+    enforcement: "update_progress_yml_with_decision_rationale"
+
+# Error handling and recovery
+error_handling:
+  missing_progress_file:
+    action: "create_from_foundation_document"
+    description: "If progress.yml is missing, recreate from current foundation state"
+
+  conflicting_information:
+    priority_order: ["progress.yml", "flashcard_demo_v1.md", "existing_code"]
+    description: "Resolve conflicts by checking progress document first"
+
+  blocked_tasks:
+    action: "update_blocked_status_and_reason"
+    description: "Clearly document blockers and potential resolution paths"
+
+# Quality gates
+quality_requirements:
+  before_task_start:
+    - "Task has clear acceptance criteria"
+    - "Dependencies are satisfied"
+    - "Foundation alignment verified"
+
+  during_task_execution:
+    - "Progress updates every 30 minutes of work"
+    - "Decision logging for non-trivial choices"
+    - "Code follows foundation architecture"
+
+  before_task_completion:
+    - "All acceptance criteria met"
+    - "Code tested (if testing required)"
+    - "Documentation updated if needed"
+
+# Integration with existing rules
+integration:
+  with_behavioral_rules:
+    description: "This rule works alongside existing behavioral rules"
+    priority: "progress_tracking_takes_precedence_for_workflow"
+
+  with_memory_system:
+    description: "progress.yml serves as persistent memory between sessions"
+    enforcement: "always_update_progress_instead_of_relying_on_memory_tool"
+
+# Metrics and success criteria
+success_metrics:
+  task_completion_rate: "target_80_percent_of_estimated_tasks"
+  foundation_alignment: "zero_architectural_deviations_without_documentation"
+  decision_tracking: "all_major_decisions_logged_with_rationale"
+  session_continuity: "seamless_pickup_from_previous_session"
+
+# Usage instructions for AI agent
+ai_agent_instructions: |
+  1. ALWAYS start each development session by reading progress.yml
+  2. Verify current task aligns with foundation document
+  3. Update progress incrementally as work progresses
+  4. Log all architectural decisions immediately
+  5. Mark tasks complete only when acceptance criteria are fully met
+  6. Set clear context for next session before ending
+  7. Update foundation document if architectural changes were made
+
+  The progress.yml file is your persistent memory and state manager.
+  Treat it as the authoritative source for what to work on next.
+
+  If there's ever a conflict between what the user asks for and what
+  progress.yml indicates, clarify with the user while showing the
+  current progress state.
+
+# Emergency procedures
+emergency_procedures:
+  corrupted_progress_file:
+    action: "backup_and_recreate_from_foundation"
+    description: "Create backup of corrupted file, then recreate from foundation + git history"
+
+  major_architectural_change:
+    action: "pause_development_update_foundation_first"
+    description: "Stop current work, update foundation document, then update progress.yml"
+
+  user_requests_conflicting_work:
+    action: "show_current_progress_and_clarify"
+    description: "Display current progress state and ask user to confirm priority change"

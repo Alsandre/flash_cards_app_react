@@ -1,0 +1,44 @@
+---
+description: Progress tracking workflow enforcement - delegates to progress_tracking.yml for detailed rules
+globs:
+alwaysApply: true
+---
+
+# Progress Tracking Rule
+
+This rule enforces the progress tracking workflow defined in `progress_tracking.yml`.
+
+## Core Directive
+
+**ALWAYS follow the workflow defined in `.cursor/rules/progress_tracking.yml`**
+
+The detailed progress tracking rules are maintained in `progress_tracking.yml` which defines:
+
+- Session start procedures (read progress.yml → verify foundation alignment → identify next task)
+- Development workflow (update progress → log decisions → flag foundation updates)
+- Task completion procedures (mark complete → update metrics → unlock dependencies)
+- Session end procedures (set next context → sync foundation if needed)
+
+## Recovery Protocol Check
+
+**FIRST ACTION**: Before any development work, check for recovery needs:
+
+1. **Read progress.yml** - Check for blockers, interrupted tasks, or error states
+2. **Verify environment** - Check for system/dependency issues from previous session
+3. **Resume or recover** - Handle any incomplete or failed operations
+4. **Update progress** - Log recovery actions taken
+
+## Quick Reference
+
+1. **Session Start**: Recovery check → Read `progress.yml` → Verify foundation alignment
+2. **During Work**: Update progress incrementally, log all decisions
+3. **Task Complete**: Mark complete only when acceptance criteria met
+4. **Session End**: Set clear context for next session
+
+## Authority Chain
+
+`progress.yml` → `flashcard_demo_v1.md` → existing code
+
+The progress document is the single source of truth for current development state.
+
+Refer to `progress_tracking.yml` for complete workflow specifications and behavioral rules.
