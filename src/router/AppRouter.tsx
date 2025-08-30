@@ -1,4 +1,3 @@
-// Main application router configuration
 import React from "react";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {AppLayout} from "../components/layout/AppLayout";
