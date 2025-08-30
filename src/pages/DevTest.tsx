@@ -1,7 +1,6 @@
 // Development test page - accessible via /dev-test
 import React, {useState} from "react";
 import {testDatabaseSetup} from "../services/databaseTest";
-import {StoreTest} from "../components/StoreTest";
 
 export const DevTest: React.FC = () => {
   const [testResult, setTestResult] = useState<string>("");
@@ -50,8 +49,6 @@ export const DevTest: React.FC = () => {
           </ul>
         </div>
       </div>
-
-      <StoreTest />
     </div>
   );
 };
