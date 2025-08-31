@@ -1,6 +1,6 @@
 import {BaseRepository} from "./base";
 import {db} from "../services/database";
-import type {StudySession} from "../types/entities";
+import type {StudySession, CardRating} from "../types/entities";
 
 export class SessionRepository extends BaseRepository<StudySession> {
   protected tableName = "studySessions";
@@ -94,5 +94,17 @@ export class SessionRepository extends BaseRepository<StudySession> {
       remainingCards,
       progressPercentage,
     };
+  }
+
+  async getAllRatings(): Promise<CardRating[]> {
+    return await db.cardRatings.orderBy("timestamp").reverse().toArray();
+  }
+
+  async getRatingsBySession(sessionId: string): Promise<CardRating[]> {
+    return await db.cardRatings.where("sessionId").equals(sessionId).toArray();
+  }
+
+  async getRatingsByCard(cardId: string): Promise<CardRating[]> {
+    return await db.cardRatings.where("cardId").equals(cardId).orderBy("timestamp").reverse().toArray();
   }
 }

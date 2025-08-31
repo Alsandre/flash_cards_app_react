@@ -2,6 +2,7 @@ import {useEffect} from "react";
 import {AppRouter} from "./router/AppRouter";
 import {useTheme, useSetTheme} from "./store/appStore";
 import {initializeTheme} from "./store/uiSlice";
+import {AppErrorBoundary} from "./components/layout/AppErrorBoundary";
 
 // CCK import removed for production-ready master branch
 
@@ -22,7 +23,11 @@ function App() {
     }
   }, [theme]);
 
-  return <AppRouter />;
+  return (
+    <AppErrorBoundary>
+      <AppRouter />
+    </AppErrorBoundary>
+  );
 }
 
 export default App;
