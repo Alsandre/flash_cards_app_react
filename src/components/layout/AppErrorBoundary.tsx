@@ -1,4 +1,5 @@
-import React, {Component, ReactNode} from "react";
+import React, {Component} from "react";
+import type {ReactNode} from "react";
 import {Button, Card} from "../ui";
 
 interface Props {
@@ -32,7 +33,7 @@ export class AppErrorBoundary extends Component<Props, State> {
     });
 
     // Log error to monitoring service in production
-    if (process.env.NODE_ENV === "production") {
+    if (import.meta.env.PROD) {
       // TODO: Send to error monitoring service
       console.error("Production application error:", {
         error: error.message,
@@ -70,7 +71,7 @@ export class AppErrorBoundary extends Component<Props, State> {
 
             <p className="text-neutral-600 dark:text-neutral-400 mb-6">The application encountered an unexpected error. Don't worry - your data is safe and has been automatically saved.</p>
 
-            {process.env.NODE_ENV === "development" && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <details className="mb-6 text-left">
                 <summary className="text-sm text-neutral-500 dark:text-neutral-400 cursor-pointer hover:text-neutral-700 dark:hover:text-neutral-300 mb-2">🔧 Error Details (Development Mode)</summary>
                 <div className="p-4 bg-neutral-100 dark:bg-neutral-800 rounded-lg text-xs font-mono text-neutral-700 dark:text-neutral-300 overflow-auto max-h-40">

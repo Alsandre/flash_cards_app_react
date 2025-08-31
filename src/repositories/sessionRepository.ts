@@ -97,7 +97,7 @@ export class SessionRepository extends BaseRepository<StudySession> {
   }
 
   async getAllRatings(): Promise<CardRating[]> {
-    return await db.cardRatings.orderBy("timestamp").reverse().toArray();
+    return await db.cardRatings.toArray();
   }
 
   async getRatingsBySession(sessionId: string): Promise<CardRating[]> {
@@ -105,6 +105,6 @@ export class SessionRepository extends BaseRepository<StudySession> {
   }
 
   async getRatingsByCard(cardId: string): Promise<CardRating[]> {
-    return await db.cardRatings.where("cardId").equals(cardId).orderBy("timestamp").reverse().toArray();
+    return await db.cardRatings.where("cardId").equals(cardId).toArray();
   }
 }

@@ -1,4 +1,5 @@
-import React, {Component, ReactNode} from "react";
+import React, {Component} from "react";
+import type {ReactNode} from "react";
 import {Button, Card} from "../ui";
 
 interface Props {
@@ -33,7 +34,7 @@ export class StudyErrorBoundary extends Component<Props, State> {
     });
 
     // Log error to monitoring service in production
-    if (process.env.NODE_ENV === "production") {
+    if (import.meta.env.PROD) {
       // TODO: Send to error monitoring service
       console.error("Production error in study session:", {
         error: error.message,
@@ -71,7 +72,7 @@ export class StudyErrorBoundary extends Component<Props, State> {
 
             <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-6">Something went wrong during your study session. Your progress has been saved automatically.</p>
 
-            {process.env.NODE_ENV === "development" && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <details className="mb-6 text-left">
                 <summary className="text-sm text-neutral-500 dark:text-neutral-400 cursor-pointer hover:text-neutral-700 dark:hover:text-neutral-300">Error Details (Development)</summary>
                 <div className="mt-2 p-3 bg-neutral-50 dark:bg-neutral-800 rounded text-xs font-mono text-neutral-700 dark:text-neutral-300 overflow-auto max-h-32">
