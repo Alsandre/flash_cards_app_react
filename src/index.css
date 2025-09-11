@@ -141,3 +141,31 @@
     overflow-x: hidden;
   }
 }
+
+/* Custom navigation button styles */
+.swiper-button-disabled-custom {
+  opacity: 0.3 !important;
+  cursor: not-allowed !important;
+}
+
+.swiper-cards-container {
+  --swiper-navigation-size: 44px;
+}
+
+/* Performance optimizations for cards effect */
+.swiper-cards-container .swiper-slide {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .swiper-cards-container {
+    --swiper-transition-duration: 0ms;
+  }
+
+  .swiper-cards-container .swiper-slide {
+    transition: none !important;
+  }
+}

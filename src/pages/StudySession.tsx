@@ -7,7 +7,6 @@ import StudyCardContainer from "../components/study/StudyCardContainer";
 import type {Card as CardType} from "../types/entities";
 
 export const StudySession: React.FC = () => {
-  console.log("🔄 StudySession: Component rendering");
   const {groupId} = useParams<{groupId: string}>();
   const navigate = useNavigate();
 
@@ -17,11 +16,6 @@ export const StudySession: React.FC = () => {
 
   const cards = useMemo(() => {
     const result = groupId ? allCards[groupId] || [] : [];
-    console.log("🎯 StudySession: Cards memoized", {
-      groupId,
-      cardsLength: result.length,
-      timestamp: new Date().toISOString().split("T")[1],
-    });
     return result;
   }, [allCards, groupId]);
   const isLoading = useIsLoading();
@@ -39,48 +33,18 @@ export const StudySession: React.FC = () => {
 
   const group = groups.find((g) => g.id === groupId);
 
-  // Debug logging for state changes
-  console.log("🔍 StudySession: State snapshot", {
-    groupId,
-    sessionCardsLength: sessionCards.length,
-    groupExists: !!group,
-    currentSessionExists: !!currentSession,
-    isLoading,
-    error,
-    ratingsCount: Object.keys(cardRatings).length,
-    timestamp: new Date().toISOString().split("T")[1],
-  });
-
   useEffect(() => {
-    console.log("🚀 StudySession: Session setup effect triggered", {
-      groupId,
-      hasCurrentSession: !!currentSession,
-      willStartSession: !!(groupId && !currentSession),
-      willLoadCards: !!(groupId && cards.length === 0),
-    });
-
     if (groupId && !currentSession) {
-      console.log("📝 StudySession: Starting study session for group", groupId);
       startStudySession(groupId);
     }
 
     // Only load cards if we don't have any for this group
     if (groupId && cards.length === 0) {
-      console.log("📚 StudySession: Loading cards for group", groupId);
       loadCards(groupId);
-    } else if (groupId && cards.length > 0) {
-      console.log("⏭️ StudySession: Cards already loaded, skipping load");
     }
   }, [groupId, startStudySession, loadCards, currentSession, cards.length]);
 
   useEffect(() => {
-    console.log("📋 StudySession: Cards setup effect triggered", {
-      cardsLength: cards.length,
-      hasGroup: !!group,
-      studyCardCount: group?.studyCardCount,
-      currentSessionCardsLength: sessionCards.length,
-    });
-
     if (cards.length > 0 && group) {
       // Get cards for study session (limited by studyCardCount)
       const studyCards = cards.slice(0, group.studyCardCount);
@@ -89,21 +53,12 @@ export const StudySession: React.FC = () => {
       const hasChanged = sessionCards.length !== studyCards.length || (sessionCards.length > 0 && studyCards.length > 0 && (sessionCards[0]?.id !== studyCards[0]?.id || sessionCards[sessionCards.length - 1]?.id !== studyCards[studyCards.length - 1]?.id));
 
       if (hasChanged) {
-        console.log("✅ StudySession: Setting session cards", {
-          totalCards: cards.length,
-          studyCardsCount: studyCards.length,
-          studyCardLimit: group.studyCardCount,
-        });
         setSessionCards(studyCards);
-      } else {
-        console.log("⏭️ StudySession: Session cards unchanged, skipping update");
       }
     }
   }, [cards, group]);
 
   const handleRating = async (cardId: string, rating: "dont_know" | "doubt" | "know") => {
-    console.log("⭐ StudySession: Rating card", cardId, "as", rating);
-
     try {
       // Update local rating state immediately for UI feedback
       setCardRatings((prev) => ({
@@ -113,7 +68,6 @@ export const StudySession: React.FC = () => {
 
       // Save rating to backend
       await rateCard(cardId, rating);
-      console.log("✅ StudySession: Rating saved successfully");
     } catch (error) {
       console.error("❌ StudySession: Failed to rate card:", error);
       // Revert local state on error
@@ -127,10 +81,7 @@ export const StudySession: React.FC = () => {
 
   const handleCardChange = useCallback(
     (index: number) => {
-      console.log("🔄 StudySession: Card change to index", index);
-
       if (currentSession) {
-        console.log("📊 StudySession: Updating session progress to", index);
         updateSessionProgress(index);
       }
     },
