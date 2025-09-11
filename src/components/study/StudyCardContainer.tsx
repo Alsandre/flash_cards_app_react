@@ -124,10 +124,10 @@ const StudyCardContainer: React.FC<StudyCardContainerProps> = ({cards, initialCa
           ))}
         </Swiper>
 
-        {/* Desktop Navigation Buttons - Hidden on Mobile */}
+        {/* Navigation Buttons - Hidden on Mobile, Visible on Tablet+ */}
         <button
           className="swiper-button-prev-custom absolute left-4 top-1/2 -translate-y-1/2 z-10 
-                         hidden lg:flex items-center justify-center w-12 h-12 rounded-full 
+                         hidden md:flex items-center justify-center w-12 h-12 rounded-full 
                          bg-white/90 dark:bg-neutral-800/90 backdrop-blur-sm
                          shadow-lg hover:shadow-xl transition-all duration-200
                          border border-neutral-200 dark:border-neutral-700
@@ -142,7 +142,7 @@ const StudyCardContainer: React.FC<StudyCardContainerProps> = ({cards, initialCa
 
         <button
           className="swiper-button-next-custom absolute right-4 top-1/2 -translate-y-1/2 z-10
-                         hidden lg:flex items-center justify-center w-12 h-12 rounded-full 
+                         hidden md:flex items-center justify-center w-12 h-12 rounded-full 
                          bg-white/90 dark:bg-neutral-800/90 backdrop-blur-sm
                          shadow-lg hover:shadow-xl transition-all duration-200
                          border border-neutral-200 dark:border-neutral-700
@@ -168,8 +168,8 @@ const StudyCardContainer: React.FC<StudyCardContainerProps> = ({cards, initialCa
         {/* Navigation instructions - responsive */}
         <div className="absolute -bottom-24 left-0 right-0 text-center">
           <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-2">
-            <span className="lg:hidden">Tap card to flip • Swipe to navigate • Rate your knowledge</span>
-            <span className="hidden lg:inline">Tap card to flip • Click arrows or swipe to navigate • Rate your knowledge</span>
+            <span className="md:hidden">Tap card to flip • Swipe to navigate • Rate your knowledge</span>
+            <span className="hidden md:inline">Tap card to flip • Click arrows or swipe to navigate • Rate your knowledge</span>
           </p>
         </div>
       </div>
