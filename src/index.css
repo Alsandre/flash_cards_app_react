@@ -102,3 +102,42 @@
     opacity: 1;
   }
 }
+
+/* 3D Card Flip Styles */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Swiper mobile fixes */
+.swiper-wrapper {
+  width: 100% !important;
+  height: 100% !important;
+}
+.swiper-slide {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden;
+}
+
+/* Mobile viewport fixes */
+@media (max-width: 640px) {
+  .swiper-container {
+    overflow: hidden !important;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+}

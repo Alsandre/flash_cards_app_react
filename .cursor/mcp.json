@@ -1,14 +1,16 @@
-  {
-    "mcpServers": {
-      "cck-flash_cards_app_react": {
-        "command": "node",
-        "args": [
-          "/Users/lekso/code/Code_Personal/flash_cards_app_react/node_modules/@codevelop-technologies/cck/src/mcp-server-stdio.js"
-        ],
-        "env": {
-          "NODE_ENV": "development",
-          "CURSOR_CONTEXT_PROJECT": "/Users/lekso/code/Code_Personal/flash_cards_app_react"
-        }
+{
+  "mcpServers": {
+    "cck-flash_cards_app_react": {
+      "command": "node",
+      "args": ["/Users/lekso/code/Code_Personal/flash_cards_app_react/node_modules/@codevelop-technologies/cck/src/mcp-server-stdio.js"],
+      "env": {
+        "NODE_ENV": "development",
+        "CURSOR_CONTEXT_PROJECT": "/Users/lekso/code/Code_Personal/flash_cards_app_react"
       }
+    },
+    "other-project-ref": {
+      "command": "node",
+      "args": ["/Users/lekso/mcp-bridge/server.mjs", "--root", "/Users/lekso/code/Code_Personal/swiper_js"]
     }
   }
+}
