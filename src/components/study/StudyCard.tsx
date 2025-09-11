@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import type {Card as CardType} from "../../types/entities";
 
 interface StudyCardProps {

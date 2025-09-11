@@ -4,9 +4,7 @@ import {EffectCards, Navigation} from "swiper/modules";
 import type {Swiper as SwiperType} from "swiper";
 
 // Import Swiper styles
-import "swiper/css";
-import "swiper/css/effect-cards";
-import "swiper/css/navigation";
+import "swiper/swiper-bundle.css";
 
 import StudyCard from "./StudyCard";
 import type {Card as CardType} from "../../types/entities";
@@ -42,7 +40,7 @@ const StudyCardContainer: React.FC<StudyCardContainerProps> = ({cards, initialCa
       console.log("🎴 StudyCardContainer: Setting initial position to", initialCardIndex);
       swiperRef.current.slideTo(initialCardIndex, 0); // 0 = no animation
     }
-  }, []); // Run once after mount when swiper is ready
+  }, [initialCardIndex]); // Run when swiper is ready or initial index changes
 
   const handleRating = (cardId: string, rating: "dont_know" | "doubt" | "know") => {
     console.log("⭐ StudyCardContainer: Rating triggered", {
