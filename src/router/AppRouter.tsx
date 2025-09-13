@@ -3,7 +3,7 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {AppLayout} from "../components/layout/AppLayout";
 import {Dashboard} from "../pages/Dashboard";
 import {GroupDetail} from "../pages/GroupDetail";
-import {StudySession} from "../pages/StudySession";
+import {ExploreSession} from "../pages/ExploreSession";
 import {Stats} from "../pages/Stats";
 import {Settings} from "../pages/Settings";
 import {DevTest} from "../pages/DevTest";
@@ -58,8 +58,8 @@ const router = createBrowserRouter([
         element: <CreateGroup />,
       },
       {
-        path: "study/:groupId",
-        element: <StudySession />,
+        path: "explore/:groupId",
+        element: <ExploreSession />,
       },
       {
         path: "stats",

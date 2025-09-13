@@ -30,7 +30,7 @@ export interface AppState {
   updateCard: (cardId: string, updates: Partial<Card>) => Promise<void>;
   deleteCard: (cardId: string) => Promise<void>;
 
-  startStudySession: (groupId: string) => Promise<void>;
+  startExploreSession: (groupId: string) => Promise<void>;
   updateSessionProgress: (cardIndex: number) => Promise<void>;
   rateCard: (cardId: string, rating: "dont_know" | "doubt" | "know") => Promise<void>;
   completeSession: () => Promise<void>;
@@ -69,9 +69,9 @@ export interface CardSlice {
   deleteCard: (cardId: string) => Promise<void>;
 }
 
-export interface StudySlice {
+export interface ExploreSlice {
   currentSession: StudySession | null;
-  startStudySession: (groupId: string) => Promise<void>;
+  startExploreSession: (groupId: string) => Promise<void>;
   updateSessionProgress: (cardIndex: number) => Promise<void>;
   rateCard: (cardId: string, rating: "dont_know" | "doubt" | "know") => Promise<void>;
   completeSession: () => Promise<void>;

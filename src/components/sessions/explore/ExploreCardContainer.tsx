@@ -6,10 +6,10 @@ import type {Swiper as SwiperType} from "swiper";
 // Import Swiper styles
 import "swiper/swiper-bundle.css";
 
-import StudyCard from "./StudyCard";
-import type {Card as CardType} from "../../types/entities";
+import ExploreCard from "./ExploreCard";
+import type {Card as CardType} from "../../../types/entities";
 
-interface StudyCardContainerProps {
+interface ExploreCardContainerProps {
   cards: CardType[];
   initialCardIndex: number;
   cardRatings: Record<string, "dont_know" | "doubt" | "know">;
@@ -17,7 +17,7 @@ interface StudyCardContainerProps {
   onCardChange?: (index: number) => void;
 }
 
-const StudyCardContainer: React.FC<StudyCardContainerProps> = ({cards, initialCardIndex, cardRatings, onRating, onCardChange}) => {
+const ExploreCardContainer: React.FC<ExploreCardContainerProps> = ({cards, initialCardIndex, cardRatings, onRating, onCardChange}) => {
   const swiperRef = useRef<SwiperType | null>(null);
   const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
 
@@ -78,7 +78,7 @@ const StudyCardContainer: React.FC<StudyCardContainerProps> = ({cards, initialCa
           <div className="text-center p-8">
             <div className="text-6xl mb-4">📚</div>
             <h3 className="text-xl font-semibold text-neutral-600 dark:text-neutral-400 mb-2">No cards available</h3>
-            <p className="text-neutral-500 dark:text-neutral-400">Add some cards to start studying!</p>
+            <p className="text-neutral-500 dark:text-neutral-400">Add some cards to start exploring!</p>
           </div>
         </div>
       </div>
@@ -119,7 +119,7 @@ const StudyCardContainer: React.FC<StudyCardContainerProps> = ({cards, initialCa
         >
           {cards.map((card, index) => (
             <SwiperSlide key={card.id} className="rounded-2xl">
-              <StudyCard card={card} currentRating={cardRatings[card.id]} onRating={(rating) => handleRating(card.id, rating)} onFlip={handleCardFlip} showBack={flippedCards.has(index)} />
+              <ExploreCard card={card} currentRating={cardRatings[card.id]} onRating={(rating) => handleRating(card.id, rating)} onFlip={handleCardFlip} showBack={flippedCards.has(index)} />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -177,4 +177,4 @@ const StudyCardContainer: React.FC<StudyCardContainerProps> = ({cards, initialCa
   );
 };
 
-export default StudyCardContainer;
+export default ExploreCardContainer;

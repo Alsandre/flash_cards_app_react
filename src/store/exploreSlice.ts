@@ -1,5 +1,5 @@
 import type {StateCreator} from "zustand";
-import type {AppState, StudySlice} from "../types/store";
+import type {AppState, ExploreSlice} from "../types/store";
 
 import {SessionRepository} from "../repositories/sessionRepository";
 import {CardRepository} from "../repositories/cardRepository";
@@ -7,9 +7,9 @@ import {CardRepository} from "../repositories/cardRepository";
 const sessionRepo = new SessionRepository();
 const cardRepo = new CardRepository();
 
-export const createStudySlice: StateCreator<AppState, [], [], StudySlice> = (set, get) => ({
+export const createExploreSlice: StateCreator<AppState, [], [], ExploreSlice> = (set, get) => ({
   currentSession: null,
-  startStudySession: async (groupId) => {
+  startExploreSession: async (groupId) => {
     try {
       set({isLoading: true, error: null});
 
@@ -30,14 +30,14 @@ export const createStudySlice: StateCreator<AppState, [], [], StudySlice> = (set
         throw new Error("Group not found");
       }
 
-      const studyCards = await cardRepo.getCardsForStudySession(groupId, group.studyCardCount);
+      const exploreCards = await cardRepo.getCardsForStudySession(groupId, group.studyCardCount);
 
-      if (studyCards.length === 0) {
-        throw new Error("No cards available for study session");
+      if (exploreCards.length === 0) {
+        throw new Error("No cards available for explore session");
       }
       const newSession = await sessionRepo.create({
         groupId,
-        totalCards: studyCards.length,
+        totalCards: exploreCards.length,
         currentCardIndex: 0,
         isCompleted: false,
         startedAt: new Date(),
@@ -48,7 +48,7 @@ export const createStudySlice: StateCreator<AppState, [], [], StudySlice> = (set
         isLoading: false,
       });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Failed to start study session";
+      const errorMessage = error instanceof Error ? error.message : "Failed to start explore session";
       set({error: errorMessage, isLoading: false});
       throw error;
     }
@@ -59,7 +59,7 @@ export const createStudySlice: StateCreator<AppState, [], [], StudySlice> = (set
       const currentSession = get().currentSession;
 
       if (!currentSession) {
-        throw new Error("No active study session");
+        throw new Error("No active explore session");
       }
 
       const updatedSession = await sessionRepo.updateProgress(currentSession.id, cardIndex);
@@ -111,7 +111,7 @@ export const createStudySlice: StateCreator<AppState, [], [], StudySlice> = (set
       const currentSession = get().currentSession;
 
       if (!currentSession) {
-        throw new Error("No active study session");
+        throw new Error("No active explore session");
       }
 
       await sessionRepo.completeSession(currentSession.id);

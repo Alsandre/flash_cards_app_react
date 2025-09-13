@@ -89,11 +89,7 @@ export const Dashboard: React.FC = () => {
           {groups.map((group) => {
             const isStarterPack = StarterPackService.isStarterPack(group.id);
             return (
-              <Card 
-                key={group.id} 
-                variant="interactive" 
-                className={`group ${isStarterPack ? 'ring-2 ring-pink-200 dark:ring-pink-800 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/50 dark:to-rose-950/50' : ''}`}
-              >
+              <Card key={group.id} variant="interactive" className={`group ${isStarterPack ? "ring-2 ring-pink-200 dark:ring-pink-800 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/50 dark:to-rose-950/50" : ""}`}>
                 <div className="mb-4 flex items-start justify-between">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
@@ -101,18 +97,8 @@ export const Dashboard: React.FC = () => {
                       {isStarterPack && <span className="text-pink-500">❤️</span>}
                     </div>
                     <div className="mt-1 flex items-center space-x-2">
-                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        isStarterPack 
-                          ? 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200' 
-                          : 'bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200'
-                      }`}>
-                        {group.cardCount} cards
-                      </span>
-                      {isStarterPack && (
-                        <span className="inline-flex items-center rounded-full bg-rose-100 px-2.5 py-0.5 text-xs font-medium text-rose-800 dark:bg-rose-900 dark:text-rose-200">
-                          Special ✨
-                        </span>
-                      )}
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${isStarterPack ? "bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200" : "bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200"}`}>{group.cardCount} cards</span>
+                      {isStarterPack && <span className="inline-flex items-center rounded-full bg-rose-100 px-2.5 py-0.5 text-xs font-medium text-rose-800 dark:bg-rose-900 dark:text-rose-200">Special ✨</span>}
                     </div>
                   </div>
                   <div className="flex items-center space-x-1 opacity-0 transition-opacity group-hover:opacity-100">
@@ -133,21 +119,21 @@ export const Dashboard: React.FC = () => {
                   </div>
                 </div>
 
-              {/* Description */}
-              {group.description && <p className="mb-4 line-clamp-2 text-sm text-neutral-600 dark:text-neutral-400">{group.description}</p>}
+                {/* Description */}
+                {group.description && <p className="mb-4 line-clamp-2 text-sm text-neutral-600 dark:text-neutral-400">{group.description}</p>}
 
-              {/* Actions */}
-              <div className="flex space-x-2">
-                <Button variant="secondary" size="sm" asChild className="flex-1">
-                  <Link to={`/groups/${group.id}`}>Manage</Link>
-                </Button>
-                {group.cardCount > 0 && (
-                  <Button size="sm" asChild className="flex-1">
-                    <Link to={`/study/${group.id}`}>Study</Link>
+                {/* Actions */}
+                <div className="flex space-x-2">
+                  <Button variant="secondary" size="sm" asChild className="flex-1">
+                    <Link to={`/groups/${group.id}`}>Manage</Link>
                   </Button>
-                )}
-              </div>
-            </Card>
+                  {group.cardCount > 0 && (
+                    <Button size="sm" asChild className="flex-1">
+                      <Link to={`/explore/${group.id}`}>Explore</Link>
+                    </Button>
+                  )}
+                </div>
+              </Card>
             );
           })}
         </div>

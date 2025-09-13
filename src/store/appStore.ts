@@ -4,7 +4,7 @@ import type {AppState} from "../types/store";
 import {createUISlice} from "./uiSlice";
 import {createGroupSlice} from "./groupSlice";
 import {createCardSlice} from "./cardSlice";
-import {createStudySlice} from "./studySlice";
+import {createExploreSlice} from "./exploreSlice";
 
 export const useAppStore = create<AppState>()(
   devtools(
@@ -12,7 +12,7 @@ export const useAppStore = create<AppState>()(
       ...createUISlice(set, get, api),
       ...createGroupSlice(set, get, api),
       ...createCardSlice(set, get, api),
-      ...createStudySlice(set, get, api),
+      ...createExploreSlice(set, get, api),
 
       reset: () => {
         set({
@@ -47,7 +47,7 @@ export const useCreateCard = () => useAppStore((state) => state.createCard);
 export const useUpdateCard = () => useAppStore((state) => state.updateCard);
 export const useDeleteCard = () => useAppStore((state) => state.deleteCard);
 
-export const useStartStudySession = () => useAppStore((state) => state.startStudySession);
+export const useStartExploreSession = () => useAppStore((state) => state.startExploreSession);
 export const useUpdateSessionProgress = () => useAppStore((state) => state.updateSessionProgress);
 export const useRateCard = () => useAppStore((state) => state.rateCard);
 export const useCompleteSession = () => useAppStore((state) => state.completeSession);

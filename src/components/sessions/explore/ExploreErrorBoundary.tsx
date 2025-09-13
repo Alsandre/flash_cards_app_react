@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import type {ReactNode} from "react";
-import {Button, Card} from "../ui";
+import {Button, Card} from "../../ui";
 
 interface Props {
   children: ReactNode;
@@ -13,7 +13,7 @@ interface State {
   errorInfo?: React.ErrorInfo;
 }
 
-export class StudyErrorBoundary extends Component<Props, State> {
+export class ExploreErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {hasError: false};
@@ -27,7 +27,7 @@ export class StudyErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("Study session error:", error, errorInfo);
+    console.error("Explore session error:", error, errorInfo);
     this.setState({
       error,
       errorInfo,
@@ -36,7 +36,7 @@ export class StudyErrorBoundary extends Component<Props, State> {
     // Log error to monitoring service in production
     if (import.meta.env.PROD) {
       // TODO: Send to error monitoring service
-      console.error("Production error in study session:", {
+      console.error("Production error in explore session:", {
         error: error.message,
         stack: error.stack,
         componentStack: errorInfo.componentStack,
@@ -68,9 +68,9 @@ export class StudyErrorBoundary extends Component<Props, State> {
               </div>
             </div>
 
-            <h3 className="text-lg font-medium text-neutral-900 dark:text-neutral-100 mb-2">Study Session Error</h3>
+            <h3 className="text-lg font-medium text-neutral-900 dark:text-neutral-100 mb-2">Explore Session Error</h3>
 
-            <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-6">Something went wrong during your study session. Your progress has been saved automatically.</p>
+            <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-6">Something went wrong during your explore session. Your progress has been saved automatically.</p>
 
             {import.meta.env.DEV && this.state.error && (
               <details className="mb-6 text-left">

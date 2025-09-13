@@ -1,7 +1,7 @@
 import React from "react";
-import type {Card as CardType} from "../../types/entities";
+import type {Card as CardType} from "../../../types/entities";
 
-interface StudyCardProps {
+interface ExploreCardProps {
   card: CardType;
   currentRating?: "dont_know" | "doubt" | "know";
   onRating: (rating: "dont_know" | "doubt" | "know") => void;
@@ -9,7 +9,7 @@ interface StudyCardProps {
   showBack: boolean;
 }
 
-const StudyCard: React.FC<StudyCardProps> = ({card, currentRating, onRating, onFlip, showBack}) => {
+const ExploreCard: React.FC<ExploreCardProps> = ({card, currentRating, onRating, onFlip, showBack}) => {
   const handleCardClick = () => {
     if (!showBack) {
       onFlip?.();
@@ -116,4 +116,4 @@ const StudyCard: React.FC<StudyCardProps> = ({card, currentRating, onRating, onF
   );
 };
 
-export default StudyCard;
+export default ExploreCard;

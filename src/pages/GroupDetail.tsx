@@ -143,7 +143,7 @@ export const GroupDetail: React.FC = () => {
           </Button>
           {group.cardCount > 0 && (
             <Button variant="secondary" asChild>
-              <Link to={`/study/${groupId}`}>Start Study</Link>
+              <Link to={`/explore/${groupId}`}>Start Exploring</Link>
             </Button>
           )}
         </div>
