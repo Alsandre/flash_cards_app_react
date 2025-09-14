@@ -3,7 +3,7 @@ import type {Group, Card} from "../types/entities";
 // Special starter pack for ქეთი ❤️
 export const STARTER_PACK_ID = "starter-pack-for-keti";
 export const STARTER_CARDS_GROUP_ID = "motivational-german-for-keti";
-export const STARTER_PACK_VERSION = "1.1"; // Update this when content changes
+export const STARTER_PACK_VERSION = "1.2"; // Update this when content changes
 
 export const STARTER_PACK: {
   group: Omit<Group, "id" | "createdAt" | "updatedAt">;
