@@ -5,6 +5,7 @@ import {Dashboard} from "../pages/Dashboard";
 import {GroupDetail} from "../pages/GroupDetail";
 import {ExploreSession} from "../pages/ExploreSession";
 import {StudySession} from "../pages/StudySession";
+import {StudyModeSelection} from "../pages/StudyModeSelection";
 import {Stats} from "../pages/Stats";
 import {Settings} from "../pages/Settings";
 import {DevTest} from "../pages/DevTest";
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
         element: <ExploreSession />,
       },
       {
+        path: "study/:groupId",
+        element: <StudyModeSelection />,
+      },
+      {
         path: "stats",
         element: <Stats />,
       },
@@ -86,7 +91,7 @@ const router = createBrowserRouter([
   },
   // Standalone routes (no AppLayout)
   {
-    path: "/study/:groupId",
+    path: "/study/:groupId/:mode",
     element: <StudySession />,
   },
 ]);

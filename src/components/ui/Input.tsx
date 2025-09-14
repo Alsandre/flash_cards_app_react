@@ -11,7 +11,7 @@ export const Input: React.FC<InputProps> = ({label, error, helperText, className
   const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
 
   return (
-    <div className="space-y-1">
+    <div className="space-y-1 w-full">
       {label && (
         <label htmlFor={inputId} className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
           {label}

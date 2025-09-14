@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useMemo, useCallback} from "react";
-import {useParams, useNavigate, useSearchParams} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 import {useGroups, useAllCards, useCurrentSession, useStartExploreSession, useUpdateSessionProgress, useRateCard, useCompleteSession, useLoadCards, useIsLoading, useError, useClearError, useTheme, useSetTheme} from "../store/appStore";
 import {Button, Card, LoadingSpinner} from "../components/ui";
 import {StudyCardContainer, StudyModal} from "../components/sessions/study";
@@ -37,12 +37,11 @@ const STUDY_MODE_CONFIG = {
 } as const;
 
 export const StudySession: React.FC = () => {
-  const {groupId} = useParams<{groupId: string}>();
+  const {groupId, mode} = useParams<{groupId: string; mode: string}>();
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
 
-  // Get mode from URL params, default to 'flow'
-  const currentMode = (searchParams.get("mode") as StudyMode) || "flow";
+  // Get mode from URL params, fallback to 'flow' if invalid
+  const currentMode = (mode as StudyMode) || "flow";
 
   const groups = useGroups();
   const allCards = useAllCards();
@@ -67,7 +66,6 @@ export const StudySession: React.FC = () => {
 
   const [sessionCards, setSessionCards] = useState<CardType[]>([]);
   const [cardRatings, setCardRatings] = useState<Record<string, "dont_know" | "doubt" | "know">>({});
-  const [showModeSelector, setShowModeSelector] = useState(false);
   const [showEndSessionModal, setShowEndSessionModal] = useState(false);
 
   const group = groups.find((g) => g.id === groupId);
@@ -97,14 +95,6 @@ export const StudySession: React.FC = () => {
     }
   }, [cards, group]);
 
-  const handleModeChange = useCallback(
-    (newMode: StudyMode) => {
-      setSearchParams({mode: newMode});
-      setShowModeSelector(false);
-    },
-    [setSearchParams]
-  );
-
   const handleRating = async (cardId: string, rating: "dont_know" | "doubt" | "know") => {
     try {
       // Update local rating state immediately for UI feedback
@@ -132,6 +122,12 @@ export const StudySession: React.FC = () => {
     // For now, just log it
   }, []);
 
+  const handleNoteUpdate = useCallback((cardId: string, note: string) => {
+    console.log(`Note updated for card ${cardId}:`, note);
+    // TODO: Handle note updates - could be saved to card or session notes
+    // For now, just log it
+  }, []);
+
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
@@ -150,7 +146,7 @@ export const StudySession: React.FC = () => {
 
     try {
       await completeSession();
-      navigate("/"); // Return to dashboard, not group detail
+      navigate(`/study/${groupId}`); // Return to study mode selection
     } catch (error) {
       console.error("Failed to end session:", error);
     }
@@ -229,40 +225,11 @@ export const StudySession: React.FC = () => {
                 </svg>
               )}
             </Button>
-            <Button variant="ghost" size="sm" onClick={() => setShowModeSelector(!showModeSelector)} className="text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100">
-              Change Mode
-            </Button>
             <Button variant="ghost" size="sm" onClick={openEndSessionModal} className="text-error-600 hover:text-error-700">
               End Session
             </Button>
           </div>
         </div>
-
-        {/* Mode Selector Dropdown */}
-        {showModeSelector && (
-          <div className="max-w-4xl mx-auto mt-3 relative">
-            <Card className="absolute top-0 right-0 z-10 p-4 min-w-80">
-              <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 mb-3">Select Study Mode</h3>
-              <div className="space-y-2">
-                {Object.entries(STUDY_MODE_CONFIG).map(([mode, config]) => (
-                  <button key={mode} onClick={() => handleModeChange(mode as StudyMode)} className={`w-full text-left p-3 rounded-lg border transition-colors ${currentMode === mode ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20" : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"}`}>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-medium text-neutral-900 dark:text-neutral-100">{config.name}</div>
-                        <div className="text-sm text-neutral-600 dark:text-neutral-400">{config.description}</div>
-                      </div>
-                      {currentMode === mode && (
-                        <svg className="w-5 h-5 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                      )}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </Card>
-          </div>
-        )}
 
         {/* Progress Bar - Compact for immersive experience */}
         <div className="max-w-4xl mx-auto mt-3">
@@ -299,12 +266,12 @@ export const StudySession: React.FC = () => {
 
       {/* Study Card Container - Full focus */}
       <div className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full max-w-4xl">{sessionCards.length > 0 && <StudyCardContainer cards={sessionCards} mode={currentMode} initialCardIndex={currentSession?.currentCardIndex ?? 0} cardRatings={cardRatings} onRating={handleRating} onAnswerSubmit={handleAnswerSubmit} onCardChange={handleCardChange} />}</div>
+        <div className="w-full max-w-4xl">{sessionCards.length > 0 && <StudyCardContainer cards={sessionCards} mode={currentMode} initialCardIndex={currentSession?.currentCardIndex ?? 0} cardRatings={cardRatings} onRating={handleRating} onAnswerSubmit={handleAnswerSubmit} onNoteUpdate={handleNoteUpdate} onCardChange={handleCardChange} />}</div>
       </div>
 
       {/* End Session Confirmation Modal */}
       <StudyModal isOpen={showEndSessionModal} onClose={() => setShowEndSessionModal(false)} title="End Study Session" confirmText="End Session" confirmVariant="danger" onConfirm={handleEndSession}>
-        <p className="text-neutral-600 dark:text-neutral-400">Are you sure you want to end this study session? Your progress will be saved.</p>
+        <p className="text-neutral-600 dark:text-neutral-400">Are you sure you want to end this study session? Your progress will be saved and you'll return to mode selection.</p>
       </StudyModal>
     </div>
   );

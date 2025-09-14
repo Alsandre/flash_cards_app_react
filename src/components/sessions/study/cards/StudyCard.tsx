@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import {Button, Input} from "../../../ui";
 import type {Card as CardType} from "../../../../types/entities";
+import {StudyContent, StudyHint, StudyNote, StudyAnswer, StudyFlipButton, StudyRatingButtons} from "../ui";
 
 /**
  * StudyCard - Study-specific card component with answer input and mode-aware behavior
@@ -16,13 +16,15 @@ interface StudyCardProps {
   currentRating?: "dont_know" | "doubt" | "know";
   onRating: (rating: "dont_know" | "doubt" | "know") => void;
   onAnswerSubmit?: (answer: string) => void;
+  onNoteUpdate?: (note: string) => void;
   onFlip?: () => void;
   showBack: boolean;
   disabled?: boolean;
 }
 
-const StudyCard: React.FC<StudyCardProps> = ({card, mode, currentRating, onRating, onAnswerSubmit, onFlip, showBack, disabled = false}) => {
+const StudyCard: React.FC<StudyCardProps> = ({card, mode, currentRating, onRating, onAnswerSubmit, onNoteUpdate, onFlip, showBack, disabled = false}) => {
   const [answerInput, setAnswerInput] = useState("");
+  const [noteInput, setNoteInput] = useState("");
   const [hasSubmittedAnswer, setHasSubmittedAnswer] = useState(false);
 
   const handleCardClick = () => {
@@ -56,7 +58,16 @@ const StudyCard: React.FC<StudyCardProps> = ({card, mode, currentRating, onRatin
 
   const handleRating = (rating: "dont_know" | "doubt" | "know", e: React.MouseEvent) => {
     e.stopPropagation();
+
+    // Save note if provided
+    if (noteInput.trim() && onNoteUpdate) {
+      onNoteUpdate(noteInput.trim());
+    }
+
     onRating(rating);
+
+    // TODO: Move to next card automatically after rating
+    // This will require parent component to handle card advancement
   };
 
   const canFlip = () => {
@@ -73,7 +84,6 @@ const StudyCard: React.FC<StudyCardProps> = ({card, mode, currentRating, onRatin
     }
   };
 
-  const showAnswerInput = mode !== "flow";
   const requireAnswerToFlip = mode === "commit" || mode === "validate" || mode === "mastery";
 
   return (
@@ -85,110 +95,52 @@ const StudyCard: React.FC<StudyCardProps> = ({card, mode, currentRating, onRatin
         `}
       >
         {/* Front Side - Question */}
-        <div className={`absolute inset-0 w-full h-full backface-hidden rounded-2xl overflow-hidden shadow-2xl bg-white dark:bg-neutral-800 ${canFlip() ? "cursor-pointer" : ""}`} onClick={handleCardClick}>
-          <div className="w-full h-full flex flex-col items-center justify-center p-8">
-            {/* Mode indicator */}
-            <div className="mb-4 inline-flex items-center rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-600 dark:bg-neutral-700 dark:text-neutral-400">{mode.charAt(0).toUpperCase() + mode.slice(1)} Mode</div>
-
-            {/* Question content */}
-            <div className="flex-1 flex items-center justify-center text-center mb-6">
-              <p className="text-2xl font-medium leading-relaxed text-neutral-900 dark:text-neutral-100 sm:text-3xl">{card.front}</p>
+        <div className={`absolute inset-0 w-full h-full backface-hidden rounded-2xl overflow-hidden shadow-2xl bg-white dark:bg-neutral-800 ${canFlip() ? "cursor-pointer" : ""}`}>
+          <div className="w-full h-full flex flex-col items-center justify-between p-2">
+            {/* Content Group */}
+            <div className="w-full flex flex-col items-center justify-center">
+              <StudyContent content={card.front} />
+              <StudyHint hint={card.hint} />
             </div>
 
-            {/* Hint section */}
-            {card.hint && (
-              <div className="mb-6 rounded-lg bg-neutral-50 p-3 dark:bg-neutral-800/50 w-full max-w-md">
-                <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-1">Hint</p>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">{card.hint}</p>
-              </div>
-            )}
+            {/* Input Group */}
+            <div className="mt-8 w-full">
+              <StudyNote value={noteInput} onChange={setNoteInput} disabled={disabled} />
 
-            {/* Answer Input - Show for all modes except flow */}
-            {showAnswerInput && !showBack && (
-              <div className="w-full max-w-md mb-6">
-                <div className="flex space-x-2">
-                  <Input type="text" placeholder="Your answer..." value={answerInput} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnswerInput(e.target.value)} onKeyPress={(e: React.KeyboardEvent) => e.key === "Enter" && handleAnswerSubmit()} disabled={hasSubmittedAnswer || disabled} className="flex-1" />
-                  <Button onClick={handleAnswerSubmit} disabled={!answerInput.trim() || hasSubmittedAnswer || disabled} size="sm">
-                    Submit
-                  </Button>
+              {!showBack && <StudyAnswer mode="input" value={answerInput} onChange={setAnswerInput} onSubmit={handleAnswerSubmit} showSubmit={mode !== "flow"} hasSubmitted={hasSubmittedAnswer} disabled={disabled} placeholder="Your answer" />}
+
+              {requireAnswerToFlip && !hasSubmittedAnswer && <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-2 text-center">Answer required to continue</p>}
+
+              {canFlip() && <StudyFlipButton onFlip={handleCardClick} disabled={disabled} />}
+
+              {!canFlip() && (
+                <div className="max-w-sm mx-auto mt-6 flex items-center justify-center space-x-2 text-sm text-neutral-500 dark:text-neutral-400">
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l .777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                  </svg>
+                  <span>Complete answer to continue</span>
                 </div>
-                {requireAnswerToFlip && !hasSubmittedAnswer && <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-2 text-center">Answer required to continue</p>}
-              </div>
-            )}
-
-            {/* Interaction hint */}
-            <div className="flex items-center space-x-2 text-sm text-neutral-500 dark:text-neutral-400">
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-              </svg>
-              <span>{canFlip() ? "Tap to reveal answer" : "Complete answer to continue"}</span>
+              )}
             </div>
-
-            {/* Flip indicator */}
-            {canFlip() && (
-              <div className="absolute top-4 right-4 w-8 h-8 bg-primary-500/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                <div className="w-2 h-2 bg-primary-500 rounded-full animate-pulse" />
-              </div>
-            )}
           </div>
         </div>
 
         {/* Back Side - Answer with Rating Buttons */}
         <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-white dark:bg-neutral-800 rounded-2xl shadow-2xl overflow-hidden">
-          <div className="h-full flex flex-col p-8">
-            {/* Back indicator */}
-            <div className="mb-4 inline-flex items-center rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-600 dark:bg-neutral-700 dark:text-neutral-400 self-center">Answer</div>
-
-            {/* Submitted answer display (for commit+ modes) */}
-            {showAnswerInput && hasSubmittedAnswer && (
-              <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                <p className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">Your Answer:</p>
-                <p className="text-sm text-blue-900 dark:text-blue-100">{answerInput}</p>
-              </div>
-            )}
-
-            {/* Correct answer */}
-            <div className="flex-1 flex items-center justify-center text-center">
-              <p className="text-2xl font-medium leading-relaxed text-neutral-900 dark:text-neutral-100 sm:text-3xl">{card.back}</p>
+          <div className="w-full h-full flex flex-col items-center justify-between p-2">
+            {/* Content Group */}
+            <div className="w-full flex flex-col items-center justify-center">
+              <StudyContent content={card.back} />
+              <StudyHint hint={card.hint} />
             </div>
 
-            {/* Rating Buttons */}
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4 mt-8">
-              <button
-                onClick={(e) => handleRating("dont_know", e)}
-                disabled={disabled}
-                className={`w-full backdrop-blur-sm rounded-xl flex flex-col items-center justify-center py-4 px-3
-                         transition-all duration-200 hover:scale-105 border-2 disabled:opacity-50 disabled:hover:scale-100 ${currentRating === "dont_know" ? "bg-error-500/40 border-error-500 text-error-800 dark:text-error-200" : "bg-error-500/20 border-error-400/30 text-error-700 dark:text-error-300 hover:bg-error-500/40"}`}
-              >
-                <svg className="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-                <span className="text-sm font-medium">Don't Know</span>
-              </button>
+            {/* Input Group */}
+            <div className="mt-8 w-full">
+              <StudyNote value={noteInput} onChange={setNoteInput} disabled={disabled} />
 
-              <button
-                onClick={(e) => handleRating("doubt", e)}
-                disabled={disabled}
-                className={`w-full backdrop-blur-sm rounded-xl flex flex-col items-center justify-center py-4 px-3
-                         transition-all duration-200 hover:scale-105 border-2 disabled:opacity-50 disabled:hover:scale-100 ${currentRating === "doubt" ? "bg-warning-500/40 border-warning-500 text-warning-800 dark:text-warning-200" : "bg-warning-500/20 border-warning-400/30 text-warning-700 dark:text-warning-300 hover:bg-warning-500/40"}`}
-              >
-                <svg className="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span className="text-sm font-medium">Doubt</span>
-              </button>
+              <StudyAnswer mode="display" value={answerInput || "No answer provided"} />
 
-              <button
-                onClick={(e) => handleRating("know", e)}
-                disabled={disabled}
-                className={`w-full backdrop-blur-sm rounded-xl flex flex-col items-center justify-center py-4 px-3
-                         transition-all duration-200 hover:scale-105 border-2 disabled:opacity-50 disabled:hover:scale-100 ${currentRating === "know" ? "bg-success-500/40 border-success-500 text-success-800 dark:text-success-200" : "bg-success-500/20 border-success-400/30 text-success-700 dark:text-success-300 hover:bg-success-500/40"}`}
-              >
-                <svg className="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                </svg>
-                <span className="text-sm font-medium">I Know</span>
-              </button>
+              <StudyRatingButtons onRating={(rating) => handleRating(rating, {stopPropagation: () => {}} as React.MouseEvent)} currentRating={currentRating} disabled={disabled} />
             </div>
           </div>
         </div>
