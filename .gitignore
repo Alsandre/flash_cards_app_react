@@ -16,6 +16,15 @@ dist-ssr
 .env.local
 .env
 
+# Planning and investigation documents
+docs/
+*.investigation.md
+*.research.md
+*.planning.md
+planning/
+research/
+investigation/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

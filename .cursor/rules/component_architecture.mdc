@@ -1,0 +1,125 @@
+---
+description: Component architecture decision framework - prompts architectural choices rather than prescribing solutions
+globs: ["src/**/*.tsx", "src/**/*.ts"]
+alwaysApply: true
+---
+
+# Component Architecture Decision Framework
+
+## Core Directive
+
+**ALWAYS present architectural options when creating or modifying components**
+
+This rule ensures components remain modular and plugin-like while allowing justified coupling decisions.
+
+## Foundation Guidelines
+
+### Component Modularity Default
+
+Design components as **plugin-like units** that can be:
+
+- Extracted to separate package
+- Replaced with different implementation
+- Tested in isolation
+- Reused across contexts
+
+### Decision-Prompting Requirements
+
+#### Before Creating New Components
+
+**ALWAYS ask user to choose**:
+
+1. **Component Level**:
+
+   - **Primitive** (UI only, zero business logic)
+   - **Feature** (single responsibility, domain-aware)
+   - **Container** (orchestrates features, complex state)
+   - **Page** (route-level, data loading)
+
+2. **Coupling Strategy**:
+   - **Loose Coupling** (maximum modularity, prop-based)
+   - **Justified Coupling** (performance/UX/domain reasons)
+
+#### Before Major Component Changes
+
+**ALWAYS present options**:
+
+1. **Extraction Decision**:
+
+   - Keep coupled for [performance/simplicity/UX]
+   - Extract for [reusability/testing/clarity]
+
+2. **Responsibility Expansion**:
+   - Expand current component
+   - Create new component
+   - Refactor into multiple components
+
+## Quick Decision Templates
+
+### Component Creation Prompt
+
+```
+This component needs: [describe functionality]
+
+Options:
+A) Primitive: Pure UI, maximum reuse
+B) Feature: Single responsibility, domain-aware
+C) Container: Orchestrates multiple features
+D) Page: Route-level with data loading
+
+Recommendation: [X] because [reason]
+User choice: ___
+```
+
+### Coupling Decision Prompt
+
+```
+Components [A] and [B] could be:
+
+Options:
+A) Loosely coupled: More modular, potential prop drilling
+B) Tightly coupled: Better performance/UX, less reusable
+
+Justification for coupling: [performance/UX flow/domain logic]
+Recommendation: [X] because [reason]
+User choice: ___
+```
+
+## Documentation Requirements
+
+### Minimal Required Documentation
+
+```typescript
+/**
+ * [ComponentName] - [One sentence purpose]
+ * @level [1-4] ([Primitive/Feature/Container/Page])
+ * @coupling [None/Justified: reason]
+ */
+```
+
+### When to Create Full Documentation
+
+**ONLY for Container and Page level components**:
+
+- Component purpose and responsibilities
+- Integration patterns
+- Usage examples
+
+## Enforcement
+
+### Code Review Triggers
+
+- Component file > 200 lines
+- Props interface > 10 properties
+- Multiple distinct responsibilities
+- Unclear component level
+
+### Required Actions
+
+1. **Present architectural options** to user
+2. **Document decision rationale** in component header
+3. **Update component level** if responsibilities change
+
+---
+
+**Focus**: Present choices, don't prescribe solutions. Keep components modular unless coupling is explicitly justified.
