@@ -89,7 +89,7 @@ export const Dashboard: React.FC = () => {
           {groups.map((group) => {
             const isStarterPack = StarterPackService.isStarterPack(group.id);
             return (
-              <Card key={group.id} variant="interactive" className={`group ${isStarterPack ? "ring-2 ring-pink-200 dark:ring-pink-800 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/50 dark:to-rose-950/50" : ""}`}>
+              <Card key={group.id} variant="interactive" className={`group ${isStarterPack ? "ring-2 ring-pink-300 dark:ring-pink-600 bg-gradient-to-br from-pink-100 to-rose-100 dark:from-pink-900/60 dark:to-rose-900/60 shadow-lg shadow-pink-200/40 dark:shadow-pink-900/30 animate-pulse-subtle" : ""}`}>
                 <div className="mb-4 flex items-start justify-between">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
@@ -128,9 +128,14 @@ export const Dashboard: React.FC = () => {
                     <Link to={`/groups/${group.id}`}>Manage</Link>
                   </Button>
                   {group.cardCount > 0 && (
-                    <Button size="sm" asChild className="flex-1">
-                      <Link to={`/explore/${group.id}`}>Explore</Link>
-                    </Button>
+                    <>
+                      <Button size="sm" asChild className="flex-1">
+                        <Link to={`/study/${group.id}`}>Study</Link>
+                      </Button>
+                      <Button variant="secondary" size="sm" asChild className="flex-1">
+                        <Link to={`/explore/${group.id}`}>Explore</Link>
+                      </Button>
+                    </>
                   )}
                 </div>
               </Card>

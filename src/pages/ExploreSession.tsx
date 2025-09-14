@@ -2,8 +2,7 @@ import React, {useEffect, useState, useMemo, useCallback} from "react";
 import {useParams, useNavigate, Link} from "react-router-dom";
 import {useGroups, useAllCards, useCurrentSession, useStartExploreSession, useUpdateSessionProgress, useRateCard, useCompleteSession, useLoadCards, useIsLoading, useError, useClearError} from "../store/appStore";
 import {Button, Card, LoadingSpinner} from "../components/ui";
-import {ExploreErrorBoundary} from "../components/sessions/explore/ExploreErrorBoundary";
-import ExploreCardContainer from "../components/sessions/explore/ExploreCardContainer";
+import {ExploreErrorBoundary, ExploreCardContainer} from "../components/sessions/explore";
 import type {Card as CardType} from "../types/entities";
 
 export const ExploreSession: React.FC = () => {

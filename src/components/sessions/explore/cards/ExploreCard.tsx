@@ -1,5 +1,5 @@
 import React from "react";
-import type {Card as CardType} from "../../../types/entities";
+import type {Card as CardType} from "../../../../types/entities";
 
 interface ExploreCardProps {
   card: CardType;

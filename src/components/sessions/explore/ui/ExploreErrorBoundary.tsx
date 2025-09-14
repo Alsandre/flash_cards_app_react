@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import type {ReactNode} from "react";
-import {Button, Card} from "../../ui";
+import {Button, Card} from "../../../ui";
 
 interface Props {
   children: ReactNode;
@@ -103,3 +103,5 @@ export class ExploreErrorBoundary extends Component<Props, State> {
     return this.props.children;
   }
 }
+
+export default ExploreErrorBoundary;

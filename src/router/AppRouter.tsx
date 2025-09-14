@@ -4,6 +4,7 @@ import {AppLayout} from "../components/layout/AppLayout";
 import {Dashboard} from "../pages/Dashboard";
 import {GroupDetail} from "../pages/GroupDetail";
 import {ExploreSession} from "../pages/ExploreSession";
+import {StudySession} from "../pages/StudySession";
 import {Stats} from "../pages/Stats";
 import {Settings} from "../pages/Settings";
 import {DevTest} from "../pages/DevTest";
@@ -82,6 +83,11 @@ const router = createBrowserRouter([
         element: <NotFound />,
       },
     ],
+  },
+  // Standalone routes (no AppLayout)
+  {
+    path: "/study/:groupId",
+    element: <StudySession />,
   },
 ]);
 

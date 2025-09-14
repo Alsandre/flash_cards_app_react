@@ -103,6 +103,20 @@
   }
 }
 
+@keyframes pulseSubtle {
+  0%,
+  100% {
+    box-shadow: var(--box-shadow-card), 0 0 20px rgba(236, 72, 153, 0.15);
+  }
+  50% {
+    box-shadow: var(--box-shadow-card), 0 0 25px rgba(236, 72, 153, 0.25);
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 4s ease-in-out infinite;
+}
+
 /* 3D Card Flip Styles */
 .perspective-1000 {
   perspective: 1000px;

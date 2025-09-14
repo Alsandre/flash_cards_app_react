@@ -6,18 +6,26 @@ import type {Swiper as SwiperType} from "swiper";
 // Import Swiper styles
 import "swiper/swiper-bundle.css";
 
-import ExploreCard from "./ExploreCard";
-import type {Card as CardType} from "../../../types/entities";
+import StudyCard, {type StudyMode} from "../cards/StudyCard";
+import type {Card as CardType} from "../../../../types/entities";
 
-interface ExploreCardContainerProps {
+/**
+ * StudyCardContainer - Study session card container with swipe navigation
+ * @level 2 (Feature Component)
+ * @coupling Justified: Optimized for study session UX flows
+ */
+
+interface StudyCardContainerProps {
   cards: CardType[];
+  mode: StudyMode;
   initialCardIndex: number;
   cardRatings: Record<string, "dont_know" | "doubt" | "know">;
   onRating: (cardId: string, rating: "dont_know" | "doubt" | "know") => void;
+  onAnswerSubmit?: (cardId: string, answer: string) => void;
   onCardChange?: (index: number) => void;
 }
 
-const ExploreCardContainer: React.FC<ExploreCardContainerProps> = ({cards, initialCardIndex, cardRatings, onRating, onCardChange}) => {
+const StudyCardContainer: React.FC<StudyCardContainerProps> = ({cards, mode, initialCardIndex, cardRatings, onRating, onAnswerSubmit, onCardChange}) => {
   const swiperRef = useRef<SwiperType | null>(null);
   const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
 
@@ -31,14 +39,21 @@ const ExploreCardContainer: React.FC<ExploreCardContainerProps> = ({cards, initi
     if (swiperRef.current && initialCardIndex > 0) {
       swiperRef.current.slideTo(initialCardIndex, 0); // 0 = no animation
     }
-  }, [initialCardIndex]); // Run when swiper is ready or initial index changes
+  }, [initialCardIndex]);
 
   const handleRating = (cardId: string, rating: "dont_know" | "doubt" | "know") => {
     onRating(cardId, rating);
   };
 
+  const handleAnswerSubmit = (answer: string) => {
+    const activeIndex = swiperRef.current?.activeIndex ?? 0;
+    const currentCard = cards[activeIndex];
+    if (currentCard) {
+      onAnswerSubmit?.(currentCard.id, answer);
+    }
+  };
+
   const handleCardFlip = () => {
-    // Get current active slide index from swiper
     const activeIndex = swiperRef.current?.activeIndex ?? 0;
     setFlippedCards((prev) => {
       const newSet = new Set(prev);
@@ -78,7 +93,7 @@ const ExploreCardContainer: React.FC<ExploreCardContainerProps> = ({cards, initi
           <div className="text-center p-8">
             <div className="text-6xl mb-4">📚</div>
             <h3 className="text-xl font-semibold text-neutral-600 dark:text-neutral-400 mb-2">No cards available</h3>
-            <p className="text-neutral-500 dark:text-neutral-400">Add some cards to start exploring!</p>
+            <p className="text-neutral-500 dark:text-neutral-400">Add some cards to start studying!</p>
           </div>
         </div>
       </div>
@@ -110,8 +125,8 @@ const ExploreCardContainer: React.FC<ExploreCardContainerProps> = ({cards, initi
           allowTouchMove={true}
           // Desktop navigation
           navigation={{
-            nextEl: ".swiper-button-next-custom",
-            prevEl: ".swiper-button-prev-custom",
+            nextEl: ".swiper-button-next-custom-study",
+            prevEl: ".swiper-button-prev-custom-study",
             disabledClass: "swiper-button-disabled-custom",
           }}
           className="w-full h-full rounded-2xl swiper-cards-container"
@@ -119,14 +134,14 @@ const ExploreCardContainer: React.FC<ExploreCardContainerProps> = ({cards, initi
         >
           {cards.map((card, index) => (
             <SwiperSlide key={card.id} className="rounded-2xl">
-              <ExploreCard card={card} currentRating={cardRatings[card.id]} onRating={(rating) => handleRating(card.id, rating)} onFlip={handleCardFlip} showBack={flippedCards.has(index)} />
+              <StudyCard card={card} mode={mode} currentRating={cardRatings[card.id]} onRating={(rating) => handleRating(card.id, rating)} onAnswerSubmit={handleAnswerSubmit} onFlip={handleCardFlip} showBack={flippedCards.has(index)} />
             </SwiperSlide>
           ))}
         </Swiper>
 
         {/* Navigation Buttons - Hidden on Mobile, Visible on Tablet+ */}
         <button
-          className="swiper-button-prev-custom absolute left-4 top-1/2 -translate-y-1/2 z-10 
+          className="swiper-button-prev-custom-study absolute left-4 top-1/2 -translate-y-1/2 z-10 
                          hidden md:flex items-center justify-center w-12 h-12 rounded-full 
                          bg-white/90 dark:bg-neutral-800/90 backdrop-blur-sm
                          shadow-lg hover:shadow-xl transition-all duration-200
@@ -141,7 +156,7 @@ const ExploreCardContainer: React.FC<ExploreCardContainerProps> = ({cards, initi
         </button>
 
         <button
-          className="swiper-button-next-custom absolute right-4 top-1/2 -translate-y-1/2 z-10
+          className="swiper-button-next-custom-study absolute right-4 top-1/2 -translate-y-1/2 z-10
                          hidden md:flex items-center justify-center w-12 h-12 rounded-full 
                          bg-white/90 dark:bg-neutral-800/90 backdrop-blur-sm
                          shadow-lg hover:shadow-xl transition-all duration-200
@@ -155,7 +170,7 @@ const ExploreCardContainer: React.FC<ExploreCardContainerProps> = ({cards, initi
           </svg>
         </button>
 
-        {/* Progress indicator - will be updated by parent's currentSession */}
+        {/* Progress indicator */}
         <div className="absolute -bottom-12 left-0 right-0 flex justify-center">
           <div className="flex space-x-1">
             {cards.map((card, index) => {
@@ -165,11 +180,11 @@ const ExploreCardContainer: React.FC<ExploreCardContainerProps> = ({cards, initi
           </div>
         </div>
 
-        {/* Navigation instructions - responsive */}
+        {/* Study-specific navigation instructions */}
         <div className="absolute -bottom-24 left-0 right-0 text-center">
           <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-2">
-            <span className="md:hidden">Tap card to flip • Swipe to navigate • Rate your knowledge</span>
-            <span className="hidden md:inline">Tap card to flip • Click arrows or swipe to navigate • Rate your knowledge</span>
+            <span className="md:hidden">{mode === "flow" ? "Tap to flip • Swipe to navigate • Rate knowledge" : "Answer • Flip • Rate • Navigate"}</span>
+            <span className="hidden md:inline">{mode === "flow" ? "Tap to flip • Navigate • Rate knowledge" : "Answer required • Flip • Rate knowledge"}</span>
           </p>
         </div>
       </div>
@@ -177,4 +192,4 @@ const ExploreCardContainer: React.FC<ExploreCardContainerProps> = ({cards, initi
   );
 };
 
-export default ExploreCardContainer;
+export default StudyCardContainer;
