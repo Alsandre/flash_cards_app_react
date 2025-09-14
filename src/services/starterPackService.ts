@@ -1,4 +1,4 @@
-import { STARTER_PACK, STARTER_CARDS_GROUP_ID } from "../data/starterPack";
+import { STARTER_PACK, STARTER_CARDS_GROUP_ID, STARTER_PACK_VERSION } from "../data/starterPack";
 import { GroupRepository } from "../repositories/groupRepository";
 import { CardRepository } from "../repositories/cardRepository";
 import type { Group, Card } from "../types/entities";
@@ -17,6 +17,13 @@ export class StarterPackService {
       const existingGroup = await groupRepo.findById(STARTER_CARDS_GROUP_ID);
       
       if (existingGroup) {
+        // Check if version matches - recreate if outdated (development feature)
+        const currentVersion = existingGroup.description?.match(/v(\d+\.\d+)/)?.[1];
+        if (currentVersion !== STARTER_PACK_VERSION && import.meta.env.DEV) {
+          console.log(`Starter pack version mismatch. Recreating: ${currentVersion} → ${STARTER_PACK_VERSION}`);
+          return await this.recreateStarterPack();
+        }
+
         // Group exists, get its cards
         const cards = await cardRepo.findByGroupId(STARTER_CARDS_GROUP_ID);
         

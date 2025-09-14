@@ -3,6 +3,7 @@ import type {Group, Card} from "../types/entities";
 // Special starter pack for ქეთი ❤️
 export const STARTER_PACK_ID = "starter-pack-for-keti";
 export const STARTER_CARDS_GROUP_ID = "motivational-german-for-keti";
+export const STARTER_PACK_VERSION = "1.1"; // Update this when content changes
 
 export const STARTER_PACK: {
   group: Omit<Group, "id" | "createdAt" | "updatedAt">;
@@ -10,7 +11,7 @@ export const STARTER_PACK: {
 } = {
   group: {
     name: "Für mein Herzchen ფისო 💕✨",
-    description: "German for us, ცუნცი! These are the words that matter. Made with love for you! 🌟❤️",
+    description: `German for us, ცუნცი! These are the words that matter. Made with love for you! 🌟❤️ (v${STARTER_PACK_VERSION})`,
     studyCardCount: 15,
     cardCount: 15,
   },
