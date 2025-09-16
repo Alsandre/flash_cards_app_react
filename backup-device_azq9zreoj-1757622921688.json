@@ -1,0 +1,1029 @@
+{
+  "groups": [
+    {
+      "name": "Goethe",
+      "description": "words page 8",
+      "studyCardCount": 35,
+      "createdAt": "2025-09-07T08:23:30.441Z",
+      "updatedAt": "2025-09-09T09:50:01.345Z",
+      "cardCount": 34,
+      "id": "098be5ae-185a-45bc-b95b-99932e727f0c"
+    },
+    {
+      "name": "ტექსტებიდან",
+      "description": "ნაყარ ნუყარი",
+      "studyCardCount": 10,
+      "createdAt": "2025-09-10T19:50:46.334Z",
+      "updatedAt": "2025-09-10T19:50:46.334Z",
+      "cardCount": 12,
+      "id": "16cf837e-1dc1-4298-b5ec-bb97ff866046"
+    },
+    {
+      "name": "Goethe",
+      "description": "page 10",
+      "studyCardCount": 10,
+      "createdAt": "2025-09-11T19:26:52.385Z",
+      "updatedAt": "2025-09-11T19:26:52.385Z",
+      "cardCount": 17,
+      "id": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd"
+    },
+    {
+      "name": "goethe",
+      "description": "words page  9",
+      "studyCardCount": 21,
+      "createdAt": "2025-09-09T10:03:45.542Z",
+      "updatedAt": "2025-09-10T19:31:22.148Z",
+      "cardCount": 21,
+      "id": "c7be603e-643f-43ce-9301-d8405fbc9015"
+    },
+    {
+      "name": "Du schaffst das, ფისო! 💪✨",
+      "description": "Your journey to German fluency starts here, ცუნცი! Every word you learn is a step closer to your dreams. You're stronger than you think! 🌟",
+      "studyCardCount": 10,
+      "cardCount": 12,
+      "createdAt": "2025-09-07T08:18:09.925Z",
+      "updatedAt": "2025-09-07T08:18:09.935Z",
+      "id": "motivational-german-for-keti"
+    }
+  ],
+  "cards": [
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "der Anfang, ¨-e",
+      "back": "Sie wohnt am Anfang der Straße.\nWir machen Anfang Juli Urlaub.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:49:07.406Z",
+      "updatedAt": "2025-09-07T08:49:07.406Z",
+      "id": "01a77821-f6b3-4a04-bc00-bd1d4cd5a47a"
+    },
+    {
+      "groupId": "16cf837e-1dc1-4298-b5ec-bb97ff866046",
+      "front": "bäume/ baum",
+      "back": "ხეები,ხე",
+      "properties": {},
+      "createdAt": "2025-09-10T19:51:50.548Z",
+      "updatedAt": "2025-09-11T19:30:53.937Z",
+      "id": "04be68b3-9fea-4b8b-a107-58c367796c41",
+      "lastRating": "know",
+      "lastReviewedAt": "2025-09-11T19:30:53.934Z"
+    },
+    {
+      "groupId": "16cf837e-1dc1-4298-b5ec-bb97ff866046",
+      "front": "zeigen",
+      "back": "ჩვენება",
+      "hint": "Er hat mir den weg gezeigt",
+      "properties": {},
+      "createdAt": "2025-09-10T20:03:37.276Z",
+      "updatedAt": "2025-09-10T20:03:37.276Z",
+      "id": "089f2e23-05df-4e3d-bb67-fdb780796666"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "der Anruf-\nbeantworter, -",
+      "back": "Wir sind im Moment nicht da. Sprechen Sie bitte auf\nden Anrufbeantworter",
+      "properties": {},
+      "createdAt": "2025-09-07T08:54:41.849Z",
+      "updatedAt": "2025-09-07T08:54:41.849Z",
+      "id": "0cdf22b9-d057-48ad-a74b-1531999795a9"
+    },
+    {
+      "groupId": "16cf837e-1dc1-4298-b5ec-bb97ff866046",
+      "front": "gemütlich",
+      "back": "გაბუტული",
+      "properties": {},
+      "createdAt": "2025-09-10T19:53:15.064Z",
+      "updatedAt": "2025-09-10T19:53:15.064Z",
+      "id": "0dcf6826-b192-49e9-8002-0afc6a49dc06"
+    },
+    {
+      "groupId": "16cf837e-1dc1-4298-b5ec-bb97ff866046",
+      "front": "meistens",
+      "back": "ძირითადად",
+      "properties": {},
+      "createdAt": "2025-09-10T19:56:01.036Z",
+      "updatedAt": "2025-09-10T19:56:01.036Z",
+      "id": "0f8a1115-ed5d-4e6d-ae4e-1a29daab9d57"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "die Ahnung, -en",
+      "back": "Ich hatte keine Ahnung, dass du heute Geburtstag\nhast.",
+      "hint": "idea",
+      "properties": {},
+      "createdAt": "2025-09-07T08:34:27.434Z",
+      "updatedAt": "2025-09-07T08:34:27.434Z",
+      "id": "170ff70d-6494-4484-b2aa-1664b95f013b"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "anrufen, ruft an, \nhat angerufen",
+      "back": "Kann ich Sie heute Abend anrufen?\nJuan ruft seine Freundin an.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:55:08.452Z",
+      "updatedAt": "2025-09-07T08:55:08.452Z",
+      "id": "181bcbbe-5d7d-420f-8e2f-eb8bc72fdb88"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "das Auge, -n",
+      "back": "Er hat blaue Augen.\nMein rechtes Auge tut seit Sonntag weh.",
+      "properties": {},
+      "createdAt": "2025-09-09T10:13:47.815Z",
+      "updatedAt": "2025-09-11T19:27:42.702Z",
+      "id": "1be9c6fb-b965-470c-8e6c-f7b68e50d891",
+      "lastRating": "know",
+      "lastReviewedAt": "2025-09-11T19:27:42.699Z"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "der Anzug, ¨-e",
+      "back": "Mein Mann muss sich einen neuen Anzug kaufen.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:58:35.292Z",
+      "updatedAt": "2025-09-07T08:58:35.292Z",
+      "id": "21bf2527-2254-4590-a0b8-8e1040b92d91"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "aussteigen, steigt aus,  ist ausgestiegen",
+      "back": "Wo müssen wir aussteigen? – An der nächsten Haltestelle.",
+      "properties": {},
+      "createdAt": "2025-09-09T10:19:00.577Z",
+      "updatedAt": "2025-09-10T19:11:24.717Z",
+      "id": "22920e4b-fa4d-4601-a816-842be4ae0580",
+      "lastRating": "doubt",
+      "lastReviewedAt": "2025-09-10T19:11:24.714Z"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "der Bahnsteig, -e",
+      "back": "Auf Hauptbahnhöfen gibt es meist viele Bahnsteige. Ich komme bald",
+      "hint": "platform პლატფორმა ბაქანი",
+      "properties": {},
+      "createdAt": "2025-09-11T19:44:46.043Z",
+      "updatedAt": "2025-09-11T19:52:19.203Z",
+      "id": "22faea19-c959-4c33-906e-162511dfabee",
+      "lastRating": "know",
+      "lastReviewedAt": "2025-09-11T19:52:19.199Z"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "abgeben\ngibt ab\nhat abgegeben",
+      "back": "Ich muss meinen Schlüssel an der Rezeption\nabgeben.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:24:35.246Z",
+      "updatedAt": "2025-09-07T08:24:35.246Z",
+      "id": "252c86bc-df1b-4ab3-8223-9fd6c371005c"
+    },
+    {
+      "groupId": "motivational-german-for-keti",
+      "front": "das hund",
+      "back": "Ich liebe das hund und du",
+      "properties": {},
+      "createdAt": "2025-09-11T20:00:54.689Z",
+      "updatedAt": "2025-09-11T20:01:30.473Z",
+      "id": "29de92ee-77c8-498d-bdd4-0d09253b14a7"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "der Arm, -e",
+      "back": "Mein Arm tut weh",
+      "hint": "my arm hurts",
+      "properties": {},
+      "createdAt": "2025-09-09T10:10:08.651Z",
+      "updatedAt": "2025-09-10T19:14:01.880Z",
+      "id": "2bdc0c3e-07f3-4768-9906-af180329dc95",
+      "lastRating": "know",
+      "lastReviewedAt": "2025-09-10T19:14:01.879Z"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "die Baustelle, -n",
+      "back": "Vor unserem Haus ist eine große Baustelle.",
+      "properties": {},
+      "createdAt": "2025-09-11T19:50:07.545Z",
+      "updatedAt": "2025-09-11T19:50:07.545Z",
+      "id": "32ba0cc6-0d81-4ac7-8720-6733254b39d8"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "der Apfel, ¨-",
+      "back": "Ein Kilo Äpfel, bitte.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:59:11.362Z",
+      "updatedAt": "2025-09-07T08:59:11.362Z",
+      "id": "3345a1e9-e3cf-4452-b161-2a86ad6c5aa3"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "die Bahn, -en",
+      "back": "Wir fahren lieber mit der Bahn als mit dem Bus.\nIch nehme die nächste S-Bahn.",
+      "properties": {},
+      "createdAt": "2025-09-11T19:37:00.838Z",
+      "updatedAt": "2025-09-11T19:37:00.838Z",
+      "id": "3bfdcf85-e2da-4851-8935-b97864777b6c"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "der Ausgang, ¨-e",
+      "back": "Entschuldigung, wo ist der Ausgang?",
+      "properties": {},
+      "createdAt": "2025-09-09T10:14:31.215Z",
+      "updatedAt": "2025-09-10T19:14:08.830Z",
+      "id": "3d9d487f-e7a0-4bae-ae81-3850f73ae505",
+      "lastRating": "know",
+      "lastReviewedAt": "2025-09-10T19:14:08.828Z"
+    },
+    {
+      "groupId": "16cf837e-1dc1-4298-b5ec-bb97ff866046",
+      "front": "schmuck",
+      "back": "სამკაული",
+      "properties": {},
+      "createdAt": "2025-09-10T19:58:26.528Z",
+      "updatedAt": "2025-09-10T19:58:26.528Z",
+      "id": "3db5a840-1ba9-4e24-b3d1-351f4891476d"
+    },
+    {
+      "groupId": "16cf837e-1dc1-4298-b5ec-bb97ff866046",
+      "front": "reden",
+      "back": "საუბარი",
+      "properties": {},
+      "createdAt": "2025-09-10T19:56:35.501Z",
+      "updatedAt": "2025-09-10T19:56:35.501Z",
+      "id": "4028b666-f093-4946-87b8-4b573ed7e8da"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "ausgehen, geht aus, ist ausgegangen",
+      "back": "Gehen wir am Freitag zusammen aus?\nPlötzlich ist das Licht ausgegangen.",
+      "properties": {},
+      "createdAt": "2025-09-09T10:15:35.647Z",
+      "updatedAt": "2025-09-10T19:14:46.029Z",
+      "id": "40a200a7-d5fe-4341-89c0-14547a9cf53e",
+      "lastRating": "doubt",
+      "lastReviewedAt": "2025-09-10T19:14:46.027Z"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "meldet an, \nhat angemeldet",
+      "back": "Eine Anmeldung für diesen Kurs ist nicht mehr möglich.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:51:37.943Z",
+      "updatedAt": "2025-09-07T08:51:37.943Z",
+      "id": "43ec9da9-a6d1-4117-97e3-871f28a73f2b"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "anmachen, \nmacht an,\nhat angemach",
+      "back": "Mach bitte das Licht an!",
+      "properties": {},
+      "createdAt": "2025-09-07T08:50:43.809Z",
+      "updatedAt": "2025-09-07T08:50:43.809Z",
+      "id": "463566a7-ee02-4977-944f-6e17a2b7225c"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "ausfüllen,",
+      "back": "Füllen Sie/Füll bitte dieses Formular aus",
+      "properties": {},
+      "createdAt": "2025-09-09T10:14:10.184Z",
+      "updatedAt": "2025-09-10T19:15:38.313Z",
+      "id": "47de70f7-650d-4a3c-8e9b-40798c659d91",
+      "lastRating": "doubt",
+      "lastReviewedAt": "2025-09-10T19:15:38.311Z"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "die Antwort, -en",
+      "back": "Er gibt leider keine Antwort.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:57:51.894Z",
+      "updatedAt": "2025-09-07T08:57:51.894Z",
+      "id": "4a4a0e8f-908e-4cff-a0ef-df865c61eb40"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "der Aufzug, ¨-e",
+      "back": "In diesem Haus gibt es keinen Aufzug.\nDer Aufzug ist leider kaputt.",
+      "properties": {},
+      "createdAt": "2025-09-09T10:13:23.082Z",
+      "updatedAt": "2025-09-10T19:16:53.961Z",
+      "id": "4aec9890-3f59-48f8-9a3d-9b88862ae2a3",
+      "lastRating": "dont_know",
+      "lastReviewedAt": "2025-09-10T19:16:53.960Z"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "bedanken (sich), bedankt, hat bedankt",
+      "back": "Ich möchte mich noch einmal sehr herzlich für Ihre\nHilfe bedanken",
+      "properties": {},
+      "createdAt": "2025-09-11T19:50:52.430Z",
+      "updatedAt": "2025-09-11T19:50:52.430Z",
+      "id": "4ca4bcab-e752-47d1-8fbc-92ac8a74de77"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "als",
+      "back": "Hector ist jünger als seine Schwester.\nSie arbeitet als Krankenschwester",
+      "properties": {},
+      "createdAt": "2025-09-07T08:38:23.488Z",
+      "updatedAt": "2025-09-07T08:38:23.488Z",
+      "id": "4df29261-c051-44d8-99b6-6d0465134a37"
+    },
+    {
+      "front": "I am learning German",
+      "back": "Ich lerne Deutsch",
+      "hint": "Yes you are, ფისო! And you're doing amazing! 📚✨",
+      "properties": {
+        "difficulty": "easy",
+        "category": "learning",
+        "motivation": "high"
+      },
+      "lastRating": "know",
+      "lastReviewedAt": "2025-09-11T19:52:39.501Z",
+      "groupId": "motivational-german-for-keti",
+      "createdAt": "2025-09-07T08:18:09.930Z",
+      "updatedAt": "2025-09-11T19:52:39.518Z",
+      "id": "51d47d2f-277b-4c11-9cf6-ac92b4ca25ef"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "der Bauch, ¨-e",
+      "back": "eit gestern tut mir der Bauch weh.",
+      "properties": {},
+      "createdAt": "2025-09-11T19:48:48.195Z",
+      "updatedAt": "2025-09-11T19:48:48.195Z",
+      "id": "52e148c7-1172-406b-b4dc-ab795fcbc59e"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "die Ampel, -n",
+      "back": "Du kannst fahren, die Ampel ist grün.\nNach der Ampel musst du nach links fahren",
+      "hint": "traffic light",
+      "properties": {},
+      "createdAt": "2025-09-07T08:39:32.644Z",
+      "updatedAt": "2025-09-07T08:39:32.644Z",
+      "id": "5484ed31-03d2-4d2f-bb82-5c6630e1616e"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "der Bahnhof, ¨-e",
+      "back": "Entschuldigung, komme ich hier zum Bahnhof?",
+      "properties": {},
+      "createdAt": "2025-09-11T19:37:42.375Z",
+      "updatedAt": "2025-09-11T19:37:42.375Z",
+      "id": "593f2765-85b5-4639-afee-2eebe7570902"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "an",
+      "back": "ahren Sie an der nächsten Kreuzung nach rechts.\nWir treffen uns am Bahnhof/am Kino/am Stand.\nAm nächsten Montag geht es leider nicht.\nDas Licht war die ganze Nacht an.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:41:46.370Z",
+      "updatedAt": "2025-09-07T08:41:46.370Z",
+      "id": "59873bd7-0502-4015-bdee-2560e733d4ed"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "ander-",
+      "back": "Willst du diesen Mantel? – Nein, ich möchte den\nanderen.\nDie anderen sind schon nach Hause gegangen.\nBitte nicht alle auf einmal! Einer nach dem anderen.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:47:43.368Z",
+      "updatedAt": "2025-09-07T08:47:43.368Z",
+      "id": "5af06a68-5e32-4444-a7aa-d948dd9322ff"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "basteln, bastelt, hat gebastelt",
+      "back": "Die Kinder haben etwas gebastelt",
+      "properties": {},
+      "createdAt": "2025-09-11T19:48:21.961Z",
+      "updatedAt": "2025-09-11T19:48:21.961Z",
+      "id": "5ce198be-51d2-4847-8d5f-63df8e0ad9e3"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "bedeuten, bedeutet,\nhat bedeutet",
+      "back": "Was bedeutet das Wort?",
+      "properties": {},
+      "createdAt": "2025-09-11T19:51:15.617Z",
+      "updatedAt": "2025-09-11T19:51:15.617Z",
+      "id": "61a8ee67-e7d0-47b5-b612-18264dc9cdd0"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "backen, bäckt/backt,\nhat gebacken",
+      "back": "Wenn du kommst, backe ich einen Kuchen.",
+      "properties": {},
+      "createdAt": "2025-09-11T19:35:32.001Z",
+      "updatedAt": "2025-09-11T19:35:32.001Z",
+      "id": "64b7f6c1-83b5-45f8-a252-c05bda6e27be"
+    },
+    {
+      "groupId": "16cf837e-1dc1-4298-b5ec-bb97ff866046",
+      "front": "nebem den",
+      "back": "გვერდით",
+      "properties": {},
+      "createdAt": "2025-09-10T19:52:13.167Z",
+      "updatedAt": "2025-09-10T19:52:13.167Z",
+      "id": "6c11acf9-e2bb-4b5d-b48c-4a0ac0305ba9"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "arbeiten, arbeitet, hat gearbeitet",
+      "back": "Wo arbeiten Sie?  Ich arbeite als Krankenschwester in einem\nKrankenhaus",
+      "properties": {},
+      "createdAt": "2025-09-09T10:05:40.572Z",
+      "updatedAt": "2025-09-10T19:17:03.961Z",
+      "id": "6ec6edb0-b25d-40ae-a4f7-62efb259cd6d",
+      "lastRating": "know",
+      "lastReviewedAt": "2025-09-10T19:17:03.959Z"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "ärgern (sich), ärgert,hat geärgert",
+      "back": "Warum ärgerst du dich? \n- Ich ärgere mich, weil das Wetter schlecht ist.",
+      "hint": "annoy",
+      "properties": {},
+      "createdAt": "2025-09-09T10:07:58.751Z",
+      "updatedAt": "2025-09-10T19:18:10.176Z",
+      "id": "6fdb454e-3259-4a3a-a418-272695c97d4c",
+      "lastRating": "dont_know",
+      "lastReviewedAt": "2025-09-10T19:18:10.174Z"
+    },
+    {
+      "groupId": "16cf837e-1dc1-4298-b5ec-bb97ff866046",
+      "front": "einige",
+      "back": "ზოგიერთი",
+      "properties": {},
+      "createdAt": "2025-09-10T19:51:17.849Z",
+      "updatedAt": "2025-09-10T19:51:17.849Z",
+      "id": "740680d9-66cf-4f43-8e8e-2bac40048474"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "allein",
+      "back": "Kommt seine Freundin mit? - Nein, er kommt allein.\nSoll ich Ihnen/dir helfen? - Nein danke, ich schaffe\ndas schon allein.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:37:54.519Z",
+      "updatedAt": "2025-09-07T08:37:54.519Z",
+      "id": "7a757875-06ee-4077-9120-7ea296bde220"
+    },
+    {
+      "front": "I am capable of amazing things",
+      "back": "Ich bin zu erstaunlichen Dingen fähig",
+      "hint": "The truest statement ever, ფისო! You amaze me every day! ✨🌟",
+      "properties": {
+        "difficulty": "hard",
+        "category": "motivation",
+        "motivation": "high"
+      },
+      "groupId": "motivational-german-for-keti",
+      "createdAt": "2025-09-07T08:18:09.934Z",
+      "updatedAt": "2025-09-07T08:18:09.934Z",
+      "id": "7ee43247-89b0-4740-abaa-962ed05926d7"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "die Anmeldung,-en",
+      "back": "Wo bekomme ich das Formular für die Anmeldung?",
+      "properties": {},
+      "createdAt": "2025-09-07T08:54:00.916Z",
+      "updatedAt": "2025-09-07T08:54:00.916Z",
+      "id": "84c393ad-61b0-41be-8988-c9a51eee7c35"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "der Anschluss, ¨-e",
+      "back": "In Mannheim haben Sie Anschluss nach\nSaarbrücken.\nIn Stuttgart erreichen Sie alle Anschlüsse. Auch der\nZug nach Paris wartet.\nGibt es in der Wohnung einen Waschmaschinen-\nanschluss?",
+      "properties": {},
+      "createdAt": "2025-09-07T08:55:57.285Z",
+      "updatedAt": "2025-09-07T08:55:57.285Z",
+      "id": "895ab1c4-6dd3-4a6d-9f63-91b59c22fef4"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "anfangen, fängt an, hat angefangen",
+      "back": "Hier fängt die Bahnhofstraße an.\nDer Unterricht fängt gleich an.\nWürden Sie bitte anfangen?\nIch fange im Herbst meine Ausbildung an.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:48:50.105Z",
+      "updatedAt": "2025-09-07T08:48:50.105Z",
+      "id": "8cd5b628-7343-4db7-8d64-45178f41f94c"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "der Anruf, -e",
+      "back": "Eva bekommt viele Anrufe von ihrem Freund Juan.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:55:35.853Z",
+      "updatedAt": "2025-09-07T08:55:35.853Z",
+      "id": "8f6e0c74-e285-4846-9ee1-029a1b364713"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "außerdem",
+      "back": "Vier Brötchen, möchten Sie außerdem noch etwas?",
+      "properties": {},
+      "createdAt": "2025-09-09T10:17:47.496Z",
+      "updatedAt": "2025-09-09T10:17:47.496Z",
+      "id": "903b1de8-14a8-4178-b6fe-32870355a8e9"
+    },
+    {
+      "front": "My boyfriend is the best",
+      "back": "Mein Freund ist der Beste",
+      "hint": "Well, someone had to teach you this one! 😄❤️",
+      "properties": {
+        "difficulty": "easy",
+        "category": "love",
+        "motivation": "high"
+      },
+      "groupId": "motivational-german-for-keti",
+      "createdAt": "2025-09-07T08:18:09.932Z",
+      "updatedAt": "2025-09-07T08:18:09.932Z",
+      "id": "965557b6-276e-4427-adad-673d4425e374"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "die Auskunft, ¨-e",
+      "back": "Wo ist die Auskunft?\nKönnen Sie mir bitte eine Auskunft geben?",
+      "properties": {},
+      "createdAt": "2025-09-09T10:15:56.114Z",
+      "updatedAt": "2025-09-10T19:20:26.541Z",
+      "id": "9847936d-ee90-42f0-8381-7d19aea861d9",
+      "lastRating": "dont_know",
+      "lastReviewedAt": "2025-09-10T19:20:26.539Z"
+    },
+    {
+      "front": "I am proud of my progress",
+      "back": "Ich bin stolz auf meinen Fortschritt",
+      "hint": "Every small step counts, ცუნცი! Celebrate your wins! 🎉",
+      "properties": {
+        "difficulty": "medium",
+        "category": "motivation",
+        "motivation": "high"
+      },
+      "groupId": "motivational-german-for-keti",
+      "createdAt": "2025-09-07T08:18:09.930Z",
+      "updatedAt": "2025-09-07T08:18:09.930Z",
+      "id": "9bab19fc-6875-48d2-a852-f1a4168b6d4c"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "bauen, baut, hat gebau",
+      "back": "Unsere Nachbarn bauen ein neues Haus.",
+      "properties": {},
+      "createdAt": "2025-09-11T19:49:08.327Z",
+      "updatedAt": "2025-09-11T19:49:08.327Z",
+      "id": "9c643c0e-80e8-4cf9-964e-90ab7df9fc6f"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "aufräumen, räumt auf,\nhat aufgeräumt",
+      "back": "Die Kinder müssen ihr Zimmer aufräumen.",
+      "hint": "clean up",
+      "properties": {},
+      "createdAt": "2025-09-09T10:12:25.383Z",
+      "updatedAt": "2025-09-10T19:21:31.822Z",
+      "id": "9d11c5c4-2da3-4660-9726-d76f04c5392e",
+      "lastRating": "dont_know",
+      "lastReviewedAt": "2025-09-10T19:21:31.820Z"
+    },
+    {
+      "front": "I can do difficult things",
+      "back": "Ich kann schwierige Dinge tun",
+      "hint": "ცუნცი, you've already proven this so many times! 💪",
+      "properties": {
+        "difficulty": "medium",
+        "category": "motivation",
+        "motivation": "high"
+      },
+      "groupId": "motivational-german-for-keti",
+      "createdAt": "2025-09-07T08:18:09.932Z",
+      "updatedAt": "2025-09-07T08:18:09.932Z",
+      "id": "9dc5dd51-d00e-437a-919a-133dae4f4465"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "das Bad, ¨-er",
+      "back": "Das Haus ist sehr alt. Es hat kein Bad.\nIm Winter nehme ich gern ein warmes Bad.",
+      "properties": {},
+      "createdAt": "2025-09-11T19:36:21.456Z",
+      "updatedAt": "2025-09-11T19:36:21.456Z",
+      "id": "9ef52245-a8bd-4270-a1c9-8424c0a1da97"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "das Baby, -s",
+      "back": "Wir haben ein Baby. Es ist sechs Wochen alt.",
+      "properties": {},
+      "createdAt": "2025-09-11T19:34:19.653Z",
+      "updatedAt": "2025-09-11T19:34:19.653Z",
+      "id": "9fd4143d-0293-4d47-947c-4442789ea127"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "antworten, \nantwortet,\nhat geantwortet",
+      "back": "Er antwortet nicht.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:57:25.592Z",
+      "updatedAt": "2025-09-07T08:57:25.592Z",
+      "id": "a2eef733-c793-4423-a3ad-36948ca98438"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "aussehen",
+      "back": "Wie sieht er aus? - Groß und blond",
+      "properties": {},
+      "createdAt": "2025-09-09T10:17:08.379Z",
+      "updatedAt": "2025-09-10T19:22:32.952Z",
+      "id": "a3a73ddb-815f-42e2-ac7a-3591b77d7589",
+      "lastRating": "know",
+      "lastReviewedAt": "2025-09-10T19:22:32.950Z"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "abschließen, schließt ab, hat abgeschlossen",
+      "back": "Ich schließe dieses Jahr mein Studium/\n meine Ausbildung ab.",
+      "hint": "complete",
+      "properties": {},
+      "createdAt": "2025-09-07T08:27:36.719Z",
+      "updatedAt": "2025-09-07T08:27:36.719Z",
+      "id": "a8695e38-a618-4f05-a4a2-d600a737dbd4"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "hat angeboten\ndas angebot,-e",
+      "back": "Er hat mir eine Stelle als Verkäuferin angeboten.\nHeute sind Bananen im Angebot.\nStellenangebote finden Sie in der Zeitung oder im\nInternet.",
+      "hint": "has offered",
+      "properties": {},
+      "createdAt": "2025-09-07T08:46:56.515Z",
+      "updatedAt": "2025-09-07T08:46:56.515Z",
+      "id": "a8dd8a8d-dd92-46a4-a387-8a4ff2a7fc41"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "der Babysitter,-",
+      "back": "Meine Tochter arbeitet als Babysitter bei einer\nFamilie mit vier Kindern.",
+      "properties": {},
+      "createdAt": "2025-09-11T19:34:51.166Z",
+      "updatedAt": "2025-09-11T19:34:51.166Z",
+      "id": "b330185f-709a-4d0a-b558-3fbe609236d0"
+    },
+    {
+      "front": "Mistakes help me learn",
+      "back": "Fehler helfen mir beim Lernen",
+      "hint": "ცუნცი, be kind to yourself! Every mistake is progress! 🤗",
+      "properties": {
+        "difficulty": "medium",
+        "category": "learning",
+        "motivation": "high"
+      },
+      "groupId": "motivational-german-for-keti",
+      "createdAt": "2025-09-07T08:18:09.933Z",
+      "updatedAt": "2025-09-07T08:18:09.933Z",
+      "id": "bc4c1c62-38b9-48f9-9b56-a01ba06cc032"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "die Angst, ¨-e",
+      "back": "Hab keine Angst!\nIch habe Angst vor großen Hunden.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:49:24.440Z",
+      "updatedAt": "2025-09-07T08:49:24.440Z",
+      "id": "c4e79830-2bf7-4a3a-809f-cbedff2d65af"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "all",
+      "back": "Ich wünsche dir alles Gute!\nHast du alles?\nMöchten Sie noch etwas? - Nein, danke. Das ist\nalles.\nSind alle da? - Nein, Rita fehlt noch.\nAlle Freunde kommen",
+      "properties": {},
+      "createdAt": "2025-09-07T08:37:12.068Z",
+      "updatedAt": "2025-09-07T08:37:12.068Z",
+      "id": "c817fc3a-bf6f-4a3b-a135-8dd099e03cd3"
+    },
+    {
+      "front": "I believe in myself",
+      "back": "Ich glaube an mich",
+      "hint": "ცუნცი, this is your daily mantra! You've got this! 🌟",
+      "properties": {
+        "difficulty": "medium",
+        "category": "motivation",
+        "motivation": "high"
+      },
+      "groupId": "motivational-german-for-keti",
+      "createdAt": "2025-09-07T08:18:09.929Z",
+      "updatedAt": "2025-09-07T08:18:09.929Z",
+      "id": "c84af66a-d647-4889-8db8-e254206e1762"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "ausruhen (sich)\nhat ausgeruht",
+      "back": "ruht aus, Ruh dich erst mal aus! Du bist sicher müde.\nEr ruht sich nach der Arbeit immer aus.",
+      "properties": {},
+      "createdAt": "2025-09-09T10:16:43.032Z",
+      "updatedAt": "2025-09-10T19:25:05.473Z",
+      "id": "cc0a3ba5-aa25-47ca-ac94-075e35547aab",
+      "lastRating": "dont_know",
+      "lastReviewedAt": "2025-09-10T19:25:05.471Z"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "der Ball, ¨-e",
+      "back": "Meine Kinder spielen gern Ball",
+      "properties": {},
+      "createdAt": "2025-09-11T19:45:41.374Z",
+      "updatedAt": "2025-09-11T19:45:41.374Z",
+      "id": "cd1fe71c-30f8-4d3d-8ccb-eca649b3b1c7"
+    },
+    {
+      "groupId": "16cf837e-1dc1-4298-b5ec-bb97ff866046",
+      "front": "spülmaschine",
+      "back": "ჭურჭლის სარეცხი მანქანა",
+      "properties": {},
+      "createdAt": "2025-09-10T19:54:33.933Z",
+      "updatedAt": "2025-09-10T19:54:33.933Z",
+      "id": "cd85f7a3-79a5-4796-bcfc-19e84558a01e"
+    },
+    {
+      "groupId": "motivational-german-for-keti",
+      "front": "abgeben\ngibt ab\nhat abgegeben",
+      "back": "Ich muss meinen Schlüssel an der Rezeption abgeben.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:22:51.141Z",
+      "updatedAt": "2025-09-07T08:22:51.141Z",
+      "id": "cfde0ab7-5133-4325-9632-e3e51afa1bc9"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "anmelden (sich",
+      "back": "Wo kann ich mich anmelden?",
+      "properties": {},
+      "createdAt": "2025-09-07T08:51:00.875Z",
+      "updatedAt": "2025-09-07T08:51:00.875Z",
+      "id": "d1e7e0f1-0045-42b5-9be9-728999fc2e5c"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "außerhalb",
+      "back": "Die Wohnung ist nicht in der Stadt, sie liegt etwas\naußerhalb.",
+      "properties": {},
+      "createdAt": "2025-09-09T10:18:04.515Z",
+      "updatedAt": "2025-09-10T19:25:14.138Z",
+      "id": "d4895378-6011-458a-9f14-3144760d8528",
+      "lastRating": "dont_know",
+      "lastReviewedAt": "2025-09-10T19:25:14.136Z"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "aufpassen,",
+      "back": "Pass auf, der Teller fällt gleich auf den Boden!\nDer Babysitter passt heute Abend auf die Kinder\nauf.",
+      "hint": "watch out",
+      "properties": {},
+      "createdAt": "2025-09-09T10:11:24.502Z",
+      "updatedAt": "2025-09-10T19:25:29.471Z",
+      "id": "d7859a52-ad5c-4a14-9818-6fd8b97cef6a",
+      "lastRating": "dont_know",
+      "lastReviewedAt": "2025-09-10T19:25:29.469Z"
+    },
+    {
+      "groupId": "16cf837e-1dc1-4298-b5ec-bb97ff866046",
+      "front": "empfangen",
+      "back": "welcome, to greet",
+      "properties": {},
+      "createdAt": "2025-09-10T20:00:49.971Z",
+      "updatedAt": "2025-09-10T20:00:49.971Z",
+      "id": "d8abdce3-4444-4685-8c36-a81599de071d"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "ansehen, sieht an, \nhat angesehen",
+      "back": "Darf ich eure Urlaubsfotos ansehen?\nIch sehe (mir) diese Sendung jeden Tag an.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:56:26.420Z",
+      "updatedAt": "2025-09-07T08:56:26.420Z",
+      "id": "d99dd0ae-4f48-418d-b087-f77fd4932ea7"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "baden, badet, hat gebade",
+      "back": "Ich bade nicht so gern, ich dusche lieber.\nIn diesem See darf man nicht baden.",
+      "properties": {},
+      "createdAt": "2025-09-11T19:36:41.971Z",
+      "updatedAt": "2025-09-11T19:36:41.971Z",
+      "id": "da0a1999-efb5-467c-8e1e-0ada041ef48a"
+    },
+    {
+      "groupId": "16cf837e-1dc1-4298-b5ec-bb97ff866046",
+      "front": "in der mitte",
+      "back": "შუაში",
+      "properties": {},
+      "createdAt": "2025-09-10T19:52:38.553Z",
+      "updatedAt": "2025-09-10T19:52:38.553Z",
+      "id": "db933952-e649-44f0-9950-66e268bed6bc"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "außer",
+      "back": "Außer Lisa möchte niemand den Film sehen.\nWir haben täglich außer Samstag geöffnet.",
+      "properties": {},
+      "createdAt": "2025-09-09T10:17:29.946Z",
+      "updatedAt": "2025-09-10T19:26:05.037Z",
+      "id": "e0df7b29-181f-4795-82ef-007397f89b5a",
+      "lastRating": "dont_know",
+      "lastReviewedAt": "2025-09-10T19:26:05.036Z"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "die Anzeige, -n",
+      "back": "Ich habe Ihre Anzeige in der Zeitung gelesen.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:58:14.560Z",
+      "updatedAt": "2025-09-07T08:58:14.560Z",
+      "id": "e48d2dfd-d849-40b1-815f-ffeb4f65f5df"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "beantworten, beantwortet, hat beantwortet",
+      "back": "Können Sie meine Frage bitte beantworten?\nHast du die Mail schon beantwortet?",
+      "properties": {},
+      "createdAt": "2025-09-11T19:50:25.177Z",
+      "updatedAt": "2025-09-11T19:50:25.177Z",
+      "id": "e67cfe8a-cca4-4217-88cc-0bce450c415d"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "ändern, ändert, hat geändert anders",
+      "back": "Das Wetter hat sich geändert.\nWie kann ich mein Passwort ändern?\nAnders geht das leider nicht.\nOliver ist anders als seine Freunde.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:48:18.854Z",
+      "updatedAt": "2025-09-07T08:48:18.854Z",
+      "id": "e6f96e00-8439-4e4e-92d8-0bb5c79853ad"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "abholen, holt ab\nhat abgeholt",
+      "back": "Wann kann ich die Sachen bei dir abholen?\n Wir müssen noch meinen Bruder abholen",
+      "hint": "pick up",
+      "properties": {},
+      "createdAt": "2025-09-07T08:26:13.809Z",
+      "updatedAt": "2025-09-07T08:26:13.809Z",
+      "id": "e8933edd-3b6c-4f9f-b9c2-d9afb4a08465"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "anbieten\nbietet an,",
+      "back": "Darf ich Ihnen/dir ein Stück Kuchen anbieten?",
+      "hint": "offer",
+      "properties": {},
+      "createdAt": "2025-09-07T08:44:35.526Z",
+      "updatedAt": "2025-09-07T08:44:35.526Z",
+      "id": "e969c72c-ee45-4a40-acf4-6d78f6c254e2"
+    },
+    {
+      "groupId": "53f4b258-cf36-4101-88d4-4f80bdf8ecdd",
+      "front": "der Baum, ¨-e",
+      "back": "Der Baum ist über hundert Jahre alt.\nWir haben zwei Apfelbäume im Garten.",
+      "properties": {},
+      "createdAt": "2025-09-11T19:49:39.293Z",
+      "updatedAt": "2025-09-11T19:49:39.293Z",
+      "id": "ea0c47b5-8c2f-4ea7-9c02-c9547f9dfe9f"
+    },
+    {
+      "front": "I am getting better every day",
+      "back": "Ich werde jeden Tag besser",
+      "hint": "This is so true, ფისო! Your growth is incredible! 🌱",
+      "properties": {
+        "difficulty": "medium",
+        "category": "motivation",
+        "motivation": "high"
+      },
+      "groupId": "motivational-german-for-keti",
+      "createdAt": "2025-09-07T08:18:09.933Z",
+      "updatedAt": "2025-09-07T08:18:09.933Z",
+      "id": "eabdbb74-f6d1-48a1-8c25-604f0343c8cc"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "ausgeben, gibt aus, hat ausgegeben",
+      "back": "Agata gibt viel Geld für Bücher aus.\nIch möchte nicht so viel Geld ausgeben.",
+      "properties": {},
+      "createdAt": "2025-09-09T10:15:11.700Z",
+      "updatedAt": "2025-09-10T19:26:55.103Z",
+      "id": "ebebdeb1-f226-460e-a66e-5e0b1c1a1830",
+      "lastRating": "dont_know",
+      "lastReviewedAt": "2025-09-10T19:26:55.101Z"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "arm",
+      "back": "Sie haben nicht viel Geld, sie sind arm.",
+      "hint": "poor",
+      "properties": {},
+      "createdAt": "2025-09-09T10:08:52.221Z",
+      "updatedAt": "2025-09-10T19:28:03.986Z",
+      "id": "ed235f36-a513-47db-a8c7-76fe9c231dba",
+      "lastRating": "doubt",
+      "lastReviewedAt": "2025-09-10T19:28:03.983Z"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "ankommen\nkommt an, ist angekommen",
+      "back": "Wann kommt dieser Zug in Hamburg an?\n Auf diesem Fahrplan steht nur die Ankunft der Züge.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:50:17.891Z",
+      "updatedAt": "2025-09-07T08:50:17.891Z",
+      "id": "edf9a33c-af46-4fbc-b2e9-297be78c7ea2"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "aktuell",
+      "back": "Das ist das aktuelle Kinoprogramm",
+      "properties": {},
+      "createdAt": "2025-09-07T08:35:01.000Z",
+      "updatedAt": "2025-09-07T08:35:01.000Z",
+      "id": "f188e446-2b5b-4dab-80d0-2ea4f19563d6"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "die Adresse, -n",
+      "back": "Können Sie mir Ihre Adresse geben?",
+      "properties": {},
+      "createdAt": "2025-09-07T08:27:58.443Z",
+      "updatedAt": "2025-09-07T08:27:58.443Z",
+      "id": "f2acb541-788d-465e-a808-47f408799028"
+    },
+    {
+      "front": "Coffee makes everything better",
+      "back": "Kaffee macht alles besser",
+      "hint": "For our coffee-loving ფისო! ☕ (Just like you make everything better!)",
+      "properties": {
+        "difficulty": "easy",
+        "category": "daily",
+        "motivation": "medium"
+      },
+      "groupId": "motivational-german-for-keti",
+      "createdAt": "2025-09-07T08:18:09.931Z",
+      "updatedAt": "2025-09-07T08:18:09.931Z",
+      "id": "f2dba058-243f-4b90-9df3-77d059e959dd"
+    },
+    {
+      "groupId": "098be5ae-185a-45bc-b95b-99932e727f0c",
+      "front": "die Apotheke, -n",
+      "back": "Das Medikament bekommen Sie in der Apotheke.",
+      "properties": {},
+      "createdAt": "2025-09-07T08:59:59.115Z",
+      "updatedAt": "2025-09-07T08:59:59.115Z",
+      "id": "f335f51b-3b10-48de-b7d7-a93e0d70c594"
+    },
+    {
+      "groupId": "16cf837e-1dc1-4298-b5ec-bb97ff866046",
+      "front": "Im Keller /  der keller",
+      "back": "სარდაფში",
+      "properties": {},
+      "createdAt": "2025-09-10T19:55:34.509Z",
+      "updatedAt": "2025-09-10T19:55:34.509Z",
+      "id": "f344c260-fcb5-4d59-8dd3-55a3fe34b67c"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "aufregend",
+      "back": "Die letzte Woche war sehr aufregend.\nDer Film ist nicht besonders aufregen",
+      "properties": {},
+      "createdAt": "2025-09-09T10:12:57.201Z",
+      "updatedAt": "2025-09-10T19:28:55.302Z",
+      "id": "f6a8954b-36c8-4a2b-a1da-d6f5522dc0c4",
+      "lastRating": "dont_know",
+      "lastReviewedAt": "2025-09-10T19:28:55.300Z"
+    },
+    {
+      "front": "Hello, my love!",
+      "back": "Hallo, meine Liebe!",
+      "hint": "The most important phrase for ფისო to know! 💕",
+      "properties": {
+        "difficulty": "easy",
+        "category": "love",
+        "motivation": "high"
+      },
+      "groupId": "motivational-german-for-keti",
+      "createdAt": "2025-09-07T08:18:09.927Z",
+      "updatedAt": "2025-09-07T08:18:09.927Z",
+      "id": "fccc1603-9184-452c-bb63-e8d37c626d49"
+    },
+    {
+      "groupId": "c7be603e-643f-43ce-9301-d8405fbc9015",
+      "front": "der Apparat, -e",
+      "back": "Was machen wir mit deinem alten Apparat?",
+      "properties": {},
+      "createdAt": "2025-09-09T10:04:47.255Z",
+      "updatedAt": "2025-09-10T19:29:02.252Z",
+      "id": "fd4d44dc-dbcd-4e48-a3f8-c64c0ec693ee",
+      "lastRating": "doubt",
+      "lastReviewedAt": "2025-09-10T19:29:02.251Z"
+    }
+  ],
+  "metadata": {
+    "timestamp": "2025-09-11T20:35:21.688Z",
+    "deviceId": "device_azq9zreoj",
+    "version": "1.0"
+  }
+}
