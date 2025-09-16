@@ -1,0 +1,75 @@
+---
+description: Study session implementation guidelines and architecture patterns
+globs: **/sessions/study/**,**/pages/StudySession.tsx,**/pages/StudyModeSelection.tsx
+---
+
+# Study Session Architecture Rule
+
+## Core Implementation Principles
+
+### Session Isolation
+
+- **Study sessions MUST be standalone routes** outside `AppLayout`
+- **NO general navigation** visible during study sessions
+- **Immersive experience** - only session-specific UI elements
+- Exit only through session completion or bailout
+
+### Component Structure
+
+Study session components follow strict plugin-like architecture:
+
+```
+sessions/study/
+├── ui/           # Reusable UI components
+├── cards/        # Card-specific components
+├── containers/   # Logic orchestration
+└── index.ts      # Barrel exports
+```
+
+### Card Progression Logic
+
+- **NO Swiper.js** in study mode (explore mode only)
+- **Array-based state management** with `currentCardIndex`
+- **Interaction-driven progression** (rating advances to next card)
+- **Force component remount** with `key={currentCard.id}` to prevent unnatural animations
+
+### Study Modes (Progressive Difficulty)
+
+- **FlowMode**: Optional inputs, personal judgment rating
+- **CommitMode**: Required answer input before flip
+- **ValidateMode**: Auto-rating based on answer correctness
+- **MasteryMode**: Exact answers + tight timing constraints
+
+### Component Extraction Pattern
+
+Extract each card element as separate component:
+
+- `StudyContent`, `StudyHint`, `StudyNote`, `StudyAnswer`
+- `StudyFlipButton`, `StudyRatingButtons`
+- Enable easy remixing and layout modifications
+
+## Implementation Checklist
+
+- [ ] Session route outside AppLayout
+- [ ] Plugin-like component structure
+- [ ] No Swiper.js dependency
+- [ ] Array-based card management
+- [ ] Proper component key for remounting
+- [ ] Extracted UI components
+- [ ] Immersive UX (no general nav)
+
+## Quality Gates
+
+**NEVER:**
+
+- Use Swiper.js in study sessions
+- Allow general navigation in study mode
+- Create monolithic card components
+- Use window.confirm() for session dialogs
+
+**ALWAYS:**
+
+- Extract UI elements as separate components
+- Use proper React keys for state reset
+- Maintain immersive session experience
+- Follow plugin-like architecture

@@ -1,0 +1,137 @@
+---
+alwaysApply: true
+description: Enforce systematic knowledge capture during development sessions
+---
+
+# Documentation Parallel Development Rule
+
+## Core Directive
+
+**ALWAYS maintain parallel documentation** during complex development sessions.
+
+## Session Documentation Protocol
+
+### Investigation Sessions
+
+When facing technical challenges:
+
+1. **Create investigation documents** (`docs/*.investigation.md`)
+2. **Document research questions** and findings
+3. **Capture decision matrices** with trade-offs
+4. **Update implementation roadmaps**
+
+### Development Journey Capture
+
+For article/blog content:
+
+1. **Log decision sessions** with context/problem/options/rationale
+2. **Document implementation challenges** and solutions
+3. **Capture lessons learned** and architectural insights
+4. **Track performance/UX discoveries**
+
+### Quality Standards
+
+#### Investigation Documents
+
+```markdown
+# [Feature] Investigation
+
+## Critical Questions
+
+- Technical challenge description
+- Research areas to explore
+- Decision criteria matrix
+
+## Findings
+
+- Research results
+- Performance implications
+- Implementation complexity
+
+## Recommendations
+
+- Preferred approach with rationale
+- Alternative options
+- Risk mitigation strategies
+```
+
+#### Development Journey
+
+```markdown
+# Development Journey
+
+## Decision Session #X: [Topic]
+
+**Context:** Current situation requiring decision
+**Problem:** Specific challenge or choice needed
+**Options:** A) Option 1, B) Option 2, C) Option 3
+**Decision:** Chosen option
+**Rationale:** Why this option was selected
+**Trade-offs:** What we gained/lost
+**Implementation Notes:** Key technical details
+**Lessons Learned:** Insights for future development
+```
+
+## Integration Workflow
+
+### Session Start Protocol
+
+1. **Check for existing documentation** needing updates
+2. **Create new documents** if starting major features
+3. **Set documentation context** for the session
+
+### During Development
+
+1. **Update documents incrementally** (don't batch)
+2. **Capture decisions immediately** when made
+3. **Log unexpected discoveries** or challenges
+4. **Document workarounds** and their reasons
+
+### Session End Protocol
+
+1. **Finalize documentation updates**
+2. **Ensure implementation matches documented decisions**
+3. **Set context** for next development session
+
+## File Organization
+
+```
+docs/
+├── study-session-investigation.md
+├── development-journey.md
+├── [feature]-investigation.md
+└── [component]-architecture.md
+```
+
+## Enforcement
+
+**BEFORE major implementation:**
+
+- Create or update investigation documents
+- Document architectural decisions
+
+**DURING complex development:**
+
+- Log decision rationale immediately
+- Capture implementation lessons
+
+**AFTER significant changes:**
+
+- Update documentation to reflect final state
+- Document lessons learned
+
+## Quality Gates
+
+**NEVER:**
+
+- Skip documentation for complex features
+- Batch documentation updates at session end
+- Leave architectural decisions undocumented
+- Ignore lessons learned from challenges
+
+**ALWAYS:**
+
+- Document decision rationale immediately
+- Capture trade-offs and alternatives considered
+- Update documents incrementally during development
+- Maintain clear separation between investigation and journey docs

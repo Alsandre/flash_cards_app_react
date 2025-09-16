@@ -1,0 +1,138 @@
+---
+alwaysApply: true
+description: Flashcard app specific technical standards and patterns
+---
+
+# Flashcard App Technical Standards
+
+## Architecture Principles
+
+### State Management Hierarchy
+
+1. **Zustand slices** for app-wide state (cards, groups, UI)
+2. **Local component state** for UI interactions only
+3. **IndexedDB via Dexie** for persistence
+4. **NO prop drilling** beyond 2 levels
+
+### Component Classification System
+
+- **Primitive** (UI only): `Button`, `Input`, `Card`
+- **Feature** (single responsibility): `StudyCard`, `GroupForm`
+- **Container** (orchestration): `StudyCardContainer`, `ExploreCardContainer`
+- **Page** (route-level): `Dashboard`, `StudySession`
+
+### Data Flow Patterns
+
+```
+IndexedDB ↔ Repositories ↔ Zustand Stores ↔ Components
+```
+
+## Technical Standards
+
+### Performance Requirements
+
+- **First page load**: < 2 seconds
+- **Route transitions**: < 300ms
+- **Card interactions**: < 100ms
+- **IndexedDB operations**: < 50ms for single records
+
+### Offline Capability
+
+- **Study sessions**: Complete offline functionality
+- **Progress tracking**: Local persistence with sync
+- **Starter pack**: Offline-first installation
+- **Data integrity**: Conflict resolution strategies
+
+### UX Standards
+
+- **Mobile-first**: All interactions optimized for touch
+- **Immersive study**: No general navigation during sessions
+- **Progress feedback**: Clear visual indicators
+- **Error boundaries**: Graceful failure handling
+
+## Implementation Patterns
+
+### Repository Pattern
+
+```typescript
+// All data access through repositories
+const cardRepo = new CardRepository();
+const cards = await cardRepo.getByGroupId(groupId);
+```
+
+### Component Barrel Exports
+
+```typescript
+// src/components/sessions/study/index.ts
+export {StudyCard} from "./cards/StudyCard";
+export {StudyCardContainer} from "./containers/StudyCardContainer";
+export * from "./ui/";
+```
+
+### Route Structure
+
+```
+/                           # Dashboard
+/study/:groupId            # Mode selection
+/study/:groupId/:mode      # Immersive session (no AppLayout)
+/groups/:groupId           # Group management
+/groups/:groupId/edit      # Group editing
+```
+
+## Data Versioning
+
+### Starter Pack Updates
+
+- **Version tracking** in `STARTER_PACK_VERSION`
+- **Automatic updates** in all environments
+- **Backward compatibility** for user data
+- **Migration strategies** for breaking changes
+
+### Schema Evolution
+
+- **Repository abstraction** for database changes
+- **Migration scripts** for IndexedDB schema updates
+- **Version checks** before data operations
+
+## Quality Gates
+
+### Code Standards
+
+- **TypeScript strict mode** enabled
+- **All props interfaces** explicitly typed
+- **Error boundaries** for all major components
+- **Loading states** for async operations
+
+### Testing Requirements
+
+- **Component isolation** testable
+- **Repository mocking** for unit tests
+- **E2E testing** for critical user flows
+- **Performance testing** for study sessions
+
+### Production Standards
+
+- **No console.logs** in production builds
+- **Error tracking** for user issues
+- **Performance monitoring**
+- **Offline functionality** validation
+
+## Forbidden Patterns
+
+**NEVER:**
+
+- Use `window.confirm()` for user dialogs
+- Put business logic in UI components
+- Allow general navigation in study sessions
+- Skip error boundaries for async operations
+- Use `any` types in TypeScript
+- Access IndexedDB directly from components
+
+**ALWAYS:**
+
+- Use repository pattern for data access
+- Extract reusable UI into separate components
+- Implement proper loading and error states
+- Follow component classification system
+- Maintain offline-first design principles
+- Document architectural decisions

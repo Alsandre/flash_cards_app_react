@@ -1,0 +1,100 @@
+---
+description: PWA implementation guidelines and best practices for flashcard app
+globs: vite.config.ts,**/manifest.json,**/sw.ts,**/pwa/**
+---
+
+# PWA Implementation Rule
+
+## Implementation Phases
+
+### Phase 1: Core Infrastructure (2-3 hours)
+
+1. **Dependencies**: `vite-plugin-pwa`, `workbox-window`
+2. **Vite configuration** with PWA plugin
+3. **App manifest** (name, icons, theme colors)
+4. **Icon generation** (192x192, 512x512, maskable)
+5. **Basic installability testing**
+
+### Phase 2: Service Worker (2-4 hours)
+
+6. **Caching strategies** (app shell, API, assets)
+7. **Offline fallbacks** for key routes
+8. **Update notifications** for new versions
+9. **Offline functionality testing**
+
+### Phase 3: Enhanced Features (4-6 hours)
+
+10. **Background sync** for study progress
+11. **Push notifications** (study reminders)
+12. **Share target API** (share cards to app)
+13. **Shortcuts** (quick home screen actions)
+
+### Phase 4: Polish & Testing (2-3 hours)
+
+14. **Splash screen optimization**
+15. **Lighthouse PWA auditing**
+16. **Cross-platform testing**
+17. **Production deployment**
+
+## Critical Requirements
+
+### Offline Study Capability
+
+- **Study sessions MUST work offline**
+- **Progress persistence** during offline usage
+- **Sync on reconnection**
+
+### Performance Standards
+
+- **Lighthouse PWA score**: 90+
+- **First load**: < 3 seconds
+- **Subsequent loads**: < 1 second
+
+### Platform Considerations
+
+- **iOS**: Add to home screen behavior
+- **Android**: Proper install prompts
+- **Desktop**: Window management
+
+## Implementation Standards
+
+```typescript
+// Vite PWA Config Pattern
+VitePWA({
+  registerType: "autoUpdate",
+  workbox: {
+    globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+    runtimeCaching: [
+      {
+        urlPattern: /^https:\/\/api\./,
+        handler: "NetworkFirst",
+      },
+    ],
+  },
+});
+```
+
+## Quality Gates
+
+**NEVER:**
+
+- Break offline study functionality
+- Ignore iOS-specific PWA limitations
+- Skip Lighthouse PWA auditing
+- Deploy without cross-platform testing
+
+**ALWAYS:**
+
+- Test offline study sessions thoroughly
+- Implement proper update mechanisms
+- Consider mobile-first design
+- Maintain performance standards
+
+## Validation Checklist
+
+- [ ] App installs on iOS/Android/Desktop
+- [ ] Study sessions work completely offline
+- [ ] Progress syncs on reconnection
+- [ ] Lighthouse PWA score 90+
+- [ ] Update notifications functional
+- [ ] Icons display correctly across platforms
