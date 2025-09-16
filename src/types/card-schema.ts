@@ -87,8 +87,8 @@ export interface Card {
   /** Average response time in milliseconds */
   averageResponseTime: number;
 
-  /** User-perceived difficulty rating (1-5 scale) */
-  difficultyRating: number;
+  /** User-perceived difficulty rating */
+  difficultyRating: "easy" | "medium" | "hard" | null;
 
   /** Success rate over time (0.0-1.0) */
   retentionScore: number;
@@ -191,14 +191,14 @@ export const DEFAULT_CARD_VALUES = {
   userNote: "",
   totalAttempts: 0,
   correctAttempts: 0,
-  sessionAttempts: [],
+  sessionAttempts: [] as StudyAttempt[],
   easeFactor: 2.5,
   interval: 1,
   repetitions: 0,
   averageResponseTime: 0,
-  difficultyRating: 3,
+  difficultyRating: null,
   retentionScore: 0.0,
-  tags: [],
+  tags: [] as string[],
   isActive: true,
   source: "user_created" as CardSource,
 } as const;

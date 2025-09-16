@@ -1,12 +1,14 @@
 import React from "react";
 import {Outlet, Link, useLocation} from "react-router-dom";
-import {useTheme, useSetTheme} from "../../store/appStore";
+import {useAppDispatch, useAppSelector} from "../../store/hooks";
+import {selectTheme} from "../../store/selectors/uiSelectors";
+import {uiActions} from "../../store/slices/uiSlice";
 import {Button} from "../ui";
 
 export const AppLayout: React.FC = () => {
   const location = useLocation();
-  const theme = useTheme();
-  const setTheme = useSetTheme();
+  const theme = useAppSelector(selectTheme);
+  const dispatch = useAppDispatch();
 
   const isActive = (path: string) => {
     if (path === "/" && location.pathname === "/") return true;
@@ -15,7 +17,7 @@ export const AppLayout: React.FC = () => {
   };
 
   const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
+    dispatch(uiActions.setTheme(theme === "light" ? "dark" : "light"));
   };
 
   return (

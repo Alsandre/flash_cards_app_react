@@ -1,19 +1,20 @@
 import {useEffect} from "react";
 import {AppRouter} from "./router/AppRouter";
-import {useTheme, useSetTheme} from "./store/appStore";
-import {initializeTheme} from "./store/uiSlice";
+import {useAppDispatch, useAppSelector} from "./store/hooks";
+import {selectTheme} from "./store/selectors/uiSelectors";
+import {uiActions, initializeTheme} from "./store/slices/uiSlice";
 import {AppErrorBoundary} from "./components/layout/AppErrorBoundary";
 
 // CCK import removed for production-ready master branch
 
 function App() {
-  const theme = useTheme();
-  const setTheme = useSetTheme();
+  const theme = useAppSelector(selectTheme);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const initialTheme = initializeTheme();
-    setTheme(initialTheme);
-  }, [setTheme]);
+    dispatch(uiActions.setTheme(initialTheme));
+  }, [dispatch]);
 
   useEffect(() => {
     if (theme === "dark") {

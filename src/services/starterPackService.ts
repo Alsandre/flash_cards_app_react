@@ -1,7 +1,8 @@
 import {STARTER_PACK, STARTER_CARDS_GROUP_ID, STARTER_PACK_VERSION} from "../data/starterPack";
 import {GroupRepository} from "../repositories/groupRepository";
 import {CardRepository} from "../repositories/cardRepository";
-import type {Group, Card} from "../types/entities";
+import type {Group} from "../types/group-schema";
+import type {Card} from "../types/card-schema";
 
 const groupRepo = new GroupRepository();
 const cardRepo = new CardRepository();
@@ -40,8 +41,16 @@ export class StarterPackService {
       return await this.createStarterPack();
     } catch (error) {
       console.error("Error ensuring starter pack exists:", error);
-      // Fallback: try to create it anyway
-      return await this.createStarterPack();
+      // If it's a constraint error (duplicate key), the group already exists
+      if (error instanceof Error && error.message.includes("Key already exists")) {
+        const existingGroup = await groupRepo.findById(STARTER_CARDS_GROUP_ID);
+        const cards = await cardRepo.findByGroupId(STARTER_CARDS_GROUP_ID);
+        if (existingGroup) {
+          return {group: existingGroup, cards};
+        }
+      }
+      // For other errors, re-throw
+      throw error;
     }
   }
 
@@ -49,17 +58,8 @@ export class StarterPackService {
    * Creates the complete starter pack (group + cards)
    */
   private static async createStarterPack(): Promise<{group: Group; cards: Card[]}> {
-    const now = new Date();
-
     // Create the group with fixed ID
-    const group = await groupRepo.create(
-      {
-        ...STARTER_PACK.group,
-        createdAt: now,
-        updatedAt: now,
-      },
-      STARTER_CARDS_GROUP_ID
-    ); // Use fixed ID
+    const group = await groupRepo.create(STARTER_PACK.group, STARTER_CARDS_GROUP_ID); // Use fixed ID
 
     // Create all cards
     const cards = await this.createStarterCards(group);

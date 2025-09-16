@@ -1,8 +1,9 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {useCreateGroup, useUpdateGroup, useClearError} from "../../store/appStore";
+import {useAppDispatch} from "../../store/hooks";
+import {createGroup, updateGroup, groupActions} from "../../store/slices/groupSlice";
 import {Button, Card, Input, Textarea} from "../ui";
-import type {Group} from "../../types/entities";
+import type {Group} from "../../types/group-schema";
 
 interface GroupFormProps {
   group?: Group;
@@ -11,9 +12,7 @@ interface GroupFormProps {
 
 export const GroupForm: React.FC<GroupFormProps> = ({group, mode}) => {
   const navigate = useNavigate();
-  const createGroup = useCreateGroup();
-  const updateGroup = useUpdateGroup();
-  const clearError = useClearError();
+  const dispatch = useAppDispatch();
 
   const [formData, setFormData] = useState({
     name: group?.name || "",
@@ -57,25 +56,27 @@ export const GroupForm: React.FC<GroupFormProps> = ({group, mode}) => {
     }
 
     setIsSubmitting(true);
-    clearError();
+    dispatch(groupActions.clearError());
 
     try {
       if (mode === "create") {
-        await createGroup({
-          name: formData.name.trim(),
-          description: formData.description.trim() || undefined,
-          studyCardCount: formData.studyCardCount,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          cardCount: 0,
-        });
+        await dispatch(
+          createGroup({
+            name: formData.name.trim(),
+            description: formData.description.trim() || undefined,
+          })
+        ).unwrap();
         navigate("/");
       } else if (group) {
-        await updateGroup(group.id, {
-          name: formData.name.trim(),
-          description: formData.description.trim() || undefined,
-          studyCardCount: formData.studyCardCount,
-        });
+        await dispatch(
+          updateGroup({
+            id: group.id,
+            updates: {
+              name: formData.name.trim(),
+              description: formData.description.trim() || undefined,
+            },
+          })
+        ).unwrap();
         navigate(`/groups/${group.id}`);
       }
     } catch (error) {

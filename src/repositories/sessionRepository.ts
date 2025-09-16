@@ -1,6 +1,6 @@
 import {BaseRepository} from "./base";
 import {db} from "../services/database";
-import type {StudySession, CardRating} from "../types/entities";
+import type {StudySession, CardRating} from "../types/session-schema";
 
 export class SessionRepository extends BaseRepository<StudySession> {
   protected tableName = "studySessions";

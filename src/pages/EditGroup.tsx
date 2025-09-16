@@ -1,21 +1,23 @@
 // Edit existing group page
 import React, {useEffect} from "react";
 import {useParams, Link} from "react-router-dom";
-import {useGroups, useLoadGroups} from "../store/appStore";
+import {useAppDispatch, useAppSelector} from "../store/hooks";
+import {selectAllGroups} from "../store/selectors/groupSelectors";
+import {loadGroups} from "../store/slices/groupSlice";
 import {GroupForm} from "../components/forms/GroupForm";
 
 export const EditGroup: React.FC = () => {
   const {groupId} = useParams<{groupId: string}>();
-  const groups = useGroups();
-  const loadGroups = useLoadGroups();
+  const groups = useAppSelector(selectAllGroups);
+  const dispatch = useAppDispatch();
 
   const group = groups.find((g) => g.id === groupId);
 
   useEffect(() => {
     if (groups.length === 0) {
-      loadGroups();
+      dispatch(loadGroups());
     }
-  }, [loadGroups, groups.length]);
+  }, [dispatch, groups.length]);
 
   if (!groupId) {
     return (

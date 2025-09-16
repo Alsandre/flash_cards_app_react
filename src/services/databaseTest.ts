@@ -2,6 +2,7 @@
 import {db} from "./database";
 import {GroupRepository} from "../repositories/groupRepository";
 import {CardRepository} from "../repositories/cardRepository";
+import {DEFAULT_CARD_VALUES} from "../types/card-schema";
 
 export async function testDatabaseSetup(): Promise<void> {
   console.log("🧪 Testing database setup...");
@@ -22,10 +23,9 @@ export async function testDatabaseSetup(): Promise<void> {
     const testGroup = await groupRepo.create({
       name: "Test German Vocabulary",
       description: "Basic German words for testing",
-      studyCardCount: 10,
-      cardCount: 0,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      tags: [],
+      isActive: true,
+      source: "user_created" as const,
     });
     console.log("✅ Group created:", testGroup.name);
 
@@ -44,24 +44,30 @@ export async function testDatabaseSetup(): Promise<void> {
 
     // Create test cards
     const testCard1 = await cardRepo.create({
+      ...DEFAULT_CARD_VALUES,
       groupId: testGroup.id,
-      front: "Hallo",
-      back: "Hello",
-      properties: {difficulty: "easy"},
+      content: "Hallo",
+      answer: "Hello",
+      hint: "A German greeting",
+      tags: ["greetings"],
+      difficultyRating: "easy",
       createdAt: new Date(),
       updatedAt: new Date(),
     });
-    console.log("✅ Card 1 created:", testCard1.front);
+    console.log("✅ Card 1 created:", testCard1.content);
 
     const testCard2 = await cardRepo.create({
+      ...DEFAULT_CARD_VALUES,
       groupId: testGroup.id,
-      front: "Danke",
-      back: "Thank you",
-      properties: {difficulty: "easy"},
+      content: "Danke",
+      answer: "Thank you",
+      hint: "Expression of gratitude",
+      tags: ["gratitude"],
+      difficultyRating: "easy",
       createdAt: new Date(),
       updatedAt: new Date(),
     });
-    console.log("✅ Card 2 created:", testCard2.front);
+    console.log("✅ Card 2 created:", testCard2.content);
 
     // Test finding cards by group
     const groupCards = await cardRepo.findByGroupId(testGroup.id);
@@ -72,8 +78,8 @@ export async function testDatabaseSetup(): Promise<void> {
     console.log("✅ Group card count updated:", groupWithCount?.cardCount);
 
     // Test card rating update
-    const ratedCard = await cardRepo.updateRating(testCard1.id, "know");
-    console.log("✅ Card rating updated:", ratedCard.lastRating);
+    const ratedCard = await cardRepo.updateRating(testCard1.id, "easy");
+    console.log("✅ Card rating updated:", ratedCard.difficultyRating);
 
     // Clean up test data
     await groupRepo.delete(testGroup.id);

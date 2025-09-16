@@ -1,6 +1,8 @@
 import React, {useEffect} from "react";
 import {useParams, useNavigate, Link} from "react-router-dom";
-import {useGroups, useLoadGroups, useIsLoading} from "../store/appStore";
+import {useAppDispatch, useAppSelector} from "../store/hooks";
+import {selectAllGroups, selectGroupsLoading} from "../store/selectors/groupSelectors";
+import {loadGroups} from "../store/slices/groupSlice";
 import {Button, Card, LoadingSpinner} from "../components/ui";
 
 /**
@@ -49,15 +51,15 @@ const STUDY_MODE_CONFIG = {
 export const StudyModeSelection: React.FC = () => {
   const {groupId} = useParams<{groupId: string}>();
   const navigate = useNavigate();
-  const groups = useGroups();
-  const loadGroups = useLoadGroups();
-  const isLoading = useIsLoading();
+  const groups = useAppSelector(selectAllGroups);
+  const isLoading = useAppSelector(selectGroupsLoading);
+  const dispatch = useAppDispatch();
 
   const group = groups.find((g) => g.id === groupId);
 
   useEffect(() => {
-    loadGroups();
-  }, [loadGroups]);
+    dispatch(loadGroups());
+  }, [dispatch]);
 
   const handleModeSelect = (mode: StudyMode) => {
     // Only allow flow mode for now

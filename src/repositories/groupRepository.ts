@@ -1,6 +1,6 @@
 import {BaseRepository} from "./base";
 import {db} from "../services/database";
-import type {Group} from "../types/entities";
+import type {Group} from "../types/group-schema";
 
 export class GroupRepository extends BaseRepository<Group> {
   protected tableName = "groups";
@@ -14,7 +14,7 @@ export class GroupRepository extends BaseRepository<Group> {
     return group || null;
   }
 
-  async create(entity: Omit<Group, "id">, fixedId?: string): Promise<Group> {
+  async create(entity: Pick<Group, "name"> & Partial<Omit<Group, "id" | "createdAt" | "updatedAt" | "cardCount" | "studyCardCount">>, fixedId?: string): Promise<Group> {
     const id = fixedId || this.generateId();
     const group: Group = {
       ...entity,
@@ -22,6 +22,10 @@ export class GroupRepository extends BaseRepository<Group> {
       createdAt: new Date(),
       updatedAt: new Date(),
       cardCount: 0,
+      studyCardCount: 0,
+      tags: entity.tags || [],
+      isActive: entity.isActive ?? true,
+      source: entity.source || "user_created",
     };
 
     await db.groups.add(group);
@@ -63,5 +67,13 @@ export class GroupRepository extends BaseRepository<Group> {
 
     // Return updated groups
     return await this.findAll();
+  }
+
+  async saveAllGroups(groups: Group[]): Promise<void> {
+    // Clear existing groups and save new ones
+    await db.groups.clear();
+    // Create mutable copies to avoid "read-only property" errors
+    const mutableGroups = groups.map((group) => ({...group}));
+    await db.groups.bulkAdd(mutableGroups);
   }
 }

@@ -7,13 +7,13 @@ import type {Swiper as SwiperType} from "swiper";
 import "swiper/swiper-bundle.css";
 
 import ExploreCard from "../cards/ExploreCard";
-import type {Card as CardType} from "../../../../types/entities";
+import type {Card as CardType} from "../../../../types/card-schema";
 
 interface ExploreCardContainerProps {
   cards: CardType[];
   initialCardIndex: number;
-  cardRatings: Record<string, "dont_know" | "doubt" | "know">;
-  onRating: (cardId: string, rating: "dont_know" | "doubt" | "know") => void;
+  cardRatings: Record<string, "easy" | "medium" | "hard">;
+  onRating: (cardId: string, rating: "easy" | "medium" | "hard") => void;
   onCardChange?: (index: number) => void;
 }
 
@@ -33,7 +33,7 @@ const ExploreCardContainer: React.FC<ExploreCardContainerProps> = ({cards, initi
     }
   }, [initialCardIndex]); // Run when swiper is ready or initial index changes
 
-  const handleRating = (cardId: string, rating: "dont_know" | "doubt" | "know") => {
+  const handleRating = (cardId: string, rating: "easy" | "medium" | "hard") => {
     onRating(cardId, rating);
   };
 

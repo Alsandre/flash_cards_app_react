@@ -1,25 +1,4 @@
-export interface Group {
-  id: string;
-  name: string;
-  description?: string;
-  studyCardCount: number;
-  createdAt: Date;
-  updatedAt: Date;
-  cardCount: number;
-}
-
-export interface Card {
-  id: string;
-  groupId: string;
-  front: string;
-  back: string;
-  hint?: string;
-  properties: Record<string, unknown>;
-  lastRating?: "dont_know" | "doubt" | "know";
-  createdAt: Date;
-  updatedAt: Date;
-  lastReviewedAt?: Date;
-}
+// Session and database-related type definitions
 
 export interface StudySession {
   id: string;

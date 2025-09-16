@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import type {Card as CardType} from "../../../../types/entities";
+import type {Card as CardType} from "../../../../types/card-schema";
 import {StudyContent, StudyHint, StudyNote, StudyAnswer, StudyFlipButton, StudyRatingButtons} from "../ui";
 
 /**
@@ -13,8 +13,8 @@ export type StudyMode = "flow" | "commit" | "validate" | "mastery";
 interface StudyCardProps {
   card: CardType;
   mode: StudyMode;
-  currentRating?: "dont_know" | "doubt" | "know";
-  onRating: (rating: "dont_know" | "doubt" | "know") => void;
+  currentRating?: "easy" | "medium" | "hard";
+  onRating: (rating: "easy" | "medium" | "hard") => void;
   onAnswerSubmit?: (answer: string) => void;
   onNoteUpdate?: (note: string) => void;
   onFlip?: () => void;
@@ -56,7 +56,7 @@ const StudyCard: React.FC<StudyCardProps> = ({card, mode, currentRating, onRatin
     onAnswerSubmit?.(answerInput.trim());
   };
 
-  const handleRating = (rating: "dont_know" | "doubt" | "know", e: React.MouseEvent) => {
+  const handleRating = (rating: "easy" | "medium" | "hard", e: React.MouseEvent) => {
     e.stopPropagation();
 
     // Save note if provided
@@ -99,7 +99,7 @@ const StudyCard: React.FC<StudyCardProps> = ({card, mode, currentRating, onRatin
           <div className="w-full h-full flex flex-col items-center justify-between p-2">
             {/* Content Group */}
             <div className="w-full flex flex-col items-center justify-center">
-              <StudyContent content={card.front} />
+              <StudyContent content={card.content} />
               <StudyHint hint={card.hint} />
             </div>
 
@@ -130,7 +130,7 @@ const StudyCard: React.FC<StudyCardProps> = ({card, mode, currentRating, onRatin
           <div className="w-full h-full flex flex-col items-center justify-between p-2">
             {/* Content Group */}
             <div className="w-full flex flex-col items-center justify-center">
-              <StudyContent content={card.back} />
+              <StudyContent content={card.answer} />
               <StudyHint hint={card.hint} />
             </div>
 

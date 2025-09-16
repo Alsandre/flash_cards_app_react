@@ -1,6 +1,10 @@
 import React, {useEffect, useMemo} from "react";
 import {useParams, Link, useNavigate} from "react-router-dom";
-import {useAppStore} from "../store/appStore";
+import {useAppDispatch, useAppSelector} from "../store/hooks";
+import {selectAllGroups, selectGroupsLoading, selectGroupsError} from "../store/selectors/groupSelectors";
+import {deleteGroup, groupActions, loadGroups} from "../store/slices/groupSlice";
+import {selectAllCards} from "../store/selectors/cardSelectors";
+import {cardActions, loadCards} from "../store/slices/cardSlice";
 import {Button, Card, LoadingSpinner} from "../components/ui";
 
 export const GroupDetail: React.FC = () => {
@@ -8,49 +12,30 @@ export const GroupDetail: React.FC = () => {
   const navigate = useNavigate();
 
   // Use simple selectors to prevent re-renders
-  const groups = useAppStore((state) => state.groups);
-  const allCards = useAppStore((state) => state.cards);
-  const isLoading = useAppStore((state) => state.isLoading);
-  const error = useAppStore((state) => state.error);
+  const dispatch = useAppDispatch();
+  const groups = useAppSelector(selectAllGroups);
+  const allCards = useAppSelector(selectAllCards);
+  const isLoading = useAppSelector(selectGroupsLoading);
+  const error = useAppSelector(selectGroupsError);
 
   const cards = useMemo(() => {
-    return groupId ? allCards[groupId] || [] : [];
+    return groupId ? allCards.filter((card) => card.groupId === groupId) : [];
   }, [allCards, groupId]);
-
-  const actions = useMemo(
-    () => ({
-      loadGroups: useAppStore.getState().loadGroups,
-      loadCards: useAppStore.getState().loadCards,
-      deleteGroup: useAppStore.getState().deleteGroup,
-      deleteCard: useAppStore.getState().deleteCard,
-      clearError: useAppStore.getState().clearError,
-    }),
-    []
-  );
 
   const group = useMemo(() => groups.find((g) => g.id === groupId), [groups, groupId]);
 
   useEffect(() => {
     const loadData = async () => {
       if (!groupId) return;
-
-      try {
-        const store = useAppStore.getState();
-
-        // Load groups if not loaded
-        if (groups.length === 0) {
-          await store.loadGroups();
-        }
-
-        // Load cards for this group
-        await store.loadCards(groupId);
-      } catch (err) {
-        console.error("Failed to load data:", err);
+      if (groups.length === 0) {
+        dispatch(loadGroups());
+      }
+      if (allCards.length === 0) {
+        dispatch(loadCards());
       }
     };
-
     loadData();
-  }, [groupId, groups.length]);
+  }, [groupId, groups.length, allCards.length, dispatch]);
 
   const handleDeleteGroup = async () => {
     if (!groupId || !group) return;
@@ -58,7 +43,7 @@ export const GroupDetail: React.FC = () => {
     const confirmed = window.confirm(`Are you sure you want to delete "${group.name}"? This will also delete all cards in this group.`);
     if (confirmed) {
       try {
-        await actions.deleteGroup(groupId);
+        await dispatch(deleteGroup(groupId)).unwrap();
         navigate("/");
       } catch (error) {
         console.error("Failed to delete group:", error);
@@ -66,11 +51,11 @@ export const GroupDetail: React.FC = () => {
     }
   };
 
-  const handleDeleteCard = async (cardId: string, cardFront: string) => {
-    const confirmed = window.confirm(`Are you sure you want to delete the card "${cardFront}"?`);
+  const handleDeleteCard = async (cardId: string, cardContent: string) => {
+    const confirmed = window.confirm(`Are you sure you want to delete the card "${cardContent}"?`);
     if (confirmed) {
       try {
-        await actions.deleteCard(cardId);
+        dispatch(cardActions.deleteCard(cardId));
       } catch (error) {
         console.error("Failed to delete card:", error);
       }
@@ -164,7 +149,7 @@ export const GroupDetail: React.FC = () => {
               </svg>
               <p className="text-sm text-error-700 dark:text-error-300">{error}</p>
             </div>
-            <Button variant="ghost" size="sm" onClick={actions.clearError} className="text-error-600 hover:text-error-700">
+            <Button variant="ghost" size="sm" onClick={() => dispatch(groupActions.clearError())} className="text-error-600 hover:text-error-700">
               Dismiss
             </Button>
           </div>
@@ -194,11 +179,11 @@ export const GroupDetail: React.FC = () => {
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <p className="mb-2 text-sm font-medium text-neutral-500 dark:text-neutral-400">Front</p>
-                      <p className="text-neutral-900 dark:text-neutral-100">{card.front}</p>
+                      <p className="text-neutral-900 dark:text-neutral-100">{card.content}</p>
                     </div>
                     <div>
                       <p className="mb-2 text-sm font-medium text-neutral-500 dark:text-neutral-400">Back</p>
-                      <p className="text-neutral-900 dark:text-neutral-100">{card.back}</p>
+                      <p className="text-neutral-900 dark:text-neutral-100">{card.answer}</p>
                     </div>
                   </div>
 
@@ -210,13 +195,17 @@ export const GroupDetail: React.FC = () => {
                   )}
 
                   <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-neutral-500 dark:text-neutral-400">
-                    {card.lastRating && (
-                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${card.lastRating === "know" ? "bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200" : card.lastRating === "doubt" ? "bg-warning-100 text-warning-800 dark:bg-warning-900 dark:text-warning-200" : "bg-error-100 text-error-800 dark:bg-error-900 dark:text-error-200"}`}>
-                        {card.lastRating.replace("_", " ")}
+                    {card.difficultyRating && (
+                      <span
+                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                          card.difficultyRating === "easy" ? "bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200" : card.difficultyRating === "medium" ? "bg-warning-100 text-warning-800 dark:bg-warning-900 dark:text-warning-200" : "bg-error-100 text-error-800 dark:bg-error-900 dark:text-error-200"
+                        }`}
+                      >
+                        {card.difficultyRating}
                       </span>
                     )}
                     <span>Created {new Date(card.createdAt).toLocaleDateString()}</span>
-                    {card.lastReviewedAt && <span>Last reviewed {new Date(card.lastReviewedAt).toLocaleDateString()}</span>}
+                    {card.lastStudiedAt && <span>Last reviewed {new Date(card.lastStudiedAt).toLocaleDateString()}</span>}
                   </div>
                 </div>
 
@@ -228,7 +217,7 @@ export const GroupDetail: React.FC = () => {
                       </svg>
                     </Link>
                   </Button>
-                  <Button variant="ghost" size="sm" onClick={() => handleDeleteCard(card.id, card.front)} className="h-8 w-8 p-0 text-error-500 hover:text-error-600" title="Delete card">
+                  <Button variant="ghost" size="sm" onClick={() => handleDeleteCard(card.id, card.content)} className="h-8 w-8 p-0 text-error-500 hover:text-error-600" title="Delete card">
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>

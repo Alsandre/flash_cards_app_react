@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import StudyCard, {type StudyMode} from "../cards/StudyCard";
-import type {Card as CardType} from "../../../../types/entities";
+import type {Card as CardType} from "../../../../types/card-schema";
 
 /**
  * StudyCardContainer - Study session single-card container with interaction-driven progression
@@ -12,8 +12,8 @@ interface StudyCardContainerProps {
   cards: CardType[];
   mode: StudyMode;
   initialCardIndex: number;
-  cardRatings: Record<string, "dont_know" | "doubt" | "know">;
-  onRating: (cardId: string, rating: "dont_know" | "doubt" | "know") => void;
+  cardRatings: Record<string, "easy" | "medium" | "hard">;
+  onRating: (cardId: string, rating: "easy" | "medium" | "hard") => void;
   onAnswerSubmit?: (cardId: string, answer: string) => void;
   onNoteUpdate?: (cardId: string, note: string) => void;
   onCardChange?: (index: number) => void;
@@ -31,7 +31,7 @@ const StudyCardContainer: React.FC<StudyCardContainerProps> = ({cards, mode, ini
     setCurrentCardIndex(initialCardIndex);
   }, [initialCardIndex]);
 
-  const handleRating = (cardId: string, rating: "dont_know" | "doubt" | "know") => {
+  const handleRating = (cardId: string, rating: "easy" | "medium" | "hard") => {
     onRating(cardId, rating);
 
     // Progress to next card after rating - clean transition

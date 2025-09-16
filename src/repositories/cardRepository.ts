@@ -1,6 +1,6 @@
 import {BaseRepository} from "./base";
 import {db} from "../services/database";
-import type {Card, Rating} from "../types/entities";
+import type {Card} from "../types/card-schema";
 
 export class CardRepository extends BaseRepository<Card> {
   protected tableName = "cards";
@@ -69,44 +69,58 @@ export class CardRepository extends BaseRepository<Card> {
     return await db.cards.where("groupId").equals(groupId).toArray();
   }
 
-  async findByRating(rating: Rating): Promise<Card[]> {
-    return await db.cards.where("lastRating").equals(rating).toArray();
+  async findByRating(rating: "easy" | "medium" | "hard"): Promise<Card[]> {
+    return await db.cards.where("difficultyRating").equals(rating).toArray();
   }
 
-  async findByGroupAndRating(groupId: string, rating: Rating): Promise<Card[]> {
+  async findByGroupAndRating(groupId: string, rating: "easy" | "medium" | "hard"): Promise<Card[]> {
     return await db.cards
       .where("groupId")
       .equals(groupId)
-      .and((card) => card.lastRating === rating)
+      .and((card) => card.difficultyRating === rating)
       .toArray();
   }
 
-  async updateRating(cardId: string, rating: Rating): Promise<Card> {
+  async updateRating(cardId: string, rating: "easy" | "medium" | "hard"): Promise<Card> {
     return await this.update(cardId, {
-      lastRating: rating,
-      lastReviewedAt: new Date(),
+      difficultyRating: rating,
+      lastStudiedAt: new Date(),
     });
   }
 
   async getCardsForStudySession(groupId: string, limit: number): Promise<Card[]> {
     // Get cards for study session, prioritizing cards that haven't been reviewed
-    // or were rated as "dont_know" or "doubt"
+    // or were rated as "hard" or "medium"
     const cards = await db.cards.where("groupId").equals(groupId).toArray();
 
-    // Sort by priority: unreviewed first, then by last rating (dont_know, doubt, know)
+    // Sort by priority: unreviewed first, then by difficulty rating (hard, medium, easy)
     const sortedCards = cards.sort((a, b) => {
       // Unreviewed cards first
-      if (!a.lastReviewedAt && b.lastReviewedAt) return -1;
-      if (a.lastReviewedAt && !b.lastReviewedAt) return 1;
+      if (!a.lastStudiedAt && b.lastStudiedAt) return -1;
+      if (a.lastStudiedAt && !b.lastStudiedAt) return 1;
 
-      // Then by rating priority
-      const ratingPriority = {dont_know: 0, doubt: 1, know: 2};
-      const aPriority = a.lastRating ? ratingPriority[a.lastRating] : -1;
-      const bPriority = b.lastRating ? ratingPriority[b.lastRating] : -1;
+      // Then by rating priority (hard cards need more practice)
+      const ratingPriority = {hard: 0, medium: 1, easy: 2};
+      const aPriority = a.difficultyRating ? ratingPriority[a.difficultyRating] : -1;
+      const bPriority = b.difficultyRating ? ratingPriority[b.difficultyRating] : -1;
 
       return aPriority - bPriority;
     });
 
     return sortedCards.slice(0, limit);
+  }
+
+  async saveAllCards(cards: Card[]): Promise<void> {
+    // Clear existing cards and save new ones
+    await db.cards.clear();
+    // Create mutable copies to avoid "read-only property" errors
+    const mutableCards = cards.map((card) => ({...card}));
+    await db.cards.bulkAdd(mutableCards);
+
+    // Update group card counts for all groups
+    const groupIds = [...new Set(cards.map((card) => card.groupId))];
+    for (const groupId of groupIds) {
+      await db.updateGroupCardCount(groupId);
+    }
   }
 }

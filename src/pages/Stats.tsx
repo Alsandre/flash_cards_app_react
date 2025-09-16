@@ -1,9 +1,13 @@
 // Statistics page - progress tracking and analytics
 import React, {useEffect, useState, useMemo} from "react";
-import {useGroups, useAllCards, useIsLoading, useError, useLoadGroups, useLoadCards} from "../store/appStore";
+import {useAppDispatch, useAppSelector} from "../store/hooks";
+import {selectAllGroups, selectGroupsLoading, selectGroupsError} from "../store/selectors/groupSelectors";
+import {selectAllCards} from "../store/selectors/cardSelectors";
+import {loadGroups} from "../store/slices/groupSlice";
+import {loadCards} from "../store/slices/cardSlice";
 import {Card, LoadingSpinner} from "../components/ui";
 import {SessionRepository} from "../repositories/sessionRepository";
-import type {StudySession, CardRating} from "../types/entities";
+import type {StudySession, CardRating} from "../types/session-schema";
 
 interface SessionStats {
   totalSessions: number;
@@ -28,12 +32,11 @@ interface GroupStats {
 }
 
 export const Stats: React.FC = () => {
-  const groups = useGroups();
-  const allCards = useAllCards();
-  const isLoading = useIsLoading();
-  const error = useError();
-  const loadGroups = useLoadGroups();
-  const loadCards = useLoadCards();
+  const groups = useAppSelector(selectAllGroups);
+  const allCards = useAppSelector(selectAllCards);
+  const isLoading = useAppSelector(selectGroupsLoading);
+  const error = useAppSelector(selectGroupsError);
+  const dispatch = useAppDispatch();
 
   const [sessions, setSessions] = useState<StudySession[]>([]);
   const [ratings, setRatings] = useState<CardRating[]>([]);
@@ -46,14 +49,11 @@ export const Stats: React.FC = () => {
         setStatsLoading(true);
 
         if (groups.length === 0) {
-          await loadGroups();
+          dispatch(loadGroups());
         }
 
-        // Load cards for all groups
-        for (const group of groups) {
-          if (!allCards[group.id]) {
-            await loadCards(group.id);
-          }
+        if (allCards.length === 0) {
+          dispatch(loadCards());
         }
 
         // Load session data
@@ -71,7 +71,7 @@ export const Stats: React.FC = () => {
     };
 
     loadData();
-  }, [groups.length, loadGroups, loadCards]);
+  }, [groups.length, allCards.length, dispatch]);
 
   // Calculate overall session statistics
   const sessionStats: SessionStats = useMemo(() => {
@@ -98,7 +98,7 @@ export const Stats: React.FC = () => {
   // Calculate per-group statistics
   const groupStats: GroupStats[] = useMemo(() => {
     return groups.map((group) => {
-      const groupCards = allCards[group.id] || [];
+      const groupCards = allCards.filter((card) => card.groupId === group.id);
       const groupSessions = sessions.filter((s) => s.groupId === group.id && s.isCompleted);
       const groupRatings = ratings.filter((r) => {
         const card = groupCards.find((c) => c.id === r.cardId);

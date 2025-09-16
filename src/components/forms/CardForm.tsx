@@ -1,8 +1,13 @@
 import React, {useState, useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {useAppStore} from "../../store/appStore";
+import {useAppDispatch, useAppSelector} from "../../store/hooks";
+import {selectAllGroups, selectGroupsLoading, selectGroupsError} from "../../store/selectors/groupSelectors";
+import {selectAllCards} from "../../store/selectors/cardSelectors";
+import {loadGroups} from "../../store/slices/groupSlice";
+import {cardActions} from "../../store/slices/cardSlice";
+import {uiActions} from "../../store/slices/uiSlice";
 import {Button, Card as UICard, Input, Textarea, LoadingSpinner} from "../ui";
-import type {Card} from "../../types/entities";
+import type {Card} from "../../types/card-schema";
 
 interface CardFormProps {
   mode: "create" | "edit";
@@ -10,8 +15,8 @@ interface CardFormProps {
 }
 
 interface CardFormData {
-  front: string;
-  back: string;
+  content: string;
+  answer: string;
   hint?: string;
 }
 
@@ -20,19 +25,17 @@ export const CardForm: React.FC<CardFormProps> = ({mode, initialData}) => {
   const {groupId, cardId} = useParams<{groupId: string; cardId?: string}>();
 
   // Zustand store selectors
-  const groups = useAppStore((state) => state.groups);
-  const cards = useAppStore((state) => (groupId ? state.cards[groupId] || [] : []));
-  const isLoading = useAppStore((state) => state.isLoading);
-  const error = useAppStore((state) => state.error);
-  const createCard = useAppStore((state) => state.createCard);
-  const updateCard = useAppStore((state) => state.updateCard);
-  const loadGroups = useAppStore((state) => state.loadGroups);
-  const loadCards = useAppStore((state) => state.loadCards);
-  const clearError = useAppStore((state) => state.clearError);
+  const dispatch = useAppDispatch();
+  const groups = useAppSelector(selectAllGroups);
+  const allCards = useAppSelector(selectAllCards);
+  const isLoading = useAppSelector(selectGroupsLoading);
+  const error = useAppSelector(selectGroupsError);
+
+  const cards = groupId ? allCards.filter((card) => card.groupId === groupId) : [];
 
   const [formData, setFormData] = useState<CardFormData>({
-    front: initialData?.front || "",
-    back: initialData?.back || "",
+    content: initialData?.content || "",
+    answer: initialData?.answer || "",
     hint: initialData?.hint || "",
   });
 
@@ -46,18 +49,15 @@ export const CardForm: React.FC<CardFormProps> = ({mode, initialData}) => {
   // Load data on mount
   useEffect(() => {
     if (groups.length === 0) {
-      loadGroups();
+      dispatch(loadGroups());
     }
-    if (groupId && cards.length === 0) {
-      loadCards(groupId);
-    }
-  }, [groupId, groups.length, cards.length, loadGroups, loadCards]);
+  }, [dispatch, groups.length]);
 
   useEffect(() => {
     if (mode === "edit" && card) {
       setFormData({
-        front: card.front,
-        back: card.back,
+        content: card.content,
+        answer: card.answer,
         hint: card.hint || "",
       });
     }
@@ -65,24 +65,24 @@ export const CardForm: React.FC<CardFormProps> = ({mode, initialData}) => {
 
   useEffect(() => {
     if (error) {
-      const timer = setTimeout(() => clearError(), 5000);
+      const timer = setTimeout(() => dispatch(uiActions.clearError()), 5000);
       return () => clearTimeout(timer);
     }
-  }, [error, clearError]);
+  }, [error, dispatch]);
 
   const validateForm = (): boolean => {
     const newErrors: Partial<CardFormData> = {};
 
-    if (!formData.front.trim()) {
-      newErrors.front = "Front side is required";
-    } else if (formData.front.length > 500) {
-      newErrors.front = "Front side must be less than 500 characters";
+    if (!formData.content.trim()) {
+      newErrors.content = "Content side is required";
+    } else if (formData.content.length > 500) {
+      newErrors.content = "Content side must be less than 500 characters";
     }
 
-    if (!formData.back.trim()) {
-      newErrors.back = "Back side is required";
-    } else if (formData.back.length > 1000) {
-      newErrors.back = "Back side must be less than 1000 characters";
+    if (!formData.answer.trim()) {
+      newErrors.answer = "Answer side is required";
+    } else if (formData.answer.length > 1000) {
+      newErrors.answer = "Answer side must be less than 1000 characters";
     }
 
     if (formData.hint && formData.hint.length > 200) {
@@ -104,21 +104,25 @@ export const CardForm: React.FC<CardFormProps> = ({mode, initialData}) => {
 
     try {
       if (mode === "create") {
-        await createCard({
-          groupId,
-          front: formData.front.trim(),
-          back: formData.back.trim(),
-          hint: formData.hint?.trim() || undefined,
-          properties: {},
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        });
+        dispatch(
+          cardActions.addCard({
+            groupId,
+            content: formData.content.trim(),
+            answer: formData.answer.trim(),
+            hint: formData.hint?.trim() || undefined,
+          })
+        );
       } else if (mode === "edit" && cardId) {
-        await updateCard(cardId, {
-          front: formData.front.trim(),
-          back: formData.back.trim(),
-          hint: formData.hint?.trim() || undefined,
-        });
+        dispatch(
+          cardActions.updateCard({
+            id: cardId,
+            updates: {
+              content: formData.content.trim(),
+              answer: formData.answer.trim(),
+              hint: formData.hint?.trim() || undefined,
+            },
+          })
+        );
       }
 
       // Navigate back to group detail page
@@ -187,7 +191,7 @@ export const CardForm: React.FC<CardFormProps> = ({mode, initialData}) => {
                 </svg>
                 <p className="text-sm text-error-700 dark:text-error-300">{error}</p>
               </div>
-              <Button variant="ghost" size="sm" onClick={clearError} className="text-error-600 hover:text-error-700">
+              <Button variant="ghost" size="sm" onClick={() => dispatch(uiActions.clearError())} className="text-error-600 hover:text-error-700">
                 Dismiss
               </Button>
             </div>
@@ -196,10 +200,10 @@ export const CardForm: React.FC<CardFormProps> = ({mode, initialData}) => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Front Side */}
-          <Textarea label="Front Side" value={formData.front} onChange={(e) => setFormData({...formData, front: e.target.value})} placeholder="Enter the question or prompt" rows={3} error={errors.front} helperText="What the user will see first (question, term, etc.)" disabled={isSubmitting} required />
+          <Textarea label="Content" value={formData.content} onChange={(e) => setFormData({...formData, content: e.target.value})} placeholder="Enter the question or prompt" rows={3} error={errors.content} helperText="What the user will see first (question, term, etc.)" disabled={isSubmitting} required />
 
           {/* Back Side */}
-          <Textarea label="Back Side" value={formData.back} onChange={(e) => setFormData({...formData, back: e.target.value})} placeholder="Enter the answer or definition" rows={4} error={errors.back} helperText="The answer or information revealed when flipped" disabled={isSubmitting} required />
+          <Textarea label="Answer" value={formData.answer} onChange={(e) => setFormData({...formData, answer: e.target.value})} placeholder="Enter the answer or definition" rows={4} error={errors.answer} helperText="The answer or information revealed when flipped" disabled={isSubmitting} required />
 
           {/* Hint (Optional) */}
           <Input label="Hint (Optional)" type="text" value={formData.hint || ""} onChange={(e) => setFormData({...formData, hint: e.target.value})} placeholder="Optional hint to help remember" error={errors.hint} helperText="A helpful clue (optional)" disabled={isSubmitting} />

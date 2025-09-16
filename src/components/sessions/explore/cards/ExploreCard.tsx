@@ -1,10 +1,10 @@
 import React from "react";
-import type {Card as CardType} from "../../../../types/entities";
+import type {Card as CardType} from "../../../../types/card-schema";
 
 interface ExploreCardProps {
   card: CardType;
-  currentRating?: "dont_know" | "doubt" | "know";
-  onRating: (rating: "dont_know" | "doubt" | "know") => void;
+  currentRating?: "easy" | "medium" | "hard";
+  onRating: (rating: "easy" | "medium" | "hard") => void;
   onFlip?: () => void;
   showBack: boolean;
 }
@@ -16,7 +16,7 @@ const ExploreCard: React.FC<ExploreCardProps> = ({card, currentRating, onRating,
     }
   };
 
-  const handleRating = (rating: "dont_know" | "doubt" | "know", e: React.MouseEvent) => {
+  const handleRating = (rating: "easy" | "medium" | "hard", e: React.MouseEvent) => {
     e.stopPropagation();
     onRating(rating);
   };
@@ -37,7 +37,7 @@ const ExploreCard: React.FC<ExploreCardProps> = ({card, currentRating, onRating,
 
             {/* Question content */}
             <div className="flex-1 flex items-center justify-center text-center">
-              <p className="text-2xl font-medium leading-relaxed text-neutral-900 dark:text-neutral-100 sm:text-3xl">{card.front}</p>
+              <p className="text-2xl font-medium leading-relaxed text-neutral-900 dark:text-neutral-100 sm:text-3xl">{card.content}</p>
             </div>
 
             {/* Hint section */}
@@ -71,42 +71,42 @@ const ExploreCard: React.FC<ExploreCardProps> = ({card, currentRating, onRating,
 
             {/* Answer content */}
             <div className="flex-1 flex items-center justify-center text-center">
-              <p className="text-2xl font-medium leading-relaxed text-neutral-900 dark:text-neutral-100 sm:text-3xl">{card.back}</p>
+              <p className="text-2xl font-medium leading-relaxed text-neutral-900 dark:text-neutral-100 sm:text-3xl">{card.answer}</p>
             </div>
 
             {/* Rating Buttons */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4 mt-8">
               <button
-                onClick={(e) => handleRating("dont_know", e)}
+                onClick={(e) => handleRating("hard", e)}
                 className={`w-full backdrop-blur-sm rounded-xl flex flex-col items-center justify-center py-4 px-3
-                         transition-all duration-200 hover:scale-105 border-2 ${currentRating === "dont_know" ? "bg-error-500/40 border-error-500 text-error-800 dark:text-error-200" : "bg-error-500/20 border-error-400/30 text-error-700 dark:text-error-300 hover:bg-error-500/40"}`}
+                         transition-all duration-200 hover:scale-105 border-2 ${currentRating === "hard" ? "bg-error-500/40 border-error-500 text-error-800 dark:text-error-200" : "bg-error-500/20 border-error-400/30 text-error-700 dark:text-error-300 hover:bg-error-500/40"}`}
               >
                 <svg className="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
-                <span className="text-sm font-medium">Don't Know</span>
+                <span className="text-sm font-medium">Hard</span>
               </button>
 
               <button
-                onClick={(e) => handleRating("doubt", e)}
+                onClick={(e) => handleRating("medium", e)}
                 className={`w-full backdrop-blur-sm rounded-xl flex flex-col items-center justify-center py-4 px-3
-                         transition-all duration-200 hover:scale-105 border-2 ${currentRating === "doubt" ? "bg-warning-500/40 border-warning-500 text-warning-800 dark:text-warning-200" : "bg-warning-500/20 border-warning-400/30 text-warning-700 dark:text-warning-300 hover:bg-warning-500/40"}`}
+                         transition-all duration-200 hover:scale-105 border-2 ${currentRating === "medium" ? "bg-warning-500/40 border-warning-500 text-warning-800 dark:text-warning-200" : "bg-warning-500/20 border-warning-400/30 text-warning-700 dark:text-warning-300 hover:bg-warning-500/40"}`}
               >
                 <svg className="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span className="text-sm font-medium">Doubt</span>
+                <span className="text-sm font-medium">Medium</span>
               </button>
 
               <button
-                onClick={(e) => handleRating("know", e)}
+                onClick={(e) => handleRating("easy", e)}
                 className={`w-full backdrop-blur-sm rounded-xl flex flex-col items-center justify-center py-4 px-3
-                         transition-all duration-200 hover:scale-105 border-2 ${currentRating === "know" ? "bg-success-500/40 border-success-500 text-success-800 dark:text-success-200" : "bg-success-500/20 border-success-400/30 text-success-700 dark:text-success-300 hover:bg-success-500/40"}`}
+                         transition-all duration-200 hover:scale-105 border-2 ${currentRating === "easy" ? "bg-success-500/40 border-success-500 text-success-800 dark:text-success-200" : "bg-success-500/20 border-success-400/30 text-success-700 dark:text-success-300 hover:bg-success-500/40"}`}
               >
                 <svg className="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                 </svg>
-                <span className="text-sm font-medium">I Know</span>
+                <span className="text-sm font-medium">Easy</span>
               </button>
             </div>
           </div>

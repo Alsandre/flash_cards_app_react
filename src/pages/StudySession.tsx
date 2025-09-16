@@ -1,9 +1,16 @@
 import React, {useEffect, useState, useMemo, useCallback} from "react";
 import {useParams, useNavigate} from "react-router-dom";
-import {useGroups, useAllCards, useCurrentSession, useStartExploreSession, useUpdateSessionProgress, useRateCard, useCompleteSession, useLoadCards, useIsLoading, useError, useClearError, useTheme, useSetTheme} from "../store/appStore";
+import {useAppDispatch, useAppSelector} from "../store/hooks";
+import {selectAllGroups, selectGroupsLoading, selectGroupsError} from "../store/selectors/groupSelectors";
+import {selectAllCards} from "../store/selectors/cardSelectors";
+import {selectTheme} from "../store/selectors/uiSelectors";
+import {selectIsStudySessionActive, selectStudyProgress, selectSessionRatings} from "../store/selectors/sessionSelectors";
+import {loadGroups} from "../store/slices/groupSlice";
+import {loadCards} from "../store/slices/cardSlice";
+import {uiActions} from "../store/slices/uiSlice";
+import {sessionActions} from "../store/slices/sessionSlice";
 import {Button, Card, LoadingSpinner} from "../components/ui";
 import {StudyCardContainer, StudyModal} from "../components/sessions/study";
-import type {Card as CardType} from "../types/entities";
 
 /**
  * StudySession - Immersive multi-mode study session page
@@ -43,109 +50,97 @@ export const StudySession: React.FC = () => {
   // Get mode from URL params, fallback to 'flow' if invalid
   const currentMode = (mode as StudyMode) || "flow";
 
-  const groups = useGroups();
-  const allCards = useAllCards();
-  const currentSession = useCurrentSession();
-  const theme = useTheme();
-  const setTheme = useSetTheme();
+  const dispatch = useAppDispatch();
+  const groups = useAppSelector(selectAllGroups);
+  const allCards = useAppSelector(selectAllCards);
+  const theme = useAppSelector(selectTheme);
+  const isLoading = useAppSelector(selectGroupsLoading);
+  const error = useAppSelector(selectGroupsError);
+
+  // Redux session selectors
+  const isSessionActive = useAppSelector(selectIsStudySessionActive);
+  const studyProgress = useAppSelector(selectStudyProgress);
+  const sessionRatings = useAppSelector(selectSessionRatings);
 
   const cards = useMemo(() => {
-    const result = groupId ? allCards[groupId] || [] : [];
-    return result;
+    return groupId ? allCards.filter((card) => card.groupId === groupId) : [];
   }, [allCards, groupId]);
 
-  const isLoading = useIsLoading();
-  const error = useError();
+  const sessionCards = useMemo(() => {
+    // Get cards for study session based on current cards
+    return cards.slice(0, 20); // Limit study sessions to 20 cards for now
+  }, [cards]);
 
-  const startExploreSession = useStartExploreSession();
-  const updateSessionProgress = useUpdateSessionProgress();
-  const rateCard = useRateCard();
-  const completeSession = useCompleteSession();
-  const loadCards = useLoadCards();
-  const clearError = useClearError();
-
-  const [sessionCards, setSessionCards] = useState<CardType[]>([]);
-  const [cardRatings, setCardRatings] = useState<Record<string, "dont_know" | "doubt" | "know">>({});
   const [showEndSessionModal, setShowEndSessionModal] = useState(false);
+
+  // Remove unused local state - now managed by Redux
+  // const [sessionCards, setSessionCards] = useState<CardType[]>([]);
+  // const [cardRatings, setCardRatings] = useState<Record<string, "dont_know" | "doubt" | "know">>({});
 
   const group = groups.find((g) => g.id === groupId);
 
   useEffect(() => {
-    if (groupId && !currentSession) {
-      startExploreSession(groupId);
+    if (groupId && groups.length === 0) {
+      dispatch(loadGroups());
     }
-
-    // Only load cards if we don't have any for this group
-    if (groupId && cards.length === 0) {
-      loadCards(groupId);
+    if (groupId && allCards.length === 0) {
+      dispatch(loadCards());
     }
-  }, [groupId, startExploreSession, loadCards, currentSession, cards.length]);
+  }, [groupId, groups.length, allCards.length, dispatch]);
 
+  // Initialize study session when cards are available
   useEffect(() => {
-    if (cards.length > 0 && group) {
-      // Get cards for study session (limited by studyCardCount)
-      const studyCards = cards.slice(0, group.studyCardCount);
-
-      // Only update if the cards actually changed
-      const hasChanged = sessionCards.length !== studyCards.length || (sessionCards.length > 0 && studyCards.length > 0 && (sessionCards[0]?.id !== studyCards[0]?.id || sessionCards[sessionCards.length - 1]?.id !== studyCards[studyCards.length - 1]?.id));
-
-      if (hasChanged) {
-        setSessionCards(studyCards);
-      }
+    if (groupId && sessionCards.length > 0 && !isSessionActive) {
+      const cardIds = sessionCards.map((card) => card.id);
+      dispatch(sessionActions.startStudySession({cardIds}));
     }
-  }, [cards, group]);
+  }, [groupId, sessionCards, isSessionActive, dispatch]);
 
-  const handleRating = async (cardId: string, rating: "dont_know" | "doubt" | "know") => {
-    try {
-      // Update local rating state immediately for UI feedback
-      setCardRatings((prev) => ({
-        ...prev,
-        [cardId]: rating,
-      }));
+  // This effect is removed - sessionCards are now managed by Redux
 
-      // Save rating to backend - for now using the same rating system
-      await rateCard(cardId, rating);
-    } catch (error) {
-      console.error("❌ StudySession: Failed to rate card:", error);
-      // Revert local state on error
-      setCardRatings((prev) => {
-        const newRatings = {...prev};
-        delete newRatings[cardId];
-        return newRatings;
-      });
-    }
-  };
+  const handleRating = useCallback(
+    (cardId: string, rating: "easy" | "medium" | "hard") => {
+      // Save rating to Redux session state
+      dispatch(sessionActions.rateCard({cardId, rating}));
 
-  const handleAnswerSubmit = useCallback((cardId: string, answer: string) => {
-    console.log(`Answer submitted for card ${cardId}:`, answer);
-    // TODO: Handle answer submission based on mode
-    // For now, just log it
-  }, []);
+      // Advance to next card automatically
+      dispatch(sessionActions.nextCard());
+    },
+    [dispatch]
+  );
+
+  const handleAnswerSubmit = useCallback(
+    (cardId: string, answer: string) => {
+      // Save answer to Redux session state
+      dispatch(sessionActions.submitAnswer({cardId, answer}));
+
+      // Flip the card to show the answer
+      dispatch(sessionActions.flipCard());
+    },
+    [dispatch]
+  );
 
   const handleNoteUpdate = useCallback((cardId: string, note: string) => {
-    console.log(`Note updated for card ${cardId}:`, note);
     // TODO: Handle note updates - could be saved to card or session notes
-    // For now, just log it
+    // For now, just log it (this could be enhanced to save to card.userNote)
+    console.log(`Note updated for card ${cardId}:`, note);
   }, []);
 
   const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
+    dispatch(uiActions.setTheme(theme === "light" ? "dark" : "light"));
   };
 
-  const handleCardChange = useCallback(
-    (index: number) => {
-      if (currentSession) {
-        updateSessionProgress(index);
-      }
-    },
-    [currentSession, updateSessionProgress]
-  );
+  const handleCardChange = useCallback((index: number) => {
+    // Card navigation is now handled by Redux session actions
+    // This callback is mainly for any additional side effects
+    console.log(`Card changed to index: ${index}`);
+  }, []);
 
   const handleEndSession = async () => {
-    if (!currentSession) return;
+    if (!isSessionActive) return;
 
     try {
-      await completeSession();
+      dispatch(sessionActions.endStudySession());
       navigate(`/study/${groupId}`); // Return to study mode selection
     } catch (error) {
       console.error("Failed to end session:", error);
@@ -198,7 +193,7 @@ export const StudySession: React.FC = () => {
     );
   }
 
-  const progress = currentSession ? ((currentSession.currentCardIndex + 1) / sessionCards.length) * 100 : 0;
+  const progress = isSessionActive ? studyProgress.progressPercentage : 0;
   const modeConfig = STUDY_MODE_CONFIG[currentMode];
 
   return (
@@ -235,7 +230,7 @@ export const StudySession: React.FC = () => {
         <div className="max-w-4xl mx-auto mt-3">
           <div className="flex items-center justify-between text-sm text-neutral-600 dark:text-neutral-400 mb-2">
             <span>
-              Card {(currentSession?.currentCardIndex ?? 0) + 1} of {sessionCards.length}
+              Card {studyProgress.currentIndex + 1} of {studyProgress.totalCards}
             </span>
             <span>{Math.round(progress)}%</span>
           </div>
@@ -256,7 +251,14 @@ export const StudySession: React.FC = () => {
                 </svg>
                 <p className="text-sm text-error-700 dark:text-error-300">{error}</p>
               </div>
-              <Button variant="ghost" size="sm" onClick={clearError} className="text-error-600 hover:text-error-700">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  /* TODO: Implement error clearing */
+                }}
+                className="text-error-600 hover:text-error-700"
+              >
                 Dismiss
               </Button>
             </div>
@@ -266,7 +268,20 @@ export const StudySession: React.FC = () => {
 
       {/* Study Card Container - Full focus */}
       <div className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full max-w-4xl">{sessionCards.length > 0 && <StudyCardContainer cards={sessionCards} mode={currentMode} initialCardIndex={currentSession?.currentCardIndex ?? 0} cardRatings={cardRatings} onRating={handleRating} onAnswerSubmit={handleAnswerSubmit} onNoteUpdate={handleNoteUpdate} onCardChange={handleCardChange} />}</div>
+        <div className="w-full max-w-4xl">
+          {sessionCards.length > 0 && isSessionActive && (
+            <StudyCardContainer
+              cards={sessionCards}
+              mode={currentMode}
+              initialCardIndex={studyProgress.currentIndex}
+              cardRatings={sessionRatings} // Using Redux session ratings
+              onRating={handleRating}
+              onAnswerSubmit={handleAnswerSubmit}
+              onNoteUpdate={handleNoteUpdate}
+              onCardChange={handleCardChange}
+            />
+          )}
+        </div>
       </div>
 
       {/* End Session Confirmation Modal */}

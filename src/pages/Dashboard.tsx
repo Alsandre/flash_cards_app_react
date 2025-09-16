@@ -1,20 +1,23 @@
 import React, {useEffect} from "react";
 import {Link} from "react-router-dom";
-import {useGroups, useLoadGroups, useDeleteGroup, useIsLoading, useError, useClearError} from "../store/appStore";
+import {useAppDispatch, useAppSelector} from "../store/hooks";
+import {loadGroups, deleteGroup} from "../store/slices/groupSlice";
+import {groupActions} from "../store/slices/groupSlice";
+import {loadCards} from "../store/slices/cardSlice";
+import {selectAllGroups, selectGroupsLoading, selectGroupsError} from "../store/selectors/groupSelectors";
 import {Button, Card, LoadingSpinner} from "../components/ui";
 import {StarterPackService} from "../services/starterPackService";
 
 export const Dashboard: React.FC = () => {
-  const groups = useGroups();
-  const isLoading = useIsLoading();
-  const error = useError();
-  const loadGroups = useLoadGroups();
-  const deleteGroup = useDeleteGroup();
-  const clearError = useClearError();
+  const dispatch = useAppDispatch();
+  const groups = useAppSelector(selectAllGroups);
+  const isLoading = useAppSelector(selectGroupsLoading);
+  const error = useAppSelector(selectGroupsError);
 
   useEffect(() => {
-    loadGroups();
-  }, [loadGroups]);
+    dispatch(loadGroups());
+    dispatch(loadCards());
+  }, [dispatch]);
 
   const handleDeleteGroup = async (groupId: string, groupName: string) => {
     // Prevent deletion of starter pack
@@ -26,7 +29,7 @@ export const Dashboard: React.FC = () => {
     const confirmed = window.confirm(`Are you sure you want to delete "${groupName}"? This will also delete all cards in this group.`);
     if (confirmed) {
       try {
-        await deleteGroup(groupId);
+        await dispatch(deleteGroup(groupId)).unwrap();
       } catch (error) {
         console.error("Failed to delete group:", error);
       }
@@ -64,7 +67,7 @@ export const Dashboard: React.FC = () => {
               </svg>
               <p className="text-sm text-error-700 dark:text-error-300">{error}</p>
             </div>
-            <Button variant="ghost" size="sm" onClick={clearError} className="text-error-600 hover:text-error-700">
+            <Button variant="ghost" size="sm" onClick={() => dispatch(groupActions.clearError())} className="text-error-600 hover:text-error-700">
               Dismiss
             </Button>
           </div>
