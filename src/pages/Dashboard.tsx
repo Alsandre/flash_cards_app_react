@@ -6,6 +6,7 @@ import {groupActions} from "../store/slices/groupSlice";
 import {loadCards} from "../store/slices/cardSlice";
 import {selectAllGroups, selectGroupsLoading, selectGroupsError} from "../store/selectors/groupSelectors";
 import {Button, Card, LoadingSpinner} from "../components/ui";
+import {WelcomeUpgradeModal} from "../components/common";
 import {StarterPackService} from "../services/starterPackService";
 
 export const Dashboard: React.FC = () => {
@@ -213,6 +214,9 @@ export const Dashboard: React.FC = () => {
           })}
         </div>
       )}
+
+      {/* Welcome modal for new app version */}
+      <WelcomeUpgradeModal />
     </div>
   );
 };
