@@ -67,24 +67,33 @@ export class SyncManager {
       return {success: false, error: "Sync already in progress"};
     }
 
-    console.log("🔄 Starting initial sync from Supabase...");
+    console.log("🔄 Starting bidirectional initial sync...");
     this.syncInProgress = true;
 
     try {
-      // Sync groups first
-      const groupSyncResult = await this.groupRepo.syncFromSupabase();
-      if (groupSyncResult.error) {
-        throw new Error(`Group sync failed: ${groupSyncResult.error}`);
+      // PHASE 1: Push local changes to cloud (merge new, newer wins for conflicts)
+      console.log("📤 Pushing local groups to cloud...");
+      const groupPushResult = await this.groupRepo.syncAllGroupsToSupabase();
+      if (groupPushResult.error) {
+        console.warn(`Group push failed: ${groupPushResult.error}`);
       }
 
-      // Sync all cards
+      // PHASE 2: Pull cloud changes to local (merge new, newer wins for conflicts)
+      console.log("📥 Pulling cloud groups to local...");
+      const groupPullResult = await this.groupRepo.syncFromSupabase();
+      if (groupPullResult.error) {
+        throw new Error(`Group pull failed: ${groupPullResult.error}`);
+      }
+
+      // PHASE 3: Pull cloud cards to local (cards don't have syncToSupabase yet)
+      console.log("📥 Pulling cloud cards to local...");
       const cardSyncResult = await this.cardRepo.syncFromSupabase();
       if (cardSyncResult.error) {
         throw new Error(`Card sync failed: ${cardSyncResult.error}`);
       }
 
       const stats = {
-        groups: groupSyncResult.synced,
+        groups: (groupPushResult.synced || 0) + (groupPullResult.synced || 0),
         cards: cardSyncResult.synced,
       };
 

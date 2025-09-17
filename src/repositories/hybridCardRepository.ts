@@ -52,8 +52,8 @@ export class HybridCardRepository extends BaseRepository<Card> {
     // Update group card count
     await db.updateGroupCardCount(entity.groupId);
 
-    // 2. Background sync to Supabase (if user is authenticated)
-    if (this.userId) {
+    // 2. Background sync to Supabase (if user is authenticated and not starter pack)
+    if (this.userId && card.source !== "starter_pack") {
       this.syncToSupabase("create", card).catch((error) => {
         console.warn("Background sync failed for card creation:", error);
         // TODO: Queue for retry
@@ -88,8 +88,8 @@ export class HybridCardRepository extends BaseRepository<Card> {
       await db.updateGroupCardCount(updates.groupId);
     }
 
-    // 2. Background sync to Supabase (if user is authenticated)
-    if (this.userId) {
+    // 2. Background sync to Supabase (if user is authenticated and not starter pack)
+    if (this.userId && updatedCard.source !== "starter_pack") {
       this.syncToSupabase("update", updatedCard).catch((error) => {
         console.warn("Background sync failed for card update:", error);
         // TODO: Queue for retry
@@ -103,19 +103,37 @@ export class HybridCardRepository extends BaseRepository<Card> {
     // Get card before deletion for sync
     const cardToDelete = await this.findById(id);
 
-    if (cardToDelete) {
-      // 1. Delete from IndexedDB immediately
-      await db.cards.delete(id);
-      await db.updateGroupCardCount(cardToDelete.groupId);
-
-      // 2. Background sync to Supabase (if user is authenticated)
-      if (this.userId) {
-        this.syncToSupabase("delete", cardToDelete).catch((error) => {
-          console.warn("Background sync failed for card deletion:", error);
-          // TODO: Queue for retry
-        });
-      }
+    if (!cardToDelete) {
+      throw new Error(`Card with id ${id} not found`);
     }
+
+    // Immediate dual delete - fail if either fails
+    const deletePromises = [
+      // Delete from IndexedDB and update group count
+      this.deleteFromLocal(id, cardToDelete.groupId),
+    ];
+
+    // Add Supabase deletion if user is authenticated and not starter pack
+    if (this.userId && cardToDelete.source !== "starter_pack") {
+      deletePromises.push(
+        CardService.deleteCard(this.userId, id).then((result) => {
+          if (result.error) {
+            throw new Error(`Supabase deletion failed: ${result.error.message}`);
+          }
+        })
+      );
+    }
+
+    // Execute both deletions simultaneously
+    await Promise.all(deletePromises);
+  }
+
+  /**
+   * Delete from local IndexedDB only
+   */
+  private async deleteFromLocal(id: string, groupId: string): Promise<void> {
+    await db.cards.delete(id);
+    await db.updateGroupCardCount(groupId);
   }
 
   /**
@@ -239,7 +257,7 @@ export class HybridCardRepository extends BaseRepository<Card> {
           retentionScore: supabaseCard.retentionScore || 0.0,
           sessionAttempts: supabaseCard.sessionAttempts || [],
           tags: supabaseCard.tags || [],
-          isActive: supabaseCard.isActive ?? true,
+          isActive: supabaseCard.is_active ?? true,
           source: supabaseCard.source || "user_created",
           createdAt: supabaseCard.created_at ? new Date(supabaseCard.created_at) : new Date(),
           updatedAt: supabaseCard.updated_at ? new Date(supabaseCard.updated_at) : new Date(),

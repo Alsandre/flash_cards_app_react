@@ -2,16 +2,17 @@ import {supabase} from "./supabase";
 import type {PostgrestError} from "@supabase/supabase-js";
 import type {Card} from "../types/card-schema";
 
-// Supabase-compatible Card interface
-export interface SupabaseCard extends Omit<Card, "id" | "createdAt" | "updatedAt" | "groupId"> {
+// Supabase-compatible Card interface (matches database schema with snake_case)
+export interface SupabaseCard extends Omit<Card, "id" | "createdAt" | "updatedAt" | "groupId" | "isActive" | "lastStudiedAt" | "nextReviewDate" | "interval"> {
   id?: string;
   group_id: string;
   user_id: string;
-  last_studied_at?: string | null;
-  next_review_date?: string | null;
-  interval_days?: number;
-  created_at?: string;
-  updated_at?: string;
+  is_active: boolean; // Snake case for database
+  last_studied_at?: string | null; // Snake case for database
+  next_review_date?: string | null; // Snake case for database
+  interval_days: number; // Snake case for database (maps to Card.interval)
+  created_at?: string; // Snake case for database
+  updated_at?: string; // Snake case for database
 }
 
 // Card service for Supabase operations
@@ -49,7 +50,7 @@ export class CardService {
       totalAttempts: cardData.totalAttempts || 0,
       correctAttempts: cardData.correctAttempts || 0,
       easeFactor: cardData.easeFactor || 2.5,
-      interval: cardData.interval || 1,
+      // interval is mapped to interval_days in database
       interval_days: cardData.interval || 1,
       repetitions: cardData.repetitions || 0,
       last_studied_at: cardData.lastStudiedAt?.toISOString() || null,
@@ -58,7 +59,7 @@ export class CardService {
       retentionScore: cardData.retentionScore || 0.0,
       sessionAttempts: cardData.sessionAttempts || [],
       tags: cardData.tags || [],
-      isActive: cardData.isActive ?? true,
+      is_active: cardData.isActive ?? true,
       source: cardData.source || "user_created",
     };
 
@@ -76,18 +77,15 @@ export class CardService {
       updated_at: new Date().toISOString(),
     };
 
-    // Convert Date fields to ISO strings
+    // Convert Date fields to ISO strings and handle property mapping
     if (updates.lastStudiedAt !== undefined) {
       updateData.last_studied_at = updates.lastStudiedAt?.toISOString() || null;
-      delete updateData.lastStudiedAt;
     }
     if (updates.nextReviewDate !== undefined) {
       updateData.next_review_date = updates.nextReviewDate?.toISOString() || null;
-      delete updateData.nextReviewDate;
     }
     if (updates.interval !== undefined) {
       updateData.interval_days = updates.interval;
-      delete updateData.interval;
     }
 
     const {data, error} = await supabase

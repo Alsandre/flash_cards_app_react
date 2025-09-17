@@ -54,6 +54,20 @@ export const deleteGroup = createAsyncThunk("groups/deleteGroup", async (groupId
   }
 });
 
+export const deleteGroups = createAsyncThunk("groups/deleteGroups", async (groupIds: string[], {rejectWithValue}) => {
+  try {
+    const result = await groupRepo.deleteMany(groupIds);
+    return {
+      deletedIds: groupIds.slice(0, result.deleted),
+      errors: result.errors,
+      deleted: result.deleted,
+      failed: result.errors.length,
+    };
+  } catch (error) {
+    return rejectWithValue(error instanceof Error ? error.message : "Failed to delete groups");
+  }
+});
+
 export const groupSlice = createSlice({
   name: "groups",
   initialState,
@@ -127,6 +141,21 @@ export const groupSlice = createSlice({
         state.groups = state.groups.filter((group) => group.id !== action.payload);
       })
       .addCase(deleteGroup.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+
+    builder
+      .addCase(deleteGroups.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteGroups.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.failed > 0 ? `${action.payload.deleted} groups deleted, ${action.payload.failed} failed` : null;
+        state.groups = state.groups.filter((group) => !action.payload.deletedIds.includes(group.id));
+      })
+      .addCase(deleteGroups.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

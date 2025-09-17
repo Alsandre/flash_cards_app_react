@@ -2,15 +2,16 @@ import {supabase} from "./supabase";
 import type {PostgrestError} from "@supabase/supabase-js";
 import type {Group} from "../types/group-schema";
 
-// Supabase-compatible Group interface
-export interface SupabaseGroup extends Omit<Group, "id" | "createdAt" | "updatedAt"> {
+// Supabase-compatible Group interface (matches database schema with snake_case)
+export interface SupabaseGroup extends Omit<Group, "id" | "createdAt" | "updatedAt" | "isActive" | "studyCardCount" | "cardCount"> {
   id?: string;
   user_id: string;
-  study_card_count?: number;
-  card_count?: number;
-  is_shared?: boolean;
-  created_at?: string;
-  updated_at?: string;
+  is_active: boolean; // Snake case for database
+  study_card_count: number; // Snake case for database
+  card_count: number; // Snake case for database
+  is_shared: boolean; // Snake case for database
+  created_at?: string; // Snake case for database
+  updated_at?: string; // Snake case for database
 }
 
 // Group service for Supabase operations
@@ -42,13 +43,11 @@ export class GroupService {
       name: groupData.name,
       description: groupData.description || "",
       tags: groupData.tags || [],
-      isActive: groupData.isActive ?? true,
+      is_active: groupData.isActive ?? true,
       is_shared: false, // Default to private
       source: groupData.source || "user_created",
       study_card_count: 0,
       card_count: 0,
-      studyCardCount: 0,
-      cardCount: 0,
     };
 
     const {data, error} = await supabase.from("groups").insert(supabaseGroup).select().single();

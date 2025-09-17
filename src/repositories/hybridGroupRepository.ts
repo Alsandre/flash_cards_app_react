@@ -54,9 +54,9 @@ export class HybridGroupRepository extends BaseRepository<Group> {
     // 1. Write to IndexedDB immediately (local-first)
     await db.groups.add(group);
 
-    // 2. Background sync to Supabase (if user is authenticated)
-    if (this.userId) {
-      this.syncToSupabase("create", group).catch((error) => {
+    // 2. Background sync to Supabase (if user is authenticated and not starter pack)
+    if (this.userId && group.source !== "starter_pack") {
+      this.syncOperationToSupabase("create", group).catch((error) => {
         console.warn("Background sync failed for group creation:", error);
         // TODO: Queue for retry
       });
@@ -79,9 +79,9 @@ export class HybridGroupRepository extends BaseRepository<Group> {
       throw new Error(`Group with id ${id} not found`);
     }
 
-    // 2. Background sync to Supabase (if user is authenticated)
-    if (this.userId) {
-      this.syncToSupabase("update", updatedGroup).catch((error) => {
+    // 2. Background sync to Supabase (if user is authenticated and not starter pack)
+    if (this.userId && updatedGroup.source !== "starter_pack") {
+      this.syncOperationToSupabase("update", updatedGroup).catch((error) => {
         console.warn("Background sync failed for group update:", error);
         // TODO: Queue for retry
       });
@@ -94,23 +94,55 @@ export class HybridGroupRepository extends BaseRepository<Group> {
     // Get group before deletion for sync
     const groupToDelete = await this.findById(id);
 
-    // 1. Delete from IndexedDB immediately (also deletes associated cards)
+    if (!groupToDelete) {
+      throw new Error(`Group with id ${id} not found`);
+    }
+
+    // Immediate dual delete - fail if either fails
+    const deletePromises = [
+      // Delete from IndexedDB (also deletes associated cards)
+      this.deleteFromLocal(id),
+    ];
+
+    // Add Supabase deletion if user is authenticated and not starter pack
+    if (this.userId && groupToDelete.source !== "starter_pack") {
+      deletePromises.push(
+        GroupService.deleteGroup(this.userId, id).then((result) => {
+          if (result.error) {
+            throw new Error(`Supabase deletion failed: ${result.error.message}`);
+          }
+        })
+      );
+    }
+
+    // Execute both deletions simultaneously
+    await Promise.all(deletePromises);
+  }
+
+  /**
+   * Delete multiple groups by IDs
+   */
+  async deleteMany(ids: string[]): Promise<{deleted: number; errors: string[]}> {
+    const results = await Promise.allSettled(ids.map((id) => this.delete(id)));
+
+    const deleted = results.filter((r) => r.status === "fulfilled").length;
+    const errors = results.filter((r): r is PromiseRejectedResult => r.status === "rejected").map((r) => r.reason?.message || "Unknown error");
+
+    return {deleted, errors};
+  }
+
+  /**
+   * Delete from local IndexedDB only
+   */
+  private async deleteFromLocal(id: string): Promise<void> {
     await db.cards.where("groupId").equals(id).delete();
     await db.groups.delete(id);
-
-    // 2. Background sync to Supabase (if user is authenticated)
-    if (this.userId && groupToDelete) {
-      this.syncToSupabase("delete", groupToDelete).catch((error) => {
-        console.warn("Background sync failed for group deletion:", error);
-        // TODO: Queue for retry
-      });
-    }
   }
 
   /**
    * Background sync operation to Supabase
    */
-  private async syncToSupabase(operation: "create" | "update" | "delete", group: Group): Promise<void> {
+  private async syncOperationToSupabase(operation: "create" | "update" | "delete", group: Group): Promise<void> {
     if (!this.userId) return;
 
     try {
@@ -187,7 +219,7 @@ export class HybridGroupRepository extends BaseRepository<Group> {
           name: supabaseGroup.name,
           description: supabaseGroup.description || "",
           tags: supabaseGroup.tags || [],
-          isActive: supabaseGroup.isActive ?? true,
+          isActive: supabaseGroup.is_active ?? true,
           source: supabaseGroup.source || "user_created",
           cardCount: supabaseGroup.card_count || 0,
           studyCardCount: supabaseGroup.study_card_count || 0,
@@ -223,6 +255,82 @@ export class HybridGroupRepository extends BaseRepository<Group> {
       return {synced: syncedCount};
     } catch (error) {
       console.error("Sync from Supabase failed:", error);
+      return {
+        synced: 0,
+        error: error instanceof Error ? error.message : "Sync failed",
+      };
+    }
+  }
+
+  /**
+   * Sync all local groups to Supabase
+   * Used to push local changes to cloud during initial sync
+   */
+  async syncAllGroupsToSupabase(): Promise<{synced: number; error?: string}> {
+    if (!this.userId) {
+      return {synced: 0, error: "User not authenticated"};
+    }
+
+    try {
+      // Get all local groups (exclude starter pack - it should stay local only)
+      const allLocalGroups = await this.findAll();
+      const localGroups = allLocalGroups.filter((group) => group.source !== "starter_pack");
+
+      // Get all cloud groups for comparison
+      const cloudResult = await GroupService.retryOperation(() => GroupService.getUserGroups(this.userId!));
+      if (cloudResult.error) {
+        return {synced: 0, error: cloudResult.error.message};
+      }
+
+      const cloudGroups = cloudResult.data || [];
+      const cloudGroupsMap = new Map(cloudGroups.map((g) => [g.id, g]));
+
+      let syncedCount = 0;
+
+      for (const localGroup of localGroups) {
+        const cloudGroup = cloudGroupsMap.get(localGroup.id);
+
+        if (!cloudGroup) {
+          // MERGE: Local group doesn't exist in cloud → push to cloud
+          const createResult = await GroupService.retryOperation(() =>
+            GroupService.createGroup(this.userId!, {
+              name: localGroup.name,
+              description: localGroup.description,
+              tags: localGroup.tags,
+              isActive: localGroup.isActive,
+              source: localGroup.source,
+            })
+          );
+
+          if (!createResult.error) {
+            syncedCount++;
+          }
+        } else {
+          // NEWER WINS: Compare timestamps
+          const localUpdated = localGroup.updatedAt;
+          const cloudUpdated = cloudGroup.updated_at ? new Date(cloudGroup.updated_at) : new Date(0);
+
+          if (localUpdated > cloudUpdated) {
+            // Local is newer → update cloud
+            const updateResult = await GroupService.retryOperation(() =>
+              GroupService.updateGroup(this.userId!, localGroup.id, {
+                name: localGroup.name,
+                description: localGroup.description,
+                tags: localGroup.tags,
+                isActive: localGroup.isActive,
+              })
+            );
+
+            if (!updateResult.error) {
+              syncedCount++;
+            }
+          }
+        }
+      }
+
+      return {synced: syncedCount};
+    } catch (error) {
+      console.error("Sync to Supabase failed:", error);
       return {
         synced: 0,
         error: error instanceof Error ? error.message : "Sync failed",

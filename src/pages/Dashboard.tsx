@@ -1,7 +1,7 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../store/hooks";
-import {loadGroups, deleteGroup} from "../store/slices/groupSlice";
+import {loadGroups, deleteGroup, deleteGroups} from "../store/slices/groupSlice";
 import {groupActions} from "../store/slices/groupSlice";
 import {loadCards} from "../store/slices/cardSlice";
 import {selectAllGroups, selectGroupsLoading, selectGroupsError} from "../store/selectors/groupSelectors";
@@ -13,6 +13,13 @@ export const Dashboard: React.FC = () => {
   const groups = useAppSelector(selectAllGroups);
   const isLoading = useAppSelector(selectGroupsLoading);
   const error = useAppSelector(selectGroupsError);
+
+  // Multi-select state
+  const [selectedGroups, setSelectedGroups] = useState<Set<string>>(new Set());
+  const [isSelectMode, setIsSelectMode] = useState(false);
+
+  // Filter out starter pack for selection (can't be deleted)
+  const selectableGroups = groups.filter((group) => !StarterPackService.isStarterPack(group.id));
 
   useEffect(() => {
     dispatch(loadGroups());
@@ -36,6 +43,37 @@ export const Dashboard: React.FC = () => {
     }
   };
 
+  // Multi-select handlers
+  const handleToggleSelectMode = () => {
+    setIsSelectMode(!isSelectMode);
+    setSelectedGroups(new Set());
+  };
+
+  const handleToggleGroup = (groupId: string) => {
+    const newSelected = new Set(selectedGroups);
+    newSelected.has(groupId) ? newSelected.delete(groupId) : newSelected.add(groupId);
+    setSelectedGroups(newSelected);
+  };
+
+  const handleSelectAll = () => {
+    setSelectedGroups(selectedGroups.size === selectableGroups.length ? new Set() : new Set(selectableGroups.map((g) => g.id)));
+  };
+
+  const handleBulkDelete = async () => {
+    const selectedIds = Array.from(selectedGroups);
+    const selectedNames = groups.filter((g) => selectedIds.includes(g.id)).map((g) => g.name);
+
+    if (window.confirm(`Are you sure you want to delete ${selectedIds.length} groups?\n\n${selectedNames.join(", ")}\n\nThis will also delete all cards in these groups.`)) {
+      try {
+        await dispatch(deleteGroups(selectedIds)).unwrap();
+        setSelectedGroups(new Set());
+        setIsSelectMode(false);
+      } catch (error) {
+        console.error("Failed to delete groups:", error);
+      }
+    }
+  };
+
   if (isLoading && groups.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-64">
@@ -54,9 +92,16 @@ export const Dashboard: React.FC = () => {
           <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">Study Groups</h1>
           <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">Organize your flashcards into focused study groups</p>
         </div>
-        <Button asChild>
-          <Link to="/groups/new">+ New Group</Link>
-        </Button>
+        <div className="flex items-center space-x-2">
+          {selectableGroups.length > 0 && (
+            <Button variant={isSelectMode ? "secondary" : "ghost"} onClick={handleToggleSelectMode} className="text-sm">
+              {isSelectMode ? "Cancel" : "Select"}
+            </Button>
+          )}
+          <Button asChild>
+            <Link to="/groups/new">+ New Group</Link>
+          </Button>
+        </div>
       </div>
       {error && (
         <Card className="border-error-200 bg-error-50 dark:border-error-800 dark:bg-error-900/20">
@@ -69,6 +114,24 @@ export const Dashboard: React.FC = () => {
             </div>
             <Button variant="ghost" size="sm" onClick={() => dispatch(groupActions.clearError())} className="text-error-600 hover:text-error-700">
               Dismiss
+            </Button>
+          </div>
+        </Card>
+      )}
+
+      {isSelectMode && (
+        <Card className="border-primary-200 bg-primary-50 dark:border-primary-800 dark:bg-primary-900/20">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <span className="text-sm font-medium text-primary-900 dark:text-primary-100">
+                {selectedGroups.size} of {selectableGroups.length} selected
+              </span>
+              <Button variant="ghost" size="sm" onClick={handleSelectAll} className="text-primary-700 hover:text-primary-800 dark:text-primary-300 dark:hover:text-primary-200">
+                {selectedGroups.size === selectableGroups.length ? "Deselect All" : "Select All"}
+              </Button>
+            </div>
+            <Button variant="danger" size="sm" onClick={handleBulkDelete} disabled={selectedGroups.size === 0}>
+              Delete Selected ({selectedGroups.size})
             </Button>
           </div>
         </Card>
@@ -96,6 +159,8 @@ export const Dashboard: React.FC = () => {
                 <div className="mb-4 flex items-start justify-between">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
+                      {/* Selection checkbox */}
+                      {isSelectMode && !isStarterPack && <input type="checkbox" checked={selectedGroups.has(group.id)} onChange={() => handleToggleGroup(group.id)} className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500" />}
                       <h3 className="truncate text-lg font-semibold text-neutral-900 dark:text-neutral-100">{group.name}</h3>
                       {isStarterPack && <span className="text-pink-500">❤️</span>}
                     </div>
@@ -104,22 +169,24 @@ export const Dashboard: React.FC = () => {
                       {isStarterPack && <span className="inline-flex items-center rounded-full bg-rose-100 px-2.5 py-0.5 text-xs font-medium text-rose-800 dark:bg-rose-900 dark:text-rose-200">Special ✨</span>}
                     </div>
                   </div>
-                  <div className="flex items-center space-x-1 opacity-0 transition-opacity group-hover:opacity-100">
-                    <Button variant="ghost" size="sm" asChild className="h-8 w-8 p-0">
-                      <Link to={`/groups/${group.id}/edit`} title="Edit group">
-                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                      </Link>
-                    </Button>
-                    {!isStarterPack && (
-                      <Button variant="ghost" size="sm" onClick={() => handleDeleteGroup(group.id, group.name)} className="h-8 w-8 p-0 text-error-500 hover:text-error-600" title="Delete group">
-                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
+                  {!isSelectMode && (
+                    <div className="flex items-center space-x-1 opacity-0 transition-opacity group-hover:opacity-100">
+                      <Button variant="ghost" size="sm" asChild className="h-8 w-8 p-0">
+                        <Link to={`/groups/${group.id}/edit`} title="Edit group">
+                          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                        </Link>
                       </Button>
-                    )}
-                  </div>
+                      {!isStarterPack && (
+                        <Button variant="ghost" size="sm" onClick={() => handleDeleteGroup(group.id, group.name)} className="h-8 w-8 p-0 text-error-500 hover:text-error-600" title="Delete group">
+                          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </Button>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Description */}
