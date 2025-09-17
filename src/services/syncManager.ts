@@ -59,15 +59,17 @@ export class SyncManager {
    * Called when user first logs in or app starts
    */
   async performInitialSync(): Promise<{success: boolean; error?: string; stats?: {groups: number; cards: number}}> {
+    console.log("🔍 [SyncManager] performInitialSync() called, userId:", this.userId);
     if (!this.userId) {
       return {success: false, error: "User not authenticated"};
     }
 
     if (this.syncInProgress) {
+      console.log("🔍 [SyncManager] Sync already in progress, skipping");
       return {success: false, error: "Sync already in progress"};
     }
 
-    console.log("🔄 Starting bidirectional initial sync...");
+    console.log("🔄 [SyncManager] Starting bidirectional initial sync...");
     this.syncInProgress = true;
 
     try {

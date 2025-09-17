@@ -37,8 +37,9 @@ export class GroupService {
   /**
    * Create a new group
    */
-  static async createGroup(userId: string, groupData: Omit<Group, "id" | "createdAt" | "updatedAt" | "studyCardCount" | "cardCount">): Promise<{data: SupabaseGroup | null; error: PostgrestError | null}> {
-    const supabaseGroup: Omit<SupabaseGroup, "id" | "created_at" | "updated_at"> = {
+  static async createGroup(userId: string, groupData: Omit<Group, "id" | "createdAt" | "updatedAt" | "studyCardCount" | "cardCount">, customId?: string): Promise<{data: SupabaseGroup | null; error: PostgrestError | null}> {
+    const supabaseGroup: Omit<SupabaseGroup, "created_at" | "updated_at"> = {
+      id: customId || crypto.randomUUID(), // Use provided ID or generate new one
       user_id: userId,
       name: groupData.name,
       description: groupData.description || "",

@@ -51,6 +51,13 @@ export class HybridGroupRepository extends BaseRepository<Group> {
       source: entity.source || "user_created",
     };
 
+    console.log("🔍 [HybridGroupRepo] Creating group:", {
+      id: group.id,
+      name: group.name,
+      source: group.source,
+      userId: this.userId,
+    });
+
     // 1. Write to IndexedDB immediately (local-first)
     await db.groups.add(group);
 
@@ -148,14 +155,19 @@ export class HybridGroupRepository extends BaseRepository<Group> {
     try {
       switch (operation) {
         case "create":
-          await GroupService.retryOperation(() =>
-            GroupService.createGroup(this.userId!, {
-              name: group.name,
-              description: group.description,
-              tags: group.tags,
-              isActive: group.isActive,
-              source: group.source,
-            })
+          await GroupService.retryOperation(
+            () =>
+              GroupService.createGroup(
+                this.userId!,
+                {
+                  name: group.name,
+                  description: group.description,
+                  tags: group.tags,
+                  isActive: group.isActive,
+                  source: group.source,
+                },
+                group.id
+              ) // 🎯 PRESERVE LOCAL ID
           );
           break;
 
@@ -198,6 +210,7 @@ export class HybridGroupRepository extends BaseRepository<Group> {
    * Used for initial load and periodic sync
    */
   async syncFromSupabase(): Promise<{synced: number; error?: string}> {
+    console.log("🔍 [HybridGroupRepo] syncFromSupabase() called, userId:", this.userId);
     if (!this.userId) {
       return {synced: 0, error: "User not authenticated"};
     }
@@ -210,6 +223,14 @@ export class HybridGroupRepository extends BaseRepository<Group> {
       }
 
       const supabaseGroups = result.data;
+      console.log(
+        "🔍 [HybridGroupRepo] Fetched from Supabase:",
+        supabaseGroups.map((g) => ({
+          id: g.id,
+          name: g.name,
+          source: g.source,
+        }))
+      );
       let syncedCount = 0;
 
       for (const supabaseGroup of supabaseGroups) {
@@ -232,6 +253,11 @@ export class HybridGroupRepository extends BaseRepository<Group> {
 
         if (!existingGroup) {
           // Add new group
+          console.log("🔍 [HybridGroupRepo] Adding new group from Supabase:", {
+            id: localGroup.id,
+            name: localGroup.name,
+            source: localGroup.source,
+          });
           await db.groups.add(localGroup);
           syncedCount++;
         } else {
@@ -267,6 +293,7 @@ export class HybridGroupRepository extends BaseRepository<Group> {
    * Used to push local changes to cloud during initial sync
    */
   async syncAllGroupsToSupabase(): Promise<{synced: number; error?: string}> {
+    console.log("🔍 [HybridGroupRepo] syncAllGroupsToSupabase() called, userId:", this.userId);
     if (!this.userId) {
       return {synced: 0, error: "User not authenticated"};
     }
@@ -274,7 +301,23 @@ export class HybridGroupRepository extends BaseRepository<Group> {
     try {
       // Get all local groups (exclude starter pack - it should stay local only)
       const allLocalGroups = await this.findAll();
+      console.log(
+        "🔍 [HybridGroupRepo] All local groups before filtering:",
+        allLocalGroups.map((g) => ({
+          id: g.id,
+          name: g.name,
+          source: g.source,
+        }))
+      );
       const localGroups = allLocalGroups.filter((group) => group.source !== "starter_pack");
+      console.log(
+        "🔍 [HybridGroupRepo] Filtered groups (no starter pack):",
+        localGroups.map((g) => ({
+          id: g.id,
+          name: g.name,
+          source: g.source,
+        }))
+      );
 
       // Get all cloud groups for comparison
       const cloudResult = await GroupService.retryOperation(() => GroupService.getUserGroups(this.userId!));
@@ -291,15 +334,20 @@ export class HybridGroupRepository extends BaseRepository<Group> {
         const cloudGroup = cloudGroupsMap.get(localGroup.id);
 
         if (!cloudGroup) {
-          // MERGE: Local group doesn't exist in cloud → push to cloud
-          const createResult = await GroupService.retryOperation(() =>
-            GroupService.createGroup(this.userId!, {
-              name: localGroup.name,
-              description: localGroup.description,
-              tags: localGroup.tags,
-              isActive: localGroup.isActive,
-              source: localGroup.source,
-            })
+          // MERGE: Local group doesn't exist in cloud → push to cloud with same ID
+          const createResult = await GroupService.retryOperation(
+            () =>
+              GroupService.createGroup(
+                this.userId!,
+                {
+                  name: localGroup.name,
+                  description: localGroup.description,
+                  tags: localGroup.tags,
+                  isActive: localGroup.isActive,
+                  source: localGroup.source,
+                },
+                localGroup.id
+              ) // 🎯 PRESERVE LOCAL ID
           );
 
           if (!createResult.error) {

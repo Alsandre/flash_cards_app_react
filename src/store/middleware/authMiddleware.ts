@@ -26,15 +26,25 @@ export const authMiddleware: Middleware = (store) => (next) => (action) => {
         }
 
         // Initialize repositories and sync manager (only once)
+        console.log("🔍 [AuthMiddleware] Initializing repos for user:", user.email);
         initializeRepositories(user.id);
         syncManager.initialize(user.id);
-        if (!store.getState().sync.isInitialSyncComplete && !store.getState().sync.isSyncing) {
-          console.log("Starting initial sync for user:", user.email);
+        const syncState = store.getState().sync;
+        console.log("🔍 [AuthMiddleware] Sync state:", {
+          isInitialSyncComplete: syncState.isInitialSyncComplete,
+          isSyncing: syncState.isSyncing,
+          userEmail: user.email,
+        });
+        if (!syncState.isInitialSyncComplete && !syncState.isSyncing) {
+          console.log("🔍 [AuthMiddleware] Starting initial sync for user:", user.email);
           dispatch(performInitialSync(user.id));
+        } else {
+          console.log("🔍 [AuthMiddleware] Skipping sync - already complete or in progress");
         }
       });
     } else if (user && state.auth.userProfile && !state.sync.isInitialSyncComplete && !state.sync.isSyncing) {
       // User has profile but sync not complete - start sync
+      console.log("🔍 [AuthMiddleware] User has profile, starting sync for:", user.email);
       initializeRepositories(user.id);
       syncManager.initialize(user.id);
       dispatch(performInitialSync(user.id));

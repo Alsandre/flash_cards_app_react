@@ -38,8 +38,9 @@ export class CardService {
   /**
    * Create a new card
    */
-  static async createCard(userId: string, groupId: string, cardData: Omit<Card, "id" | "groupId" | "createdAt" | "updatedAt">): Promise<{data: SupabaseCard | null; error: PostgrestError | null}> {
-    const supabaseCard: Omit<SupabaseCard, "id" | "created_at" | "updated_at"> = {
+  static async createCard(userId: string, groupId: string, cardData: Omit<Card, "id" | "groupId" | "createdAt" | "updatedAt">, customId?: string): Promise<{data: SupabaseCard | null; error: PostgrestError | null}> {
+    const supabaseCard: Omit<SupabaseCard, "created_at" | "updated_at"> = {
+      id: customId || crypto.randomUUID(), // Use provided ID or generate new one
       user_id: userId,
       group_id: groupId,
       content: cardData.content,

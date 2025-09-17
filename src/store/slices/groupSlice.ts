@@ -17,10 +17,20 @@ const initialState: GroupsState = {
 
 // Async Thunks
 export const loadGroups = createAsyncThunk("groups/loadGroups", async (_, {rejectWithValue}) => {
+  console.log("🔍 [GroupSlice] loadGroups() called - ensuring starter pack exists");
   try {
     // Ensure starter pack exists first
     await StarterPackService.ensureStarterPackExists();
+    console.log("🔍 [GroupSlice] Getting groups with card counts");
     const groups = await groupRepo.getGroupsWithCardCounts();
+    console.log(
+      "🔍 [GroupSlice] Loaded groups:",
+      groups.map((g) => ({
+        id: g.id,
+        name: g.name,
+        source: g.source,
+      }))
+    );
     return groups;
   } catch (error) {
     return rejectWithValue(error instanceof Error ? error.message : "Failed to load groups");

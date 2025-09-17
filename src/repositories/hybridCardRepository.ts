@@ -145,27 +145,33 @@ export class HybridCardRepository extends BaseRepository<Card> {
     try {
       switch (operation) {
         case "create":
-          await CardService.retryOperation(() =>
-            CardService.createCard(this.userId!, card.groupId, {
-              content: card.content,
-              answer: card.answer,
-              hint: card.hint,
-              userNote: card.userNote,
-              difficultyRating: card.difficultyRating,
-              totalAttempts: card.totalAttempts,
-              correctAttempts: card.correctAttempts,
-              easeFactor: card.easeFactor,
-              interval: card.interval,
-              repetitions: card.repetitions,
-              lastStudiedAt: card.lastStudiedAt,
-              nextReviewDate: card.nextReviewDate,
-              averageResponseTime: card.averageResponseTime,
-              retentionScore: card.retentionScore,
-              sessionAttempts: card.sessionAttempts,
-              tags: card.tags,
-              isActive: card.isActive,
-              source: card.source,
-            })
+          await CardService.retryOperation(
+            () =>
+              CardService.createCard(
+                this.userId!,
+                card.groupId,
+                {
+                  content: card.content,
+                  answer: card.answer,
+                  hint: card.hint,
+                  userNote: card.userNote,
+                  difficultyRating: card.difficultyRating,
+                  totalAttempts: card.totalAttempts,
+                  correctAttempts: card.correctAttempts,
+                  easeFactor: card.easeFactor,
+                  interval: card.interval,
+                  repetitions: card.repetitions,
+                  lastStudiedAt: card.lastStudiedAt,
+                  nextReviewDate: card.nextReviewDate,
+                  averageResponseTime: card.averageResponseTime,
+                  retentionScore: card.retentionScore,
+                  sessionAttempts: card.sessionAttempts,
+                  tags: card.tags,
+                  isActive: card.isActive,
+                  source: card.source,
+                },
+                card.id
+              ) // 🎯 PRESERVE LOCAL ID
           );
           break;
 
