@@ -62,7 +62,7 @@ export class BackupService {
     }
   }
 
-  static async getBackups(): Promise<{success: boolean; backups?: any[]; error?: string}> {
+  static async getBackups(): Promise<{success: boolean; backups?: unknown[]; error?: string}> {
     try {
       const deviceId = this.getDeviceId();
 

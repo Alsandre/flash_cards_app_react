@@ -1,6 +1,7 @@
 import {createSelector} from "@reduxjs/toolkit";
 import type {RootState} from "../store";
 import {selectUserId, selectIsAuthenticated} from "./authSelectors";
+import type {Card} from "../../types/card-schema";
 
 // Base selectors
 export const selectCardsState = (state: RootState) => state.cards;
@@ -9,7 +10,7 @@ export const selectCardsLoading = (state: RootState) => state.cards.loading;
 export const selectCardsError = (state: RootState) => state.cards.error;
 
 // Parameterized selectors
-export const selectCardById = createSelector([selectAllCards, (_state: RootState, cardId: string) => cardId], (cards, cardId) => cards.find((card: any) => card.id === cardId));
+export const selectCardById = createSelector([selectAllCards, (_state: RootState, cardId: string) => cardId], (cards: Card[], cardId: string) => cards.find((card: Card) => card.id === cardId));
 
 export const selectCardsByGroup = createSelector([selectAllCards, (_state: RootState, groupId: string) => groupId], (cards, groupId) => cards.filter((card) => card.groupId === groupId));
 
@@ -28,36 +29,36 @@ export const selectUserCards = createSelector([selectAllCards, selectUserId, sel
   });
 });
 
-export const selectUserCardById = createSelector([selectUserCards, (_state: RootState, cardId: string) => cardId], (userCards, cardId) => userCards.find((card: any) => card.id === cardId));
+export const selectUserCardById = createSelector([selectUserCards, (_state: RootState, cardId: string) => cardId], (userCards: Card[], cardId: string) => userCards.find((card: Card) => card.id === cardId));
 
-export const selectUserCardsByGroup = createSelector([selectUserCards, (_state: RootState, groupId: string) => groupId], (userCards, groupId) => userCards.filter((card: any) => card.groupId === groupId));
+export const selectUserCardsByGroup = createSelector([selectUserCards, (_state: RootState, groupId: string) => groupId], (userCards: Card[], groupId: string) => userCards.filter((card: Card) => card.groupId === groupId));
 
 // Active cards only (user's active cards)
-export const selectActiveUserCards = createSelector([selectUserCards], (userCards) => userCards.filter((card: any) => card.isActive));
+export const selectActiveUserCards = createSelector([selectUserCards], (userCards: Card[]) => userCards.filter((card: Card) => card.isActive));
 
 // Cards by difficulty
-export const selectUserCardsByDifficulty = createSelector([selectUserCards, (_state: RootState, difficulty: "easy" | "medium" | "hard") => difficulty], (userCards, difficulty) => userCards.filter((card: any) => card.difficultyRating === difficulty));
+export const selectUserCardsByDifficulty = createSelector([selectUserCards, (_state: RootState, difficulty: "easy" | "medium" | "hard") => difficulty], (userCards: Card[], difficulty: "easy" | "medium" | "hard") => userCards.filter((card: Card) => card.difficultyRating === difficulty));
 
 // Cards by source
-export const selectUserCardsBySource = createSelector([selectUserCards, (_state: RootState, source: string) => source], (userCards, source) => userCards.filter((card: any) => card.source === source));
+export const selectUserCardsBySource = createSelector([selectUserCards, (_state: RootState, source: string) => source], (userCards: Card[], source: string) => userCards.filter((card: Card) => card.source === source));
 
 // Computed selectors - user-aware
-export const selectUserStudyableCards = createSelector([selectUserCards], (userCards) => userCards.filter((card: any) => card.isActive && card.content && card.answer));
+export const selectUserStudyableCards = createSelector([selectUserCards], (userCards: Card[]) => userCards.filter((card: Card) => card.isActive && card.content && card.answer));
 
 export const selectUserCardStats = createSelector([selectUserCards], (userCards) => {
   const totalCards = userCards.length;
-  const studiedCards = userCards.filter((card: any) => card.totalAttempts > 0).length;
-  const averageAccuracy = userCards.length > 0 ? userCards.reduce((sum: any, card: any) => sum + (card.totalAttempts > 0 ? card.correctAttempts / card.totalAttempts : 0), 0) / userCards.length : 0;
+  const studiedCards = userCards.filter((card: Card) => card.totalAttempts > 0).length;
+  const averageAccuracy = userCards.length > 0 ? userCards.reduce((sum: number, card: Card) => sum + (card.totalAttempts > 0 ? card.correctAttempts / card.totalAttempts : 0), 0) / userCards.length : 0;
 
   // Difficulty breakdown
-  const easyCards = userCards.filter((card: any) => card.difficultyRating === "easy").length;
-  const mediumCards = userCards.filter((card: any) => card.difficultyRating === "medium").length;
-  const hardCards = userCards.filter((card: any) => card.difficultyRating === "hard").length;
-  const unratedCards = userCards.filter((card: any) => !card.difficultyRating).length;
+  const easyCards = userCards.filter((card: Card) => card.difficultyRating === "easy").length;
+  const mediumCards = userCards.filter((card: Card) => card.difficultyRating === "medium").length;
+  const hardCards = userCards.filter((card: Card) => card.difficultyRating === "hard").length;
+  const unratedCards = userCards.filter((card: Card) => !card.difficultyRating).length;
 
   // Source breakdown
-  const userCreatedCards = userCards.filter((card: any) => card.source === "user_created").length;
-  const starterPackCards = userCards.filter((card: any) => card.source === "starter_pack").length;
+  const userCreatedCards = userCards.filter((card: Card) => card.source === "user_created").length;
+  const starterPackCards = userCards.filter((card: Card) => card.source === "starter_pack").length;
 
   return {
     totalCards,
@@ -78,9 +79,9 @@ export const selectUserCardStats = createSelector([selectUserCards], (userCards)
 });
 
 // Cards due for review (spaced repetition)
-export const selectUserCardsDueForReview = createSelector([selectUserCards], (userCards) => {
+export const selectUserCardsDueForReview = createSelector([selectUserCards], (userCards: Card[]) => {
   const now = new Date();
-  return userCards.filter((card: any) => {
+  return userCards.filter((card: Card) => {
     if (!card.nextReviewDate) return true; // Never studied
     return new Date(card.nextReviewDate) <= now;
   });

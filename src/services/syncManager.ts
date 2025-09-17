@@ -1,5 +1,7 @@
 import {HybridGroupRepository} from "../repositories/hybridGroupRepository";
 import {HybridCardRepository} from "../repositories/hybridCardRepository";
+import type {Group} from "../types/group-schema";
+import type {Card} from "../types/card-schema";
 import {UserService} from "./userService";
 
 /**
@@ -15,7 +17,7 @@ export class SyncManager {
     type: "group" | "card";
     operation: "create" | "update" | "delete";
     id: string;
-    data: any;
+    data: Group | Card;
     attempts: number;
   }> = [];
 
@@ -187,7 +189,7 @@ export class SyncManager {
   /**
    * Queue operation for retry (when sync fails)
    */
-  queueOperation(type: "group" | "card", operation: "create" | "update" | "delete", id: string, data: any) {
+  queueOperation(type: "group" | "card", operation: "create" | "update" | "delete", id: string, data: Group | Card) {
     this.syncQueue.push({
       type,
       operation,

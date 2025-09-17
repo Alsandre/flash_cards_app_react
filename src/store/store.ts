@@ -21,7 +21,7 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: ["persist/PERSIST"],
-        isSerializable: (value: any) => {
+        isSerializable: (value: unknown) => {
           if (value instanceof Date) return true;
           return typeof value !== "object" || value === null || Array.isArray(value) || value.constructor === Object;
         },

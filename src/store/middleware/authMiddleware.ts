@@ -3,13 +3,14 @@ import {authActions, loadUserProfile, createUserProfile} from "../slices/authSli
 import {performInitialSync, syncActions} from "../slices/syncSlice";
 import {syncManager} from "../../services/syncManager";
 import {initializeRepositories, clearRepositories} from "../../services/repositoryService";
+import type {RootState, AppDispatch} from "../store";
 import type {User} from "@supabase/supabase-js";
 
 // Auth middleware for syncing with React Context and handling auth events
 export const authMiddleware: Middleware = (store) => (next) => (action) => {
   const result = next(action);
-  const state = store.getState() as any;
-  const dispatch = store.dispatch as any;
+  const state = store.getState() as RootState;
+  const dispatch = store.dispatch as AppDispatch;
 
   // Listen for auth state changes from React Context
   if (authActions.setUser.match(action)) {
@@ -17,7 +18,7 @@ export const authMiddleware: Middleware = (store) => (next) => (action) => {
 
     if (user && !state.auth.userProfile && !state.auth.profileLoading) {
       // User logged in but no profile loaded - try to load or create profile
-      dispatch(loadUserProfile(user.id)).then((profileResult: any) => {
+      dispatch(loadUserProfile(user.id)).then((profileResult) => {
         if (profileResult.type === "auth/loadUserProfile/rejected") {
           // Profile doesn't exist, create it
           console.log("User profile not found, creating new profile for:", user.email);
