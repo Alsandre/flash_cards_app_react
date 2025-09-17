@@ -1,0 +1,109 @@
+---
+description: "Authentication implementation patterns and standards for Supabase integration"
+---
+
+# Authentication Implementation Standards
+
+## Core Implementation Pattern
+
+**ALWAYS use phased authentication approach:**
+
+### Phase 1: UI Foundation
+
+- Create `AuthProvider` with context pattern
+- Implement `ProtectedRoute` wrapper for auth-required routes
+- Build form components (`LoginForm`, `SignupForm`) with validation
+- Add user menu to existing layout with sign-out functionality
+
+### Phase 2: Data Layer Integration
+
+- Implement dual-write pattern (local + cloud storage)
+- Add `user_id` filtering to all data operations
+- Maintain IndexedDB fallback for offline functionality
+- Create user-specific services (`UserService`, `SyncService`)
+
+### Phase 3: Advanced Features
+
+- Auto-migrate anonymous data on first login
+- Implement shared workspace functionality
+- Add user role management (casual/manager)
+
+## Technical Requirements
+
+### Auth Provider Pattern
+
+```typescript
+// REQUIRED: Type-safe context with loading states
+interface AuthContextType {
+  user: User | null;
+  session: Session | null;
+  loading: boolean;
+  signIn: (email: string, password: string) => Promise<AuthResult>;
+  signUp: (email: string, password: string) => Promise<AuthResult>;
+  signOut: () => Promise<{error?: AuthError | null}>;
+}
+```
+
+### Protected Route Pattern
+
+```typescript
+// REQUIRED: Handle loading and redirect states
+const ProtectedRoute = ({children}) => {
+  const {user, loading} = useAuth();
+  if (loading) return <LoadingState />;
+  if (!user) return <Navigate to="/auth" replace />;
+  return children;
+};
+```
+
+### Form Security Standards
+
+- **ALWAYS** include show/hide password toggles
+- **ALWAYS** validate email format client-side
+- **ALWAYS** handle network errors gracefully
+- **ALWAYS** provide clear success/error feedback
+
+## Data Migration Strategy
+
+### Existing Data Handling
+
+1. **Preserve local data** during auth implementation
+2. **Auto-migrate on first login** - move IndexedDB data to user account
+3. **Dual-storage approach** - maintain local + cloud sync
+4. **Graceful degradation** - app works offline if network fails
+
+## Router Integration
+
+### Auth Routes Structure
+
+```
+/auth                    # Login/signup page (public)
+/                       # Dashboard (protected)
+/study/:groupId/:mode   # Study session (protected)
+/groups/:groupId        # Group management (protected)
+```
+
+### Navigation Flow
+
+- **Unauthenticated users** → `/auth` page
+- **Authenticated users** → redirect to dashboard
+- **Sign out** → redirect to `/auth`
+- **Session persistence** → automatic login on app reload
+
+## Quality Gates
+
+### NEVER ship without:
+
+- Loading states for all auth operations
+- Error handling for network failures
+- Form validation and user feedback
+- Proper TypeScript types for auth context
+- Protected routes for all user features
+
+### ALWAYS include:
+
+- Password visibility toggles
+- Email validation
+- Session persistence checking
+- Graceful error messages
+- Clear user feedback for all states

@@ -1,0 +1,183 @@
+---
+description: "Redux Toolkit migration patterns and state management standards"
+---
+
+# Redux Migration & State Management Standards
+
+## Migration Strategy
+
+### Big Bang vs Incremental
+
+**PREFER big bang migration for solo development:**
+
+- Migrate entire state tree in single session
+- Update all components simultaneously
+- Avoid mixed state management systems
+- Complete TypeScript migration before proceeding
+
+### Pre-Migration Checklist
+
+1. **Schema audit** - ensure all entity types are current
+2. **Component inventory** - identify all state consumers
+3. **Action mapping** - plan Zustand → Redux action equivalents
+4. **Selector strategy** - design memoized selectors upfront
+
+## Redux Toolkit Architecture
+
+### Slice Organization
+
+```typescript
+// REQUIRED: Co-locate related state, actions, and reducers
+const entitySlice = createSlice({
+  name: "entity",
+  initialState,
+  reducers: {
+    // Synchronous actions only
+  },
+  extraReducers: (builder) => {
+    // Async thunk handling
+  },
+});
+```
+
+### Async Thunk Pattern
+
+```typescript
+// REQUIRED: Handle loading states explicitly
+export const loadEntity = createAsyncThunk("entity/load", async (_, {rejectWithValue}) => {
+  try {
+    const data = await repository.findAll();
+    return data;
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
+});
+```
+
+### Selector Architecture
+
+```typescript
+// REQUIRED: Memoized selectors for performance
+export const selectEntityById = createSelector([selectAllEntities, (_: RootState, id: string) => id], (entities, id) => entities.find((entity) => entity.id === id));
+```
+
+## Component Migration Pattern
+
+### Hook Replacement
+
+```typescript
+// OLD: Zustand
+const {entities, loadEntities, isLoading} = useAppStore();
+
+// NEW: Redux Toolkit
+const dispatch = useAppDispatch();
+const entities = useAppSelector(selectAllEntities);
+const isLoading = useAppSelector(selectEntitiesLoading);
+const error = useAppSelector(selectEntitiesError);
+
+useEffect(() => {
+  dispatch(loadEntities());
+}, [dispatch]);
+```
+
+### State Access Pattern
+
+- **ALWAYS** use typed hooks (`useAppDispatch`, `useAppSelector`)
+- **ALWAYS** use selectors, never access state directly
+- **NEVER** destructure store state in components
+- **PREFER** specific selectors over generic state access
+
+## Persistence Integration
+
+### Middleware Configuration
+
+```typescript
+// REQUIRED: Custom serialization for Date objects
+middleware: (getDefaultMiddleware) =>
+  getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: ["persist/PERSIST"],
+      isSerializable: (value) => {
+        if (value instanceof Date) return true;
+        return /* standard serialization check */;
+      },
+    },
+  }).concat(persistenceMiddleware),
+```
+
+### Persistence Middleware Pattern
+
+- **Debounce writes** to prevent excessive disk I/O
+- **Handle async operations** gracefully
+- **Maintain data integrity** across app restarts
+- **Support offline-first** architecture
+
+## TypeScript Standards
+
+### Import Patterns
+
+```typescript
+// REQUIRED: Type-only imports for types
+import type {Entity} from "../types/entity-schema";
+import type {PayloadAction} from "@reduxjs/toolkit";
+import type {RootState} from "./store";
+
+// Regular imports for runtime values
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+```
+
+### Type Safety Requirements
+
+- **NEVER** use `any` types in Redux code
+- **ALWAYS** type async thunk parameters explicitly
+- **ALWAYS** type selector return values
+- **PREFER** strict typing over convenience
+
+## Migration Quality Gates
+
+### Phase 1: Store Setup
+
+- [ ] All slices created with proper typing
+- [ ] Persistence middleware integrated
+- [ ] Typed hooks available (`useAppDispatch`, `useAppSelector`)
+- [ ] Store provider wrapping app root
+
+### Phase 2: Component Migration
+
+- [ ] All `useAppStore` calls replaced
+- [ ] Components using selectors and dispatch
+- [ ] Loading states properly handled
+- [ ] Error states integrated
+
+### Phase 3: Data Flow Verification
+
+- [ ] Actions trigger expected state changes
+- [ ] Persistence working correctly
+- [ ] No memory leaks in subscriptions
+- [ ] TypeScript compilation clean
+
+## Common Migration Pitfalls
+
+### AVOID:
+
+- Mixed state management systems during migration
+- Direct state mutations outside reducers
+- Async operations in reducer functions
+- Non-serializable data without proper configuration
+
+### WATCH FOR:
+
+- Performance issues with excessive re-renders
+- Memory leaks from unsubscribed selectors
+- Persistence conflicts with async operations
+- TypeScript errors from incomplete migration
+
+## Post-Migration Verification
+
+### REQUIRED Tests:
+
+1. **State persistence** across app restarts
+2. **Loading states** for all async operations
+3. **Error handling** for failed operations
+4. **Memory usage** with development tools
+5. **TypeScript compilation** without errors

@@ -1,0 +1,225 @@
+---
+description: "Data schema migration patterns and entity evolution standards"
+---
+
+# Schema Migration Standards
+
+## Migration Strategy
+
+### Comprehensive Schema Updates
+
+**ALWAYS migrate schema comprehensively:**
+
+- Update all entity definitions simultaneously
+- Migrate all consuming components in same session
+- Update repositories, services, and test data together
+- Maintain backward compatibility during transition
+
+### Pre-Migration Planning
+
+1. **Schema comparison audit** - document all field changes
+2. **Component impact analysis** - identify all schema consumers
+3. **Migration script planning** - design data transformation logic
+4. **Rollback strategy** - plan for migration failures
+
+## Entity Schema Evolution
+
+### Schema Definition Pattern
+
+```typescript
+// REQUIRED: Comprehensive interface with all fields
+export interface Entity {
+  // Core identification
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+
+  // Business logic fields
+  // ... specific fields
+
+  // Analytics and tracking
+  // ... metrics fields
+
+  // System fields
+  isActive: boolean;
+  source: EntitySource;
+}
+
+// REQUIRED: Default values for all optional fields
+export const DEFAULT_ENTITY_VALUES = {
+  // ... all optional field defaults
+} as const;
+```
+
+### Migration Field Mapping
+
+```typescript
+// OLD Schema → NEW Schema mapping
+const FIELD_MIGRATIONS = {
+  front: "content", // Rename
+  back: "answer", // Rename
+  lastRating: "difficultyRating", // Rename + type change
+  lastReviewedAt: "lastStudiedAt", // Rename
+  // Add new fields with defaults
+  easeFactor: () => 2.5,
+  interval: () => 1,
+  retentionScore: () => 0.0,
+} as const;
+```
+
+## Component Migration Pattern
+
+### Systematic Component Updates
+
+1. **Repository layer** - update data access methods first
+2. **Service layer** - update business logic
+3. **Store/State** - update state management
+4. **UI Components** - update presentation layer
+5. **Test utilities** - update test data and mocks
+
+### Field Reference Updates
+
+```typescript
+// OLD: Legacy field access
+const cardContent = card.front;
+const cardAnswer = card.back;
+const rating = card.lastRating;
+
+// NEW: Updated field access
+const cardContent = card.content;
+const cardAnswer = card.answer;
+const rating = card.difficultyRating;
+```
+
+## Data Migration Implementation
+
+### Starter Pack Updates
+
+```typescript
+// REQUIRED: Version tracking for content updates
+export const STARTER_PACK_VERSION = "1.2";
+
+// REQUIRED: Default value spreading
+const cards = [
+  {
+    ...DEFAULT_CARD_VALUES,
+    content: "...",
+    answer: "...",
+    source: "starter_pack" as const,
+  },
+];
+```
+
+### Database Schema Evolution
+
+```typescript
+// REQUIRED: Dexie version upgrades
+db.version(2)
+  .stores({
+    cards: "++id, groupId, content, answer, difficultyRating, lastStudiedAt",
+  })
+  .upgrade((trans) => {
+    // Migration logic for existing data
+    return trans.cards.toCollection().modify((card) => {
+      card.content = card.front;
+      card.answer = card.back;
+      delete card.front;
+      delete card.back;
+    });
+  });
+```
+
+## Type Safety During Migration
+
+### Import Pattern Updates
+
+```typescript
+// REQUIRED: Update all type imports
+import type {Card} from "../types/card-schema"; // NEW
+import type {Group} from "../types/group-schema"; // NEW
+// Remove old imports
+// import type {Card as CardType} from "../types/entities"; // OLD
+```
+
+### Repository Method Updates
+
+```typescript
+// Update method signatures to match new schema
+async updateRating(
+  cardId: string,
+  rating: "easy" | "medium" | "hard"  // NEW rating type
+): Promise<Card> {
+  // ... implementation with new fields
+}
+```
+
+## Migration Quality Assurance
+
+### Pre-Migration Checklist
+
+- [ ] All entity schemas documented with complete interfaces
+- [ ] Default values defined for all optional fields
+- [ ] Migration mapping documented for renamed fields
+- [ ] Backward compatibility plan established
+
+### During Migration Checklist
+
+- [ ] Repository layer updated first
+- [ ] Service layer methods updated
+- [ ] State management updated
+- [ ] UI components updated systematically
+- [ ] Test data and utilities updated
+
+### Post-Migration Verification
+
+- [ ] All TypeScript compilation errors resolved
+- [ ] All components render without runtime errors
+- [ ] Data persistence working with new schema
+- [ ] Starter pack content uses new schema
+- [ ] No legacy field references remaining
+
+## Schema Versioning Strategy
+
+### Version Control
+
+```typescript
+// REQUIRED: Track schema versions
+export const SCHEMA_VERSION = {
+  CARD: "2.0",
+  GROUP: "1.1",
+  SESSION: "1.0",
+} as const;
+```
+
+### Migration Scripts
+
+- **Create migration utilities** for data transformation
+- **Version detection logic** to identify outdated data
+- **Automatic migration triggers** on app initialization
+- **Manual migration tools** for development/testing
+
+## Common Migration Issues
+
+### AVOID:
+
+- Partial schema updates leaving inconsistent state
+- Missing default values causing runtime errors
+- Incomplete component updates with legacy field access
+- Type mismatches between old and new schemas
+
+### WATCH FOR:
+
+- Runtime errors from undefined properties
+- TypeScript compilation failures
+- Data loss during field renaming
+- Performance issues from inefficient migrations
+
+## Testing Strategy
+
+### Migration Testing Requirements
+
+1. **Schema validation** - ensure all required fields present
+2. **Data integrity** - verify no data loss during migration
+3. **Component functionality** - test all UI with new schema
+4. **Persistence verification** - test save/load cycles
+5. **Performance impact** - measure migration execution time

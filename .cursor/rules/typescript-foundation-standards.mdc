@@ -1,0 +1,264 @@
+---
+description: "TypeScript foundation standards and systematic error resolution patterns"
+globs: "*.ts,*.tsx"
+---
+
+# TypeScript Foundation Standards
+
+## Strict Configuration Requirements
+
+### TSConfig Standards
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "verbatimModuleSyntax": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  }
+}
+```
+
+### Import/Export Standards
+
+```typescript
+// REQUIRED: Type-only imports when verbatimModuleSyntax enabled
+import type {User, Session} from "@supabase/supabase-js";
+import type {PayloadAction} from "@reduxjs/toolkit";
+import type {RootState} from "./store";
+
+// Runtime imports
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import {supabase} from "../services/supabase";
+```
+
+## Error Resolution Methodology
+
+### Systematic Audit Approach
+
+1. **Compile and collect** all TypeScript errors
+2. **Categorize by type** (import, type assignment, unused variables)
+3. **Fix by category** to avoid introducing new errors
+4. **Verify each fix** doesn't break runtime functionality
+5. **Final compilation check** before proceeding
+
+### Error Categories & Solutions
+
+#### Import/Export Errors
+
+```typescript
+// ERROR: Named import of type with verbatimModuleSyntax
+import {User} from "@supabase/supabase-js";
+
+// FIX: Type-only import
+import type {User} from "@supabase/supabase-js";
+```
+
+#### Unused Variable Errors
+
+```typescript
+// ERROR: Variable declared but never used
+const currentCard = useAppSelector(selectCurrentCard);
+
+// FIX: Remove unused variable or use underscore prefix
+const _currentCard = useAppSelector(selectCurrentCard); // If needed for future
+// OR simply remove the line entirely
+```
+
+#### Type Assignment Errors
+
+```typescript
+// ERROR: Property missing from type
+const group = {name: "Test"}; // Missing required properties
+
+// FIX: Use proper type construction
+const group: Omit<Group, "id" | "createdAt" | "updatedAt"> = {
+  name: "Test",
+  description: "",
+  tags: [],
+  isActive: true,
+  source: "user_created",
+};
+```
+
+## Schema Integration Standards
+
+### Default Values Pattern
+
+```typescript
+// REQUIRED: Comprehensive default values
+export const DEFAULT_ENTITY_VALUES = {
+  // Core fields
+  isActive: true,
+  source: "user_created" as const,
+  tags: [] as string[],
+
+  // Metrics
+  totalAttempts: 0,
+  averageResponseTime: 0,
+
+  // Optional fields
+  userNote: "",
+  lastStudiedAt: undefined, // Use undefined, not null
+} as const;
+
+// REQUIRED: Spread defaults in entity creation
+const newEntity = {
+  ...DEFAULT_ENTITY_VALUES,
+  specificField: "value",
+};
+```
+
+### Type Union Consistency
+
+```typescript
+// REQUIRED: Consistent string unions across codebase
+type Rating = "easy" | "medium" | "hard";
+type EntitySource = "user_created" | "starter_pack" | "shared";
+
+// Use everywhere, no mixed types
+interface Component {
+  rating?: Rating; // Not "dont_know" | "doubt" | "know"
+}
+```
+
+## Component Type Safety
+
+### Prop Interface Requirements
+
+```typescript
+// REQUIRED: Explicit prop interfaces
+interface ComponentProps {
+  entity: Entity;
+  onAction: (id: string, action: ActionType) => void;
+  disabled?: boolean;
+  className?: string;
+}
+
+// REQUIRED: Explicit function component typing
+const Component: React.FC<ComponentProps> = ({entity, onAction, disabled, className}) => {
+  // ...
+};
+```
+
+### Hook Usage Patterns
+
+```typescript
+// REQUIRED: Typed Redux hooks
+const dispatch = useAppDispatch(); // Not useDispatch
+const data = useAppSelector(selectData); // Not useSelector
+
+// REQUIRED: Explicit typing for complex state
+const [state, setState] = useState<ComplexType | null>(null);
+```
+
+## Repository & Service Standards
+
+### Method Signatures
+
+```typescript
+// REQUIRED: Explicit parameter and return types
+async create(
+  data: Omit<Entity, "id" | "createdAt" | "updatedAt">,
+  fixedId?: string
+): Promise<Entity> {
+  // Implementation
+}
+
+// REQUIRED: Error handling with typed errors
+async operation(): Promise<{data?: Entity; error?: string}> {
+  try {
+    const result = await repository.method();
+    return {data: result};
+  } catch (error) {
+    return {error: error instanceof Error ? error.message : "Unknown error"};
+  }
+}
+```
+
+### Generic Type Constraints
+
+```typescript
+// AVOID: Loose any types
+function handler(data: any): any {}
+
+// PREFER: Constrained generics or specific types
+function handler<T extends BaseEntity>(data: T): Promise<T> {}
+```
+
+## Quality Gates
+
+### Pre-Commit Requirements
+
+- [ ] Zero TypeScript compilation errors
+- [ ] No `any` types in production code
+- [ ] All imports properly categorized (type vs runtime)
+- [ ] Unused variables/parameters removed
+- [ ] Consistent type unions across components
+
+### Code Review Triggers
+
+- Any use of `any` type
+- Missing interface definitions
+- Inconsistent naming patterns
+- Mixed import styles
+- Runtime type assertions without validation
+
+### Performance Considerations
+
+```typescript
+// PREFER: Type-only imports for better tree shaking
+import type {LargeType} from "./large-module";
+
+// AVOID: Importing entire modules for types
+import {SomeLargeLibrary} from "large-library"; // Just for types
+```
+
+## Migration Support Patterns
+
+### Legacy Code Handling
+
+```typescript
+// During migration: explicit TODO comments
+// TODO: Update to new schema after migration complete
+const legacyField = entity.oldField; // Will be entity.newField
+
+// Temporary type assertions with comments
+const data = response as NewType; // Remove after API updated
+```
+
+### Gradual Strictness
+
+```typescript
+// Phase 1: Allow some flexibility during migration
+interface TemporaryEntity {
+  requiredField: string;
+  optionalField?: unknown; // Tighten later
+}
+
+// Phase 2: Full strictness after migration complete
+interface FinalEntity {
+  requiredField: string;
+  optionalField: SpecificType;
+}
+```
+
+## Error Prevention Strategies
+
+### ALWAYS:
+
+- Use strict TypeScript configuration
+- Define explicit interfaces for all props/parameters
+- Import types separately from runtime code
+- Handle error cases with typed error objects
+- Remove unused code immediately
+
+### NEVER:
+
+- Use `any` type in production code
+- Mix type and runtime imports when verbatimModuleSyntax enabled
+- Leave unused variables/parameters
+- Skip error handling in async operations
+- Commit code with TypeScript compilation errors

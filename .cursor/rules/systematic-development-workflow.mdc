@@ -1,0 +1,250 @@
+---
+alwaysApply: true
+---
+
+# Systematic Development Workflow Standards
+
+## Large Refactor Management
+
+### Pre-Refactor Assessment
+
+**ALWAYS conduct systematic audit before major changes:**
+
+1. **Scope Analysis**
+
+   - Document all affected components/files
+   - Identify breaking changes and dependencies
+   - Plan migration order (repositories → services → state → UI)
+   - Estimate time and complexity
+
+2. **Quality Baseline**
+
+   - Run full TypeScript compilation check
+   - Document existing errors/technical debt
+   - Ensure test suite passes (if applicable)
+   - Take backup of current stable state
+
+3. **Migration Strategy**
+   - **Big Bang vs Incremental**: Choose based on team size and risk tolerance
+   - **Rollback Plan**: Document how to revert if migration fails
+   - **Dependency Chain**: Order changes to minimize broken intermediate states
+
+### During Refactor Execution
+
+#### Phase-Based Approach
+
+```
+Phase 1: Data Layer (Repositories, Schemas, Services)
+Phase 2: State Management (Store, Actions, Selectors)
+Phase 3: UI Components (Forms, Pages, Containers)
+Phase 4: Integration Testing (E2E flows, Error handling)
+```
+
+#### Quality Gates Between Phases
+
+- [ ] TypeScript compilation clean
+- [ ] No runtime errors in console
+- [ ] Core functionality still works
+- [ ] No memory leaks or performance regressions
+
+### Post-Refactor Verification
+
+#### Systematic Testing Checklist
+
+1. **Functionality Verification**
+
+   - All main user flows work
+   - Data persistence functions correctly
+   - Error states handled gracefully
+   - Loading states display properly
+
+2. **Performance Verification**
+
+   - App startup time unchanged or improved
+   - Memory usage stable
+   - Network requests optimized
+   - UI responsiveness maintained
+
+3. **Code Quality Verification**
+   - Zero TypeScript errors
+   - No console warnings/errors
+   - Code style consistent
+   - Documentation updated
+
+## Error Resolution Methodology
+
+### Systematic Error Handling
+
+```typescript
+// 1. COLLECT: Gather all errors first
+$ yarn build 2>&1 | tee errors.log
+
+// 2. CATEGORIZE: Group by error type
+// - Import/export errors
+// - Type assignment errors
+// - Missing property errors
+// - Unused variable errors
+
+// 3. PRIORITIZE: Fix in order of impact
+// - Blocking compilation errors first
+// - Runtime safety errors second
+// - Code cleanliness errors last
+```
+
+### Error Fix Patterns
+
+```typescript
+// PATTERN: Type-only import fixes
+// OLD: import {Type} from "module";
+// NEW: import type {Type} from "module";
+
+// PATTERN: Missing property fixes
+// OLD: const obj = {name: "test"};
+// NEW: const obj = {...DEFAULT_VALUES, name: "test"};
+
+// PATTERN: Unused variable cleanup
+// OLD: const unused = getValue();
+// NEW: Remove line entirely or prefix with _
+```
+
+## Quality Assurance Standards
+
+### Code Review Self-Checklist
+
+Before considering work complete:
+
+- [ ] **Compilation**: `yarn build` succeeds without errors
+- [ ] **Runtime**: App loads and core functions work
+- [ ] **Types**: No `any` types introduced
+- [ ] **Performance**: No obvious performance regressions
+- [ ] **Documentation**: Major changes documented
+- [ ] **Testing**: Manual testing of affected workflows
+
+### Progressive Enhancement Approach
+
+```typescript
+// Phase 1: Make it work (basic functionality)
+const basicImplementation = () => {
+  // Simple, functional approach
+};
+
+// Phase 2: Make it right (proper architecture)
+const properImplementation = () => {
+  // Type-safe, maintainable approach
+};
+
+// Phase 3: Make it fast (optimization)
+const optimizedImplementation = () => {
+  // Performance-optimized approach
+};
+```
+
+## Migration Documentation Standards
+
+### Decision Documentation
+
+```markdown
+## Migration Decision Log
+
+### Context
+
+- What problem we're solving
+- Why this approach was chosen
+- Alternative approaches considered
+
+### Implementation
+
+- Technical approach taken
+- Key architectural decisions
+- Breaking changes introduced
+
+### Results
+
+- What was accomplished
+- Lessons learned
+- Future considerations
+```
+
+### Progress Tracking Pattern
+
+```markdown
+## Current Status: [Phase X of Y]
+
+### Completed ✅
+
+- [x] Task 1 with verification steps
+- [x] Task 2 with acceptance criteria
+
+### In Progress 🔄
+
+- [ ] Current task with specific next actions
+
+### Pending ⏳
+
+- [ ] Future task 1
+- [ ] Future task 2
+
+### Blockers 🚫
+
+- Issue description with owner/timeline
+```
+
+## Risk Management
+
+### High-Risk Change Indicators
+
+- Changing core data schemas
+- Migrating state management systems
+- Updating authentication/security code
+- Modifying build/deployment configuration
+- Large-scale component refactoring
+
+### Risk Mitigation Strategies
+
+1. **Backup Strategy**: Git commits before each major phase
+2. **Incremental Validation**: Test after each logical grouping of changes
+3. **Rollback Plan**: Document exact steps to revert changes
+4. **Parallel Development**: Keep old system functional during migration
+5. **Stakeholder Communication**: Clear progress updates and timeline estimates
+
+## Workflow Quality Metrics
+
+### Development Velocity Indicators
+
+- Time from "start" to "working basic version"
+- Time from "working" to "production ready"
+- Number of rollbacks/reverts required
+- TypeScript error count throughout process
+
+### Quality Indicators
+
+- Test coverage maintenance during changes
+- Performance benchmark stability
+- User experience regression count
+- Documentation completeness score
+
+### Success Criteria Template
+
+```markdown
+## Definition of Done
+
+### Functional Requirements
+
+- [ ] All user workflows operational
+- [ ] Data integrity maintained
+- [ ] Performance meets baseline
+- [ ] Error handling comprehensive
+
+### Technical Requirements
+
+- [ ] TypeScript compilation clean
+- [ ] Code style consistent
+- [ ] Documentation updated
+- [ ] Migration path documented
+
+### Business Requirements
+
+- [ ] No feature regressions
+- [ ] User experience maintained/improved
+- [ ] Development productivity maintained
+```
