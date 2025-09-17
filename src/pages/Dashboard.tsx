@@ -6,7 +6,6 @@ import {groupActions} from "../store/slices/groupSlice";
 import {loadCards} from "../store/slices/cardSlice";
 import {selectAllGroups, selectGroupsLoading, selectGroupsError} from "../store/selectors/groupSelectors";
 import {Button, Card, LoadingSpinner} from "../components/ui";
-import {WelcomeUpgradeModal} from "../components/common";
 import {StarterPackService} from "../services/starterPackService";
 
 export const Dashboard: React.FC = () => {
@@ -52,7 +51,8 @@ export const Dashboard: React.FC = () => {
 
   const handleToggleGroup = (groupId: string) => {
     const newSelected = new Set(selectedGroups);
-    newSelected.has(groupId) ? newSelected.delete(groupId) : newSelected.add(groupId);
+    if (newSelected.has(groupId)) newSelected.delete(groupId);
+    else newSelected.add(groupId);
     setSelectedGroups(newSelected);
   };
 
@@ -216,7 +216,6 @@ export const Dashboard: React.FC = () => {
       )}
 
       {/* Welcome modal for new app version */}
-      <WelcomeUpgradeModal />
     </div>
   );
 };
