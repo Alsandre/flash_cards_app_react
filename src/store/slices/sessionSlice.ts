@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import type {PayloadAction} from "@reduxjs/toolkit";
 
-interface SessionState {
+export interface SessionState {
   // Study session
   currentCardIndex: number;
   isFlipped: boolean;

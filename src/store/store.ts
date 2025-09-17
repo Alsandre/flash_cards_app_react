@@ -1,9 +1,12 @@
-import {configureStore} from "@reduxjs/toolkit";
+import {configureStore, type Middleware} from "@reduxjs/toolkit";
 import {cardSlice} from "./slices/cardSlice";
 import {sessionSlice} from "./slices/sessionSlice";
 import {groupSlice} from "./slices/groupSlice";
 import {uiSlice} from "./slices/uiSlice";
+import authSlice from "./slices/authSlice";
+import syncSlice from "./slices/syncSlice";
 import {persistenceMiddleware} from "./middleware/persistence";
+import {authMiddleware} from "./middleware/authMiddleware";
 
 export const store = configureStore({
   reducer: {
@@ -11,23 +14,29 @@ export const store = configureStore({
     sessions: sessionSlice.reducer,
     groups: groupSlice.reducer,
     ui: uiSlice.reducer,
+    auth: authSlice,
+    sync: syncSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        // Ignore these action types completely
         ignoredActions: ["persist/PERSIST"],
-        // Custom serialization check - allow Date objects
         isSerializable: (value: any) => {
-          // Allow Date objects
           if (value instanceof Date) return true;
-          // Use default serialization check for everything else
           return typeof value !== "object" || value === null || Array.isArray(value) || value.constructor === Object;
         },
       },
-    }).concat(persistenceMiddleware),
+    }).concat(persistenceMiddleware as Middleware, authMiddleware as Middleware),
   devTools: process.env.NODE_ENV !== "production",
 });
 
-export type RootState = ReturnType<typeof store.getState>;
+// Define types to avoid circular reference
+export type RootState = {
+  cards: ReturnType<typeof cardSlice.reducer>;
+  sessions: ReturnType<typeof sessionSlice.reducer>;
+  groups: ReturnType<typeof groupSlice.reducer>;
+  ui: ReturnType<typeof uiSlice.reducer>;
+  auth: ReturnType<typeof authSlice>;
+  sync: ReturnType<typeof syncSlice>;
+};
 export type AppDispatch = typeof store.dispatch;

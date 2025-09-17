@@ -2,11 +2,9 @@ import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import type {PayloadAction} from "@reduxjs/toolkit";
 import type {Card} from "../../types/card-schema";
 import {DEFAULT_CARD_VALUES} from "../../types/card-schema";
-import {CardRepository} from "../../repositories/cardRepository";
+import {cardRepo} from "../../services/repositoryService";
 
-const cardRepo = new CardRepository();
-
-interface CardsState {
+export interface CardsState {
   cards: Card[];
   loading: boolean;
   error: string | null;

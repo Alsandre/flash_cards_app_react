@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import type {PayloadAction} from "@reduxjs/toolkit";
 
-interface UIState {
+export interface UIState {
   theme: "light" | "dark";
   currentRoute: string;
   isLoading: boolean;

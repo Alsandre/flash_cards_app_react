@@ -1,9 +1,9 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import type {Group} from "../../types/group-schema";
-import {GroupRepository} from "../../repositories/groupRepository";
+import {groupRepo} from "../../services/repositoryService";
 import {StarterPackService} from "../../services/starterPackService";
 
-interface GroupsState {
+export interface GroupsState {
   groups: Group[];
   loading: boolean;
   error: string | null;
@@ -14,8 +14,6 @@ const initialState: GroupsState = {
   loading: false,
   error: null,
 };
-
-const groupRepo = new GroupRepository();
 
 // Async Thunks
 export const loadGroups = createAsyncThunk("groups/loadGroups", async (_, {rejectWithValue}) => {

@@ -1,5 +1,6 @@
 import {createSelector} from "@reduxjs/toolkit";
 import type {RootState} from "../store";
+import {selectUserId, selectIsAuthenticated} from "./authSelectors";
 
 // Base selectors
 export const selectGroupsState = (state: RootState) => state.groups;
@@ -8,18 +9,47 @@ export const selectGroupsLoading = (state: RootState) => state.groups.loading;
 export const selectGroupsError = (state: RootState) => state.groups.error;
 
 // Parameterized selectors
-export const selectGroupById = createSelector([selectAllGroups, (_state: RootState, groupId: string) => groupId], (groups, groupId) => groups.find((group) => group.id === groupId));
+export const selectGroupById = createSelector([selectAllGroups, (_state: RootState, groupId: string) => groupId], (groups, groupId) => groups.find((group: any) => group.id === groupId));
 
-// Computed selectors
-export const selectGroupsWithStats = createSelector([selectAllGroups], (groups) => {
-  const totalGroups = groups.length;
-  const totalCards = groups.reduce((sum, group) => sum + group.cardCount, 0);
-  const groupsWithCards = groups.filter((group) => group.cardCount > 0).length;
+// User-aware selectors - filter by authenticated user
+export const selectUserGroups = createSelector([selectAllGroups, selectUserId, selectIsAuthenticated], (groups, userId, isAuthenticated) => {
+  // Return all groups during development or when not authenticated
+  if (!isAuthenticated || !userId) {
+    return groups;
+  }
+
+  // Filter groups by user ownership (note: future enhancement for shared groups)
+  return groups.filter(() => {
+    // For now, assume all IndexedDB groups belong to current user
+    // When we implement hybrid storage, we'll add proper user_id filtering
+    return true;
+  });
+});
+
+export const selectUserGroupById = createSelector([selectUserGroups, (_state: RootState, groupId: string) => groupId], (userGroups, groupId) => userGroups.find((group: any) => group.id === groupId));
+
+// Active groups (user's active groups only)
+export const selectActiveUserGroups = createSelector([selectUserGroups], (userGroups) => userGroups.filter((group: any) => group.isActive));
+
+// Groups by source
+export const selectUserGroupsBySource = createSelector([selectUserGroups, (_state: RootState, source: string) => source], (userGroups, source) => userGroups.filter((group: any) => group.source === source));
+
+// Computed selectors - user-aware
+export const selectUserGroupsWithStats = createSelector([selectUserGroups], (userGroups) => {
+  const totalGroups = userGroups.length;
+  const totalCards = userGroups.reduce((sum: any, group: any) => sum + group.cardCount, 0);
+  const groupsWithCards = userGroups.filter((group: any) => group.cardCount > 0).length;
+  const activeGroups = userGroups.filter((group: any) => group.isActive).length;
 
   return {
     totalGroups,
     totalCards,
     groupsWithCards,
+    activeGroups,
+    inactiveGroups: totalGroups - activeGroups,
     averageCardsPerGroup: totalGroups > 0 ? Math.round(totalCards / totalGroups) : 0,
   };
 });
+
+// Legacy selector for backward compatibility
+export const selectGroupsWithStats = selectUserGroupsWithStats;

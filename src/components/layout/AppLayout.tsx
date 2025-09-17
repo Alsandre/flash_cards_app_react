@@ -1,14 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import {Outlet, Link, useLocation} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../store/hooks";
 import {selectTheme} from "../../store/selectors/uiSelectors";
 import {uiActions} from "../../store/slices/uiSlice";
 import {Button} from "../ui";
+import {useAuth} from "../../auth/AuthProvider";
 
 export const AppLayout: React.FC = () => {
   const location = useLocation();
   const theme = useAppSelector(selectTheme);
   const dispatch = useAppDispatch();
+  const {user, signOut} = useAuth();
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   const isActive = (path: string) => {
     if (path === "/" && location.pathname === "/") return true;
@@ -18,6 +21,21 @@ export const AppLayout: React.FC = () => {
 
   const toggleTheme = () => {
     dispatch(uiActions.setTheme(theme === "light" ? "dark" : "light"));
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      setShowUserMenu(false);
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
+  // Get user display name (email prefix or full email)
+  const getUserDisplayName = () => {
+    if (!user?.email) return "User";
+    return user.email.split("@")[0];
   };
 
   return (
@@ -63,6 +81,29 @@ export const AppLayout: React.FC = () => {
                   </svg>
                 )}
               </Button>
+
+              {/* User Menu */}
+              <div className="relative ml-2">
+                <Button variant="ghost" size="sm" onClick={() => setShowUserMenu(!showUserMenu)} className="flex items-center space-x-2 px-3 py-2 h-11">
+                  <div className="h-6 w-6 rounded-full bg-primary-500 flex items-center justify-center text-white text-xs font-medium">{getUserDisplayName().charAt(0).toUpperCase()}</div>
+                  <span className="hidden sm:inline text-sm font-medium text-neutral-700 dark:text-neutral-300">{getUserDisplayName()}</span>
+                  <svg className="h-4 w-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </Button>
+
+                {/* Dropdown Menu */}
+                {showUserMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-neutral-800 rounded-md shadow-lg border border-neutral-200 dark:border-neutral-700 z-50">
+                    <div className="py-1">
+                      <div className="px-4 py-2 text-sm text-neutral-500 dark:text-neutral-400 border-b border-neutral-200 dark:border-neutral-700">{user?.email}</div>
+                      <button onClick={handleSignOut} className="w-full text-left px-4 py-2 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors">
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </nav>
           </div>
         </div>

@@ -13,6 +13,8 @@ import {CreateGroup} from "../pages/CreateGroup";
 import {EditGroup} from "../pages/EditGroup";
 import {CreateCard} from "../pages/CreateCard";
 import {EditCard} from "../pages/EditCard";
+import {AuthPage} from "../auth/AuthPage";
+import {ProtectedRoute} from "../auth/ProtectedRoute";
 
 // Placeholder components for routes not yet implemented
 const NotFound: React.FC = () => (
@@ -33,7 +35,11 @@ const ComingSoon: React.FC<{feature: string}> = ({feature}) => (
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <AppLayout />,
+    element: (
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
@@ -91,8 +97,16 @@ const router = createBrowserRouter([
   },
   // Standalone routes (no AppLayout)
   {
+    path: "/auth",
+    element: <AuthPage />,
+  },
+  {
     path: "/study/:groupId/:mode",
-    element: <StudySession />,
+    element: (
+      <ProtectedRoute>
+        <StudySession />
+      </ProtectedRoute>
+    ),
   },
 ]);
 
