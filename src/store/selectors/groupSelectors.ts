@@ -5,7 +5,9 @@ import type {Group} from "../../types/group-schema";
 
 // Base selectors
 export const selectGroupsState = (state: RootState) => state.groups;
-export const selectAllGroups = (state: RootState) => state.groups.groups;
+export const selectAllGroups = (state: RootState) => {
+  return state.groups.groups;
+};
 export const selectGroupsLoading = (state: RootState) => state.groups.loading;
 export const selectGroupsError = (state: RootState) => state.groups.error;
 

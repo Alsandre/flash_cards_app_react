@@ -9,26 +9,21 @@ export class StarterPackService {
    * Called on app initialization
    */
   static async ensureStarterPackExists(): Promise<{group: Group; cards: Card[]}> {
-    console.log("🔍 [StarterPack] ensureStarterPackExists() called");
     try {
       // Check if starter pack group already exists
       const existingGroup = await getGroupRepo().findById(STARTER_CARDS_GROUP_ID);
-      console.log("🔍 [StarterPack] Existing group found:", !!existingGroup, existingGroup?.id);
 
       if (existingGroup) {
         // Check if source is correct - recreate if wrong
         if (existingGroup.source !== "starter_pack") {
-          console.log(`🔍 [StarterPack] Wrong source detected. Recreating: ${existingGroup.source} → starter_pack`);
           return await this.recreateStarterPack();
         }
 
         // Check if version matches - recreate if outdated
         const currentVersion = existingGroup.description?.match(/v(\d+\.\d+)/)?.[1];
         if (currentVersion !== STARTER_PACK_VERSION) {
-          console.log(`🔍 [StarterPack] Version mismatch. Recreating: ${currentVersion} → ${STARTER_PACK_VERSION}`);
           return await this.recreateStarterPack();
         }
-        console.log("🔍 [StarterPack] Version and source correct, using existing group");
 
         // Group exists, get its cards
         const cards = await getCardRepo().findByGroupId(STARTER_CARDS_GROUP_ID);
@@ -43,7 +38,6 @@ export class StarterPackService {
       }
 
       // Create the starter pack from scratch
-      console.log("🔍 [StarterPack] No existing group found, creating new starter pack");
       return await this.createStarterPack();
     } catch (error) {
       console.error("Error ensuring starter pack exists:", error);

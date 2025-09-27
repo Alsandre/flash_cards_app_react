@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 *.local
+ad-hoc-scripts/
+parsed_groups/
+split_groups/
 
 # Environment variables
 .env.local

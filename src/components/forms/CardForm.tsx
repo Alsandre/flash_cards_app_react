@@ -4,7 +4,7 @@ import {useAppDispatch, useAppSelector} from "../../store/hooks";
 import {selectAllGroups, selectGroupsLoading, selectGroupsError} from "../../store/selectors/groupSelectors";
 import {selectAllCards} from "../../store/selectors/cardSelectors";
 import {loadGroups} from "../../store/slices/groupSlice";
-import {cardActions} from "../../store/slices/cardSlice";
+import {createCard, updateCard} from "../../store/slices/cardSlice";
 import {uiActions} from "../../store/slices/uiSlice";
 import {Button, Card as UICard, Input, Textarea, LoadingSpinner} from "../ui";
 import type {Card} from "../../types/card-schema";
@@ -104,17 +104,20 @@ export const CardForm: React.FC<CardFormProps> = ({mode, initialData}) => {
 
     try {
       if (mode === "create") {
-        dispatch(
-          cardActions.addCard({
+        
+        await dispatch(
+          createCard({
             groupId,
             content: formData.content.trim(),
             answer: formData.answer.trim(),
             hint: formData.hint?.trim() || undefined,
           })
-        );
+        ).unwrap();
+        
       } else if (mode === "edit" && cardId) {
-        dispatch(
-          cardActions.updateCard({
+        
+        await dispatch(
+          updateCard({
             id: cardId,
             updates: {
               content: formData.content.trim(),
@@ -122,7 +125,8 @@ export const CardForm: React.FC<CardFormProps> = ({mode, initialData}) => {
               hint: formData.hint?.trim() || undefined,
             },
           })
-        );
+        ).unwrap();
+        
       }
 
       // Navigate back to group detail page

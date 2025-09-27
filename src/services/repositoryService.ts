@@ -10,17 +10,9 @@ export let cardRepo: SupabaseCardRepository | null = null;
  * Called when user logs in
  */
 export function initializeRepositories(userId: string) {
-  const timestamp = new Date().toISOString();
-  console.log("📚 [RepositoryService] initializeRepositories called:", {
-    userId,
-    hasExistingGroupRepo: !!groupRepo,
-    hasExistingCardRepo: !!cardRepo,
-    timestamp
-  });
   
   // Prevent re-initialization for the same user
   if (groupRepo && cardRepo) {
-    console.log("📚 [RepositoryService] Repositories already initialized, skipping re-initialization");
     return;
   }
   
@@ -28,7 +20,6 @@ export function initializeRepositories(userId: string) {
   groupRepo = new SupabaseGroupRepository(userId);
   cardRepo = new SupabaseCardRepository(userId);
 
-  console.log("📚 [RepositoryService] Supabase repositories initialized for user:", userId);
 }
 
 /**
@@ -45,10 +36,6 @@ export function clearRepositories() {
  * Get authenticated group repository
  */
 export function getGroupRepo(): SupabaseGroupRepository {
-  console.log("📚 [RepositoryService] getGroupRepo() called:", {
-    hasGroupRepo: !!groupRepo,
-    timestamp: new Date().toISOString()
-  });
   
   if (!groupRepo) {
     console.error("📚 [RepositoryService] Group repository not initialized - user must be authenticated");

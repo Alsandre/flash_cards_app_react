@@ -63,7 +63,7 @@ export class GroupService {
   /**
    * Update a group
    */
-  static async updateGroup(userId: string, groupId: string, updates: Partial<Pick<Group, "name" | "description" | "tags" | "isActive">>): Promise<{data: SupabaseGroup | null; error: PostgrestError | null}> {
+  static async updateGroup(userId: string, groupId: string, updates: Partial<Pick<Group, "name" | "description" | "tags" | "isActive" | "cardCount" | "studyCardCount">>): Promise<{data: SupabaseGroup | null; error: PostgrestError | null}> {
     const updateData: Partial<SupabaseGroup> = {
       updated_at: new Date().toISOString(),
     };
@@ -73,6 +73,8 @@ export class GroupService {
     if (updates.description !== undefined) updateData.description = updates.description;
     if (updates.tags !== undefined) updateData.tags = updates.tags;
     if (updates.isActive !== undefined) updateData.is_active = updates.isActive;
+    if (updates.cardCount !== undefined) updateData.card_count = updates.cardCount;
+    if (updates.studyCardCount !== undefined) updateData.study_card_count = updates.studyCardCount;
 
     const {data, error} = await supabase
       .from("groups")

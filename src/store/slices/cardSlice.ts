@@ -20,17 +20,15 @@ const initialState: CardsState = {
 export const loadCards = createAsyncThunk("cards/loadCards", async (_, {rejectWithValue, getState}) => {
   try {
     // Check if user is authenticated before proceeding
-    const state = getState() as any;
+    const state = getState() as {auth: {user: {id: string; email: string} | null}};
     if (!state.auth.user) {
-      console.log("🔍 [CardSlice] User not authenticated, skipping card loading");
       return [];
     }
 
     // Check if repositories are initialized before proceeding
     try {
       getCardRepo(); // This will throw if not initialized
-    } catch (error) {
-      console.log("🔍 [CardSlice] Repositories not yet initialized, skipping card loading");
+    } catch {
       return [];
     }
 
@@ -41,12 +39,111 @@ export const loadCards = createAsyncThunk("cards/loadCards", async (_, {rejectWi
   }
 });
 
+export const createCard = createAsyncThunk("cards/createCard", async (cardData: Pick<Card, "groupId" | "content" | "answer"> & Partial<Pick<Card, "hint">>, {rejectWithValue, dispatch}) => {
+  try {
+    
+    const newCard = await getCardRepo().create({
+      ...DEFAULT_CARD_VALUES,
+      ...cardData,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    
+
+    // Update group card count by querying database directly
+    try {
+      // Import here to avoid circular dependency
+      const {getCardRepo, getGroupRepo} = await import("../../services/repositoryService");
+      
+      // Get actual current card count from database
+      const currentCards = await getCardRepo().findByGroupId(cardData.groupId);
+      const actualCardCount = currentCards.length;
+      
+
+      await getGroupRepo().update(cardData.groupId, {
+        cardCount: actualCardCount,
+      });
+
+      // Also update the group in Redux state
+      const {loadGroups} = await import("./groupSlice");
+      dispatch(loadGroups());
+
+    } catch (groupUpdateError) {
+      console.error("Failed to update group card count:", groupUpdateError);
+      // Don't fail the whole operation if group update fails
+    }
+    
+    return newCard;
+  } catch (error) {
+    console.error("Card creation failed:", error);
+    return rejectWithValue(error instanceof Error ? error.message : "Failed to create card");
+  }
+});
+
+export const updateCard = createAsyncThunk("cards/updateCard", async ({id, updates}: {id: string; updates: Partial<Card>}, {rejectWithValue}) => {
+  try {
+    
+    const updatedCard = await getCardRepo().update(id, updates);
+    
+    
+    return updatedCard;
+  } catch (error) {
+    console.error("Card update failed:", error);
+    return rejectWithValue(error instanceof Error ? error.message : "Failed to update card");
+  }
+});
+
+export const deleteCard = createAsyncThunk("cards/deleteCard", async (cardId: string, {rejectWithValue, getState, dispatch}) => {
+  try {
+
+    // Get the card's groupId before deleting
+    const state = getState() as {cards: {cards: Card[]}};
+    const cardToDelete = state.cards.cards.find((card: Card) => card.id === cardId);
+    if (!cardToDelete) {
+      throw new Error("Card not found in state");
+    }
+    
+    await getCardRepo().delete(cardId);
+    
+
+    // Update group card count by querying database directly
+    try {
+      // Import here to avoid circular dependency
+      const {getCardRepo, getGroupRepo} = await import("../../services/repositoryService");
+      
+      // Get actual current card count from database (after deletion)
+      const remainingCards = await getCardRepo().findByGroupId(cardToDelete.groupId);
+      const actualCardCount = remainingCards.length;
+      
+
+      await getGroupRepo().update(cardToDelete.groupId, {
+        cardCount: actualCardCount,
+      });
+
+      // Also update the group in Redux state
+      const {loadGroups} = await import("./groupSlice");
+      dispatch(loadGroups());
+
+    } catch (groupUpdateError) {
+      console.error("Failed to update group card count after deletion:", groupUpdateError);
+      // Don't fail the whole operation if group update fails
+    }
+    
+    return cardId;
+  } catch (error) {
+    console.error("Card deletion failed:", error);
+    return rejectWithValue(error instanceof Error ? error.message : "Failed to delete card");
+  }
+});
+
 export const cardSlice = createSlice({
   name: "cards",
   initialState,
   reducers: {
-    // Card CRUD
+    // Synchronous actions (deprecated - use async thunks instead)
+    // TODO: Remove these after migration is complete
     addCard: (state, action: PayloadAction<Pick<Card, "groupId" | "content" | "answer"> & Partial<Pick<Card, "hint">>>) => {
+      console.warn("🚨 [CardSlice] DEPRECATED: addCard synchronous action used. Use createCard async thunk instead.");
       const newCard: Card = {
         ...DEFAULT_CARD_VALUES,
         ...action.payload,
@@ -57,7 +154,8 @@ export const cardSlice = createSlice({
       state.cards.push(newCard);
     },
 
-    updateCard: (state, action: PayloadAction<{id: string; updates: Partial<Card>}>) => {
+    updateCardSync: (state, action: PayloadAction<{id: string; updates: Partial<Card>}>) => {
+      console.warn("🚨 [CardSlice] DEPRECATED: updateCardSync synchronous action used. Use updateCard async thunk instead.");
       const {id, updates} = action.payload;
       const cardIndex = state.cards.findIndex((card) => card.id === id);
 
@@ -78,7 +176,8 @@ export const cardSlice = createSlice({
       }
     },
 
-    deleteCard: (state, action: PayloadAction<string>) => {
+    deleteCardSync: (state, action: PayloadAction<string>) => {
+      console.warn("🚨 [CardSlice] DEPRECATED: deleteCardSync synchronous action used. Use deleteCard async thunk instead.");
       state.cards = state.cards.filter((card) => card.id !== action.payload);
     },
 
@@ -158,6 +257,7 @@ export const cardSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // Load Cards
     builder
       .addCase(loadCards.pending, (state) => {
         state.loading = true;
@@ -169,6 +269,57 @@ export const cardSlice = createSlice({
         state.error = null;
       })
       .addCase(loadCards.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+
+    // Create Card
+    builder
+      .addCase(createCard.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createCard.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.cards.push(action.payload);
+      })
+      .addCase(createCard.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+
+    // Update Card
+    builder
+      .addCase(updateCard.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateCard.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        const cardIndex = state.cards.findIndex((card) => card.id === action.payload.id);
+        if (cardIndex !== -1) {
+          state.cards[cardIndex] = action.payload;
+        }
+      })
+      .addCase(updateCard.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+
+    // Delete Card
+    builder
+      .addCase(deleteCard.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteCard.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.cards = state.cards.filter((card) => card.id !== action.payload);
+      })
+      .addCase(deleteCard.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

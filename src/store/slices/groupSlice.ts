@@ -17,45 +17,25 @@ const initialState: GroupsState = {
 
 // Async Thunks
 export const loadGroups = createAsyncThunk("groups/loadGroups", async (_, {rejectWithValue, getState}) => {
-  const timestamp = new Date().toISOString();
-  console.log("🔍 [GroupSlice] loadGroups() called at:", timestamp);
 
   try {
     // Check if user is authenticated before proceeding
-    const state = getState() as any;
-    console.log("🔍 [GroupSlice] Auth state check:", {
-      hasUser: !!state.auth.user,
-      userEmail: state.auth.user?.email || "null",
-      isAuthenticated: state.auth.isAuthenticated,
-      timestamp
-    });
+    const state = getState() as {auth: {user: {id: string; email: string} | null}};
 
     if (!state.auth.user) {
-      console.log("🔍 [GroupSlice] User not authenticated, skipping group loading");
       return [];
     }
 
     // Check if repositories are initialized before proceeding
     try {
       getGroupRepo(); // This will throw if not initialized
-    } catch (error) {
-      console.log("🔍 [GroupSlice] Repositories not yet initialized, skipping group loading");
+    } catch {
       return [];
     }
 
-    console.log("🔍 [GroupSlice] User authenticated, ensuring starter pack exists");
     // Ensure starter pack exists first
     await StarterPackService.ensureStarterPackExists();
-    console.log("🔍 [GroupSlice] Getting groups with card counts");
     const groups = await getGroupRepo().getGroupsWithCardCounts();
-    console.log(
-      "🔍 [GroupSlice] Loaded groups:",
-      groups.map((g) => ({
-        id: g.id,
-        name: g.name,
-        source: g.source,
-      }))
-    );
     return groups;
   } catch (error) {
     return rejectWithValue(error instanceof Error ? error.message : "Failed to load groups");
@@ -64,9 +44,13 @@ export const loadGroups = createAsyncThunk("groups/loadGroups", async (_, {rejec
 
 export const createGroup = createAsyncThunk("groups/createGroup", async (groupData: Pick<Group, "name"> & Partial<Pick<Group, "description">>, {rejectWithValue}) => {
   try {
+    
     const newGroup = await getGroupRepo().create(groupData);
+    
+    
     return newGroup;
   } catch (error) {
+    console.error("Group creation failed:", error);
     return rejectWithValue(error instanceof Error ? error.message : "Failed to create group");
   }
 });
@@ -120,6 +104,7 @@ export const groupSlice = createSlice({
         state.error = null;
       })
       .addCase(loadGroups.fulfilled, (state, action) => {
+        
         state.loading = false;
         state.error = null;
         state.groups = action.payload;

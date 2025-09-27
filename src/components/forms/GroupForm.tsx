@@ -60,12 +60,14 @@ export const GroupForm: React.FC<GroupFormProps> = ({group, mode}) => {
 
     try {
       if (mode === "create") {
+        
         await dispatch(
           createGroup({
             name: formData.name.trim(),
             description: formData.description.trim() || undefined,
           })
         ).unwrap();
+        
         navigate("/");
       } else if (group) {
         await dispatch(

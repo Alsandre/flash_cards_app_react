@@ -11,6 +11,7 @@ import {StarterPackService} from "../services/starterPackService";
 export const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const groups = useAppSelector(selectAllGroups);
+  
   const isLoading = useAppSelector(selectGroupsLoading);
   const error = useAppSelector(selectGroupsError);
 

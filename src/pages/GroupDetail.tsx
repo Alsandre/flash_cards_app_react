@@ -4,7 +4,7 @@ import {useAppDispatch, useAppSelector} from "../store/hooks";
 import {selectAllGroups, selectGroupsLoading, selectGroupsError} from "../store/selectors/groupSelectors";
 import {deleteGroup, groupActions, loadGroups} from "../store/slices/groupSlice";
 import {selectAllCards} from "../store/selectors/cardSelectors";
-import {cardActions, loadCards} from "../store/slices/cardSlice";
+import {loadCards, deleteCard} from "../store/slices/cardSlice";
 import {Button, Card, LoadingSpinner} from "../components/ui";
 
 export const GroupDetail: React.FC = () => {
@@ -55,7 +55,7 @@ export const GroupDetail: React.FC = () => {
     const confirmed = window.confirm(`Are you sure you want to delete the card "${cardContent}"?`);
     if (confirmed) {
       try {
-        dispatch(cardActions.deleteCard(cardId));
+        await dispatch(deleteCard(cardId)).unwrap();
       } catch (error) {
         console.error("Failed to delete card:", error);
       }
