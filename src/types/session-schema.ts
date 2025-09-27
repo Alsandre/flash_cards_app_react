@@ -18,12 +18,6 @@ export interface CardRating {
   timestamp: Date;
 }
 
-export interface SyncMetadata {
-  key: string;
-  lastSyncAt?: Date;
-  localVersion: number;
-  cloudVersion?: number;
-  conflicts: string[];
-}
+// SyncMetadata removed - no longer using IndexedDB sync
 
 export type Rating = "dont_know" | "doubt" | "know";

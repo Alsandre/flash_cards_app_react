@@ -46,11 +46,6 @@ export const AuthPage: React.FC = () => {
           {/* Form Content */}
           {mode === "login" ? <LoginForm /> : <SignupForm />}
         </Card>
-
-        {/* Footer */}
-        <div className="text-center">
-          <p className="text-xs text-neutral-500 dark:text-neutral-400">Secure authentication powered by Supabase</p>
-        </div>
       </div>
     </div>
   );

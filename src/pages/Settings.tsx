@@ -85,7 +85,7 @@ export const Settings: React.FC = () => {
 
           <div className="flex items-center justify-between">
             <span className="text-neutral-700 dark:text-neutral-300">Storage</span>
-            <span className="text-neutral-500 dark:text-neutral-400">Local IndexedDB</span>
+            <span className="text-neutral-500 dark:text-neutral-400">Supabase Cloud</span>
           </div>
         </div>
       </Card>

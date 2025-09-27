@@ -44,8 +44,6 @@ export interface Group {
   /** Origin of this group (starter pack vs user created) */
   source: GroupSource;
 
-  /** Version for starter pack update tracking */
-  version?: string;
 }
 
 /**

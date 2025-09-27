@@ -129,10 +129,6 @@ export const SignupForm: React.FC = () => {
           {isLoading ? "Creating account..." : "Create Account"}
         </Button>
       </div>
-
-      <div className="text-center">
-        <p className="text-xs text-neutral-500 dark:text-neutral-400">By creating an account, you agree to our terms of service and privacy policy.</p>
-      </div>
     </form>
   );
 };

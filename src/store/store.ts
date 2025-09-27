@@ -5,7 +5,7 @@ import {groupSlice} from "./slices/groupSlice";
 import {uiSlice} from "./slices/uiSlice";
 import authSlice from "./slices/authSlice";
 import syncSlice from "./slices/syncSlice";
-import {persistenceMiddleware} from "./middleware/persistence";
+// import {persistenceMiddleware} from "./middleware/persistence"; // Removed - no longer using IndexedDB persistence
 import {authMiddleware} from "./middleware/authMiddleware";
 
 export const store = configureStore({
@@ -26,7 +26,7 @@ export const store = configureStore({
           return typeof value !== "object" || value === null || Array.isArray(value) || value.constructor === Object;
         },
       },
-    }).concat(persistenceMiddleware as Middleware, authMiddleware as Middleware),
+    }).concat(authMiddleware as Middleware),
   devTools: process.env.NODE_ENV !== "production",
 });
 

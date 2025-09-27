@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import type {Group} from "../../types/group-schema";
-import {groupRepo} from "../../services/repositoryService";
+import {getGroupRepo} from "../../services/repositoryService";
 import {StarterPackService} from "../../services/starterPackService";
 
 export interface GroupsState {
@@ -16,13 +16,38 @@ const initialState: GroupsState = {
 };
 
 // Async Thunks
-export const loadGroups = createAsyncThunk("groups/loadGroups", async (_, {rejectWithValue}) => {
-  console.log("🔍 [GroupSlice] loadGroups() called - ensuring starter pack exists");
+export const loadGroups = createAsyncThunk("groups/loadGroups", async (_, {rejectWithValue, getState}) => {
+  const timestamp = new Date().toISOString();
+  console.log("🔍 [GroupSlice] loadGroups() called at:", timestamp);
+
   try {
+    // Check if user is authenticated before proceeding
+    const state = getState() as any;
+    console.log("🔍 [GroupSlice] Auth state check:", {
+      hasUser: !!state.auth.user,
+      userEmail: state.auth.user?.email || "null",
+      isAuthenticated: state.auth.isAuthenticated,
+      timestamp
+    });
+
+    if (!state.auth.user) {
+      console.log("🔍 [GroupSlice] User not authenticated, skipping group loading");
+      return [];
+    }
+
+    // Check if repositories are initialized before proceeding
+    try {
+      getGroupRepo(); // This will throw if not initialized
+    } catch (error) {
+      console.log("🔍 [GroupSlice] Repositories not yet initialized, skipping group loading");
+      return [];
+    }
+
+    console.log("🔍 [GroupSlice] User authenticated, ensuring starter pack exists");
     // Ensure starter pack exists first
     await StarterPackService.ensureStarterPackExists();
     console.log("🔍 [GroupSlice] Getting groups with card counts");
-    const groups = await groupRepo.getGroupsWithCardCounts();
+    const groups = await getGroupRepo().getGroupsWithCardCounts();
     console.log(
       "🔍 [GroupSlice] Loaded groups:",
       groups.map((g) => ({
@@ -39,7 +64,7 @@ export const loadGroups = createAsyncThunk("groups/loadGroups", async (_, {rejec
 
 export const createGroup = createAsyncThunk("groups/createGroup", async (groupData: Pick<Group, "name"> & Partial<Pick<Group, "description">>, {rejectWithValue}) => {
   try {
-    const newGroup = await groupRepo.create(groupData);
+    const newGroup = await getGroupRepo().create(groupData);
     return newGroup;
   } catch (error) {
     return rejectWithValue(error instanceof Error ? error.message : "Failed to create group");
@@ -48,7 +73,7 @@ export const createGroup = createAsyncThunk("groups/createGroup", async (groupDa
 
 export const updateGroup = createAsyncThunk("groups/updateGroup", async ({id, updates}: {id: string; updates: Partial<Group>}, {rejectWithValue}) => {
   try {
-    const updatedGroup = await groupRepo.update(id, updates);
+    const updatedGroup = await getGroupRepo().update(id, updates);
     return updatedGroup;
   } catch (error) {
     return rejectWithValue(error instanceof Error ? error.message : "Failed to update group");
@@ -57,7 +82,7 @@ export const updateGroup = createAsyncThunk("groups/updateGroup", async ({id, up
 
 export const deleteGroup = createAsyncThunk("groups/deleteGroup", async (groupId: string, {rejectWithValue}) => {
   try {
-    await groupRepo.delete(groupId);
+    await getGroupRepo().delete(groupId);
     return groupId;
   } catch (error) {
     return rejectWithValue(error instanceof Error ? error.message : "Failed to delete group");
@@ -66,7 +91,7 @@ export const deleteGroup = createAsyncThunk("groups/deleteGroup", async (groupId
 
 export const deleteGroups = createAsyncThunk("groups/deleteGroups", async (groupIds: string[], {rejectWithValue}) => {
   try {
-    const result = await groupRepo.deleteMany(groupIds);
+    const result = await getGroupRepo().deleteMany(groupIds);
     return {
       deletedIds: groupIds.slice(0, result.deleted),
       errors: result.errors,

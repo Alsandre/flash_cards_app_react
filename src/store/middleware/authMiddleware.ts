@@ -1,59 +1,67 @@
 import type {Middleware} from "@reduxjs/toolkit";
 import {authActions, loadUserProfile, createUserProfile} from "../slices/authSlice";
-import {performInitialSync, syncActions} from "../slices/syncSlice";
-import {syncManager} from "../../services/syncManager";
+import {performInitialSync} from "../slices/syncSlice";
+// import {syncManager} from "../../services/syncManager"; // Removed - no longer using sync manager
 import {initializeRepositories, clearRepositories} from "../../services/repositoryService";
 import type {RootState, AppDispatch} from "../store";
-import type {User} from "@supabase/supabase-js";
 
 // Auth middleware for syncing with React Context and handling auth events
 export const authMiddleware: Middleware = (store) => (next) => (action) => {
   const result = next(action);
   const state = store.getState() as RootState;
   const dispatch = store.dispatch as AppDispatch;
+  const user = state.auth.user;
 
-  // Listen for auth state changes from React Context
+  // Log every action that hits this middleware
   if (authActions.setUser.match(action)) {
-    const user = action.payload as User | null;
+    console.log("🔍 [AuthMiddleware] setUser action:", {
+      actionType: action.type,
+      userFromPayload: action.payload?.email || "null",
+      userFromState: user?.email || "null",
+      timestamp: new Date().toISOString()
+    });
 
-    if (user && !state.auth.userProfile && !state.auth.profileLoading) {
-      // User logged in but no profile loaded - try to load or create profile
-      dispatch(loadUserProfile(user.id)).then((profileResult) => {
-        if (profileResult.type === "auth/loadUserProfile/rejected") {
-          // Profile doesn't exist, create it
-          console.log("User profile not found, creating new profile for:", user.email);
-          dispatch(createUserProfile(user));
-        }
-
-        // Initialize repositories and sync manager (only once)
-        console.log("🔍 [AuthMiddleware] Initializing repos for user:", user.email);
-        initializeRepositories(user.id);
-        syncManager.initialize(user.id);
-        const syncState = store.getState().sync;
-        console.log("🔍 [AuthMiddleware] Sync state:", {
-          isInitialSyncComplete: syncState.isInitialSyncComplete,
-          isSyncing: syncState.isSyncing,
-          userEmail: user.email,
-        });
-        if (!syncState.isInitialSyncComplete && !syncState.isSyncing) {
-          console.log("🔍 [AuthMiddleware] Starting initial sync for user:", user.email);
-          dispatch(performInitialSync(user.id));
-        } else {
-          console.log("🔍 [AuthMiddleware] Skipping sync - already complete or in progress");
-        }
-      });
-    } else if (user && state.auth.userProfile && !state.sync.isInitialSyncComplete && !state.sync.isSyncing) {
-      // User has profile but sync not complete - start sync
-      console.log("🔍 [AuthMiddleware] User has profile, starting sync for:", user.email);
-      initializeRepositories(user.id);
-      syncManager.initialize(user.id);
-      dispatch(performInitialSync(user.id));
-    } else if (!user) {
-      // User logged out - clear sync state and go offline
-      console.log("User logged out, clearing sync state");
+    if (user) {
+      console.log("🔍 [AuthMiddleware] User set, dispatching loadUserProfile for:", user.email);
+      dispatch(loadUserProfile(user.id));
+    } else {
+      console.log("🔍 [AuthMiddleware] User cleared (logged out), clearing repositories");
       clearRepositories();
-      syncManager.enableOfflineMode();
-      dispatch(syncActions.setNetworkStatus("offline"));
+      dispatch(authActions.clearAuth());
+    }
+  } else if (loadUserProfile.fulfilled.match(action)) {
+    console.log("🔍 [AuthMiddleware] loadUserProfile.fulfilled:", {
+      hasUser: !!user,
+      userEmail: user?.email || "null",
+      hasProfile: !!action.payload,
+      profileId: action.payload?.id || "null",
+      timestamp: new Date().toISOString()
+    });
+
+    if (user) {
+      if (!action.payload) {
+        console.log("🔍 [AuthMiddleware] Profile not found, creating new profile for:", user.email);
+        dispatch(createUserProfile(user));
+      }
+
+      console.log("🔍 [AuthMiddleware] Initializing repos for user:", user.email);
+      initializeRepositories(user.id);
+      const syncState = store.getState().sync;
+      console.log("🔍 [AuthMiddleware] Sync state check:", {
+        isInitialSyncComplete: syncState.isInitialSyncComplete,
+        isSyncing: syncState.isSyncing,
+        userEmail: user.email,
+        timestamp: new Date().toISOString()
+      });
+      
+      if (!syncState.isInitialSyncComplete && !syncState.isSyncing) {
+        console.log("🔍 [AuthMiddleware] Starting initial sync for user:", user.email);
+        dispatch(performInitialSync(user.id));
+      } else {
+        console.log("🔍 [AuthMiddleware] Skipping sync - already complete or in progress");
+      }
+    } else {
+      console.log("🔍 [AuthMiddleware] loadUserProfile.fulfilled but no user in state - race condition?");
     }
   }
 

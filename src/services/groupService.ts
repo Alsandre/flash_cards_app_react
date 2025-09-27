@@ -2,16 +2,20 @@ import {supabase} from "./supabase";
 import type {PostgrestError} from "@supabase/supabase-js";
 import type {Group} from "../types/group-schema";
 
-// Supabase-compatible Group interface (matches database schema with snake_case)
-export interface SupabaseGroup extends Omit<Group, "id" | "createdAt" | "updatedAt" | "isActive" | "studyCardCount" | "cardCount"> {
+// Supabase Group interface - matches exact database schema with snake_case
+export interface SupabaseGroup {
   id?: string;
   user_id: string;
-  is_active: boolean; // Snake case for database
-  study_card_count: number; // Snake case for database
-  card_count: number; // Snake case for database
-  is_shared: boolean; // Snake case for database
-  created_at?: string; // Snake case for database
-  updated_at?: string; // Snake case for database
+  name: string;
+  description?: string | null;
+  tags?: string[] | null;
+  card_count?: number;
+  study_card_count?: number;
+  is_active?: boolean;
+  is_shared?: boolean;
+  source?: "user_created" | "starter_pack";
+  created_at?: string;
+  updated_at?: string;
 }
 
 // Group service for Supabase operations
@@ -60,10 +64,15 @@ export class GroupService {
    * Update a group
    */
   static async updateGroup(userId: string, groupId: string, updates: Partial<Pick<Group, "name" | "description" | "tags" | "isActive">>): Promise<{data: SupabaseGroup | null; error: PostgrestError | null}> {
-    const updateData = {
-      ...updates,
+    const updateData: Partial<SupabaseGroup> = {
       updated_at: new Date().toISOString(),
     };
+
+    // Map camelCase to snake_case for Supabase
+    if (updates.name !== undefined) updateData.name = updates.name;
+    if (updates.description !== undefined) updateData.description = updates.description;
+    if (updates.tags !== undefined) updateData.tags = updates.tags;
+    if (updates.isActive !== undefined) updateData.is_active = updates.isActive;
 
     const {data, error} = await supabase
       .from("groups")

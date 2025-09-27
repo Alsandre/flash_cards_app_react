@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import type {PayloadAction} from "@reduxjs/toolkit";
-import {syncManager} from "../../services/syncManager";
+// import {syncManager} from "../../services/syncManager"; // Removed - no longer using sync manager
 
 // Sync state interface
 export interface SyncState {
@@ -18,14 +18,6 @@ export interface SyncState {
 
   // Error handling
   syncError: string | null;
-  networkStatus: "online" | "offline" | "unknown";
-
-  // Background sync
-  backgroundSyncEnabled: boolean;
-  lastBackgroundSync: string | null;
-
-  // Queue status
-  pendingOperations: number;
 }
 
 const initialState: SyncState = {
@@ -40,28 +32,26 @@ const initialState: SyncState = {
   },
 
   syncError: null,
-  networkStatus: navigator.onLine ? "online" : "offline",
-
-  backgroundSyncEnabled: true,
-  lastBackgroundSync: null,
-
-  pendingOperations: 0,
 };
 
 // Async thunks for sync operations
 export const performInitialSync = createAsyncThunk("sync/performInitialSync", async (_userId: string, {rejectWithValue, dispatch}) => {
   try {
     dispatch(syncActions.setSyncStage("groups"));
-
-    const result = await syncManager.performInitialSync();
-
-    if (!result.success) {
-      throw new Error(result.error || "Initial sync failed");
-    }
+    
+    // Import here to avoid circular dependency
+    const {loadGroups} = await import("./groupSlice");
+    const {loadCards} = await import("./cardSlice");
+    
+    console.log("🔄 Starting initial data sync from Supabase");
+    
+    // Load groups and cards
+    await dispatch(loadGroups());
+    await dispatch(loadCards());
 
     dispatch(syncActions.setSyncStage("complete"));
     return {
-      stats: result.stats || {groups: 0, cards: 0},
+      stats: {groups: 0, cards: 0}, // TODO: Return actual counts
       timestamp: new Date().toISOString(),
     };
   } catch (error) {
@@ -71,14 +61,12 @@ export const performInitialSync = createAsyncThunk("sync/performInitialSync", as
 
 export const performBackgroundSync = createAsyncThunk("sync/performBackgroundSync", async (_, {rejectWithValue}) => {
   try {
-    const result = await syncManager.performBackgroundSync();
-
-    if (!result.success) {
-      throw new Error(result.error || "Background sync failed");
-    }
-
+    // TODO: Implement background sync with Supabase if needed
+    // For now, background sync is not needed as operations are direct to Supabase
+    console.log("ℹ️ Background sync not needed - using direct Supabase operations");
+    
     return {
-      stats: result.stats || {groups: 0, cards: 0},
+      stats: {groups: 0, cards: 0},
       timestamp: new Date().toISOString(),
     };
   } catch (error) {
@@ -88,14 +76,12 @@ export const performBackgroundSync = createAsyncThunk("sync/performBackgroundSyn
 
 export const forceSync = createAsyncThunk("sync/forceSync", async (_, {rejectWithValue}) => {
   try {
-    const result = await syncManager.forceSync();
-
-    if (!result.success) {
-      throw new Error(result.error || "Force sync failed");
-    }
-
+    // TODO: Implement force sync with Supabase if needed
+    // For now, force sync is not needed as operations are direct to Supabase
+    console.log("ℹ️ Force sync not needed - using direct Supabase operations");
+    
     return {
-      stats: result.stats || {groups: 0, cards: 0},
+      stats: {groups: 0, cards: 0},
       timestamp: new Date().toISOString(),
     };
   } catch (error) {
@@ -108,15 +94,6 @@ const syncSlice = createSlice({
   name: "sync",
   initialState,
   reducers: {
-    // Network status
-    setNetworkStatus: (state, action: PayloadAction<"online" | "offline">) => {
-      state.networkStatus = action.payload;
-
-      if (action.payload === "offline") {
-        state.backgroundSyncEnabled = false;
-      }
-    },
-
     // Sync progress
     setSyncProgress: (state, action: PayloadAction<{current: number; total: number}>) => {
       state.syncProgress.current = action.payload.current;
@@ -137,29 +114,9 @@ const syncSlice = createSlice({
       state.isSyncing = false;
     },
 
-    // Background sync control
-    toggleBackgroundSync: (state) => {
-      state.backgroundSyncEnabled = !state.backgroundSyncEnabled;
-    },
+    // Removed offline/background sync controls - no longer needed
 
-    setBackgroundSync: (state, action: PayloadAction<boolean>) => {
-      state.backgroundSyncEnabled = action.payload;
-    },
-
-    // Pending operations
-    setPendingOperations: (state, action: PayloadAction<number>) => {
-      state.pendingOperations = action.payload;
-    },
-
-    incrementPendingOps: (state) => {
-      state.pendingOperations += 1;
-    },
-
-    decrementPendingOps: (state) => {
-      if (state.pendingOperations > 0) {
-        state.pendingOperations -= 1;
-      }
-    },
+    // Removed pending operations tracking - no longer needed
   },
 
   extraReducers: (builder) => {
@@ -195,7 +152,7 @@ const syncSlice = createSlice({
 
     builder.addCase(performBackgroundSync.fulfilled, (state, action) => {
       state.isSyncing = false;
-      state.lastBackgroundSync = action.payload.timestamp;
+      // Removed lastBackgroundSync - no longer tracking
       state.syncError = null;
 
       if (!state.isInitialSyncComplete) {

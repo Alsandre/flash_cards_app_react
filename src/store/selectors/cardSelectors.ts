@@ -21,12 +21,8 @@ export const selectUserCards = createSelector([selectAllCards, selectUserId, sel
     return cards;
   }
 
-  // Filter cards by user ownership
-  return cards.filter(() => {
-    // For now, assume all IndexedDB cards belong to current user
-    // When we implement hybrid storage, we'll add proper user_id filtering
-    return true;
-  });
+  // All cards from Supabase are already user-scoped
+  return cards;
 });
 
 export const selectUserCardById = createSelector([selectUserCards, (_state: RootState, cardId: string) => cardId], (userCards: Card[], cardId: string) => userCards.find((card: Card) => card.id === cardId));

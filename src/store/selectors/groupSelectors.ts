@@ -19,12 +19,8 @@ export const selectUserGroups = createSelector([selectAllGroups, selectUserId, s
     return groups;
   }
 
-  // Filter groups by user ownership (note: future enhancement for shared groups)
-  return groups.filter(() => {
-    // For now, assume all IndexedDB groups belong to current user
-    // When we implement hybrid storage, we'll add proper user_id filtering
-    return true;
-  });
+  // All groups from Supabase are already user-scoped
+  return groups;
 });
 
 export const selectUserGroupById = createSelector([selectUserGroups, (_state: RootState, groupId: string) => groupId], (userGroups: Group[], groupId: string) => userGroups.find((group: Group) => group.id === groupId));

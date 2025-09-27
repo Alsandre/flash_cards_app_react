@@ -1,0 +1,38 @@
+yarn run v1.22.22
+$ tsc -b && vite build
+vite v7.1.5 building for production...
+transforming...
+[plugin vite:resolve] Module "stream" has been externalized for browser compatibility, imported by "/Users/lekso/code/Code_Personal/flash_cards_app_react/node_modules/@supabase/realtime-js/node_modules/@supabase/node-fetch/lib/index.mjs". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.
+[plugin vite:resolve] Module "http" has been externalized for browser compatibility, imported by "/Users/lekso/code/Code_Personal/flash_cards_app_react/node_modules/@supabase/realtime-js/node_modules/@supabase/node-fetch/lib/index.mjs". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.
+[plugin vite:resolve] Module "url" has been externalized for browser compatibility, imported by "/Users/lekso/code/Code_Personal/flash_cards_app_react/node_modules/@supabase/realtime-js/node_modules/@supabase/node-fetch/lib/index.mjs". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.
+[plugin vite:resolve] Module "https" has been externalized for browser compatibility, imported by "/Users/lekso/code/Code_Personal/flash_cards_app_react/node_modules/@supabase/realtime-js/node_modules/@supabase/node-fetch/lib/index.mjs". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.
+[plugin vite:resolve] Module "zlib" has been externalized for browser compatibility, imported by "/Users/lekso/code/Code_Personal/flash_cards_app_react/node_modules/@supabase/realtime-js/node_modules/@supabase/node-fetch/lib/index.mjs". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.
+✓ 252 modules transformed.
+rendering chunks...
+[plugin vite:reporter] 
+(!) /Users/lekso/code/Code_Personal/flash_cards_app_react/src/store/slices/groupSlice.ts is dynamically imported by /Users/lekso/code/Code_Personal/flash_cards_app_react/src/store/slices/syncSlice.ts but also statically imported by /Users/lekso/code/Code_Personal/flash_cards_app_react/src/components/forms/CardForm.tsx, /Users/lekso/code/Code_Personal/flash_cards_app_react/src/components/forms/GroupForm.tsx, /Users/lekso/code/Code_Personal/flash_cards_app_react/src/pages/Dashboard.tsx, /Users/lekso/code/Code_Personal/flash_cards_app_react/src/pages/EditGroup.tsx, /Users/lekso/code/Code_Personal/flash_cards_app_react/src/pages/ExploreSession.tsx, /Users/lekso/code/Code_Personal/flash_cards_app_react/src/pages/GroupDetail.tsx, /Users/lekso/code/Code_Personal/flash_cards_app_react/src/pages/Stats.tsx, /Users/lekso/code/Code_Personal/flash_cards_app_react/src/pages/StudyModeSelection.tsx, /Users/lekso/code/Code_Personal/flash_cards_app_react/src/pages/StudySession.tsx, /Users/lekso/code/Code_Personal/flash_cards_app_react/src/store/store.ts, dynamic import will not move module into another chunk.
+
+[plugin vite:reporter] 
+(!) /Users/lekso/code/Code_Personal/flash_cards_app_react/src/store/slices/cardSlice.ts is dynamically imported by /Users/lekso/code/Code_Personal/flash_cards_app_react/src/store/slices/syncSlice.ts but also statically imported by /Users/lekso/code/Code_Personal/flash_cards_app_react/src/components/forms/CardForm.tsx, /Users/lekso/code/Code_Personal/flash_cards_app_react/src/pages/Dashboard.tsx, /Users/lekso/code/Code_Personal/flash_cards_app_react/src/pages/ExploreSession.tsx, /Users/lekso/code/Code_Personal/flash_cards_app_react/src/pages/GroupDetail.tsx, /Users/lekso/code/Code_Personal/flash_cards_app_react/src/pages/Stats.tsx, /Users/lekso/code/Code_Personal/flash_cards_app_react/src/pages/StudySession.tsx, /Users/lekso/code/Code_Personal/flash_cards_app_react/src/store/store.ts, dynamic import will not move module into another chunk.
+
+computing gzip size...
+dist/registerSW.js                0.13 kB
+dist/manifest.webmanifest         0.42 kB
+dist/index.html                   1.24 kB │ gzip:   0.56 kB
+dist/assets/index-CxIZTjLh.css   74.38 kB │ gzip:  14.20 kB
+dist/assets/index-CcaYnQIV.js   311.03 kB │ gzip:  78.52 kB
+dist/assets/index-DlGUEbxR.js   677.64 kB │ gzip: 197.47 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.75s
+
+PWA v1.0.3
+mode      generateSW
+precache  21 entries (1059.34 KiB)
+files generated
+  dist/sw.js
+  dist/workbox-2f6bd5c3.js
+Done in 6.29s.

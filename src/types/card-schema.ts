@@ -61,9 +61,6 @@ export interface Card {
   /** User's difficulty rating in current session (temporary) */
   currentRating?: StudyRating;
 
-  /** History of all study attempts for analytics */
-  sessionAttempts: StudyAttempt[];
-
   // ========================================
   // SPACED REPETITION ALGORITHM
   // ========================================
@@ -106,8 +103,6 @@ export interface Card {
   /** Origin of this card (starter pack vs user created) */
   source: CardSource;
 
-  /** Version for starter pack update tracking */
-  version?: string;
 }
 
 /**
@@ -191,7 +186,6 @@ export const DEFAULT_CARD_VALUES = {
   userNote: "",
   totalAttempts: 0,
   correctAttempts: 0,
-  sessionAttempts: [] as StudyAttempt[],
   easeFactor: 2.5,
   interval: 1,
   repetitions: 0,

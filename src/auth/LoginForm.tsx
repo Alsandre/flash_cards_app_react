@@ -72,12 +72,6 @@ export const LoginForm: React.FC = () => {
           {isLoading ? "Signing in..." : "Sign In"}
         </Button>
       </div>
-
-      <div className="text-center">
-        <button type="button" className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300" disabled={isLoading}>
-          Forgot your password?
-        </button>
-      </div>
     </form>
   );
 };

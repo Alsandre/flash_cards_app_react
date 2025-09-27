@@ -1,6 +1,6 @@
 import React from "react";
 import {useAppSelector, useAppDispatch} from "../../store/hooks";
-import {selectSyncStatusText, selectSyncStatus, selectSyncProgress, selectShouldShowSyncIndicator, selectPendingOperations, selectSyncError} from "../../store/selectors/syncSelectors";
+import {selectSyncStatusText, selectSyncStatus, selectSyncProgress, selectShouldShowSyncIndicator, selectSyncError} from "../../store/selectors/syncSelectors";
 import {syncActions, forceSync} from "../../store/slices/syncSlice";
 import {Button} from "./Button";
 import {LoadingSpinner} from "./LoadingSpinner";
@@ -18,7 +18,7 @@ export const SyncStatus: React.FC<SyncStatusProps> = ({variant = "compact", show
   const status = useAppSelector(selectSyncStatus);
   const progress = useAppSelector(selectSyncProgress);
   const shouldShow = useAppSelector(selectShouldShowSyncIndicator);
-  const pendingOps = useAppSelector(selectPendingOperations);
+  // Removed pendingOps - no longer tracking pending operations
   const syncError = useAppSelector(selectSyncError);
 
   const handleRetry = () => {
@@ -76,7 +76,7 @@ export const SyncStatus: React.FC<SyncStatusProps> = ({variant = "compact", show
     if (!status.isOnline) return "text-neutral-500";
     if (status.hasError) return "text-error-600";
     if (status.isSyncing) return "text-primary-600";
-    if (pendingOps > 0) return "text-warning-600";
+    // Removed pending operations check
     return "text-success-600";
   };
 
@@ -101,13 +101,7 @@ export const SyncStatus: React.FC<SyncStatusProps> = ({variant = "compact", show
       return <LoadingSpinner size="sm" />;
     }
 
-    if (pendingOps > 0) {
-      return (
-        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      );
-    }
+    // Removed pending operations icon
 
     return (
       <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -186,14 +180,7 @@ export const SyncStatus: React.FC<SyncStatusProps> = ({variant = "compact", show
             <span>{status.isOnline ? "Online" : "Offline"}</span>
           </div>
 
-          {pendingOps > 0 && (
-            <div className="flex items-center space-x-1">
-              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>{pendingOps} pending</span>
-            </div>
-          )}
+          {/* Removed pending operations display */}
         </div>
       </div>
     );

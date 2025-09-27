@@ -2,17 +2,30 @@ import {supabase} from "./supabase";
 import type {PostgrestError} from "@supabase/supabase-js";
 import type {Card} from "../types/card-schema";
 
-// Supabase-compatible Card interface (matches database schema with snake_case)
-export interface SupabaseCard extends Omit<Card, "id" | "createdAt" | "updatedAt" | "groupId" | "isActive" | "lastStudiedAt" | "nextReviewDate" | "interval"> {
+// Supabase Card interface - matches exact database schema with snake_case
+export interface SupabaseCard {
   id?: string;
   group_id: string;
   user_id: string;
-  is_active: boolean; // Snake case for database
-  last_studied_at?: string | null; // Snake case for database
-  next_review_date?: string | null; // Snake case for database
-  interval_days: number; // Snake case for database (maps to Card.interval)
-  created_at?: string; // Snake case for database
-  updated_at?: string; // Snake case for database
+  content: string;
+  answer: string;
+  hint?: string | null;
+  user_note?: string | null;
+  tags?: string[] | null;
+  difficulty_rating?: "easy" | "medium" | "hard" | null;
+  total_attempts?: number;
+  correct_attempts?: number;
+  last_studied_at?: string | null;
+  ease_factor?: number;
+  interval_days?: number;
+  repetitions?: number;
+  next_review_date?: string | null;
+  average_response_time?: number;
+  retention_score?: number;
+  is_active?: boolean;
+  source?: "user_created" | "starter_pack";
+  created_at?: string;
+  updated_at?: string;
 }
 
 // Card service for Supabase operations
@@ -46,19 +59,18 @@ export class CardService {
       content: cardData.content,
       answer: cardData.answer,
       hint: cardData.hint || "",
-      userNote: cardData.userNote || "",
-      difficultyRating: cardData.difficultyRating,
-      totalAttempts: cardData.totalAttempts || 0,
-      correctAttempts: cardData.correctAttempts || 0,
-      easeFactor: cardData.easeFactor || 2.5,
+      user_note: cardData.userNote || "",
+      difficulty_rating: cardData.difficultyRating,
+      total_attempts: cardData.totalAttempts || 0,
+      correct_attempts: cardData.correctAttempts || 0,
+      ease_factor: cardData.easeFactor || 2.5,
       // interval is mapped to interval_days in database
       interval_days: cardData.interval || 1,
       repetitions: cardData.repetitions || 0,
       last_studied_at: cardData.lastStudiedAt?.toISOString() || null,
       next_review_date: cardData.nextReviewDate?.toISOString() || null,
-      averageResponseTime: cardData.averageResponseTime || 0,
-      retentionScore: cardData.retentionScore || 0.0,
-      sessionAttempts: cardData.sessionAttempts || [],
+      average_response_time: cardData.averageResponseTime || 0,
+      retention_score: cardData.retentionScore || 0.0,
       tags: cardData.tags || [],
       is_active: cardData.isActive ?? true,
       source: cardData.source || "user_created",
@@ -114,20 +126,20 @@ export class CardService {
   ): Promise<{data: SupabaseCard | null; error: PostgrestError | null}> {
     const now = new Date();
     const updateData: Partial<SupabaseCard> = {
-      difficultyRating: rating,
+      difficulty_rating: rating,
       last_studied_at: now.toISOString(),
       updated_at: now.toISOString(),
     };
 
     if (studyData) {
       if (studyData.responseTime) {
-        updateData.averageResponseTime = studyData.responseTime;
+        updateData.average_response_time = studyData.responseTime;
       }
       if (studyData.wasCorrect !== undefined) {
         // Note: Manual increment - consider using RPC functions for atomic operations in production
-        updateData.totalAttempts = (updateData.totalAttempts || 0) + 1;
+        updateData.total_attempts = (updateData.total_attempts || 0) + 1;
         if (studyData.wasCorrect) {
-          updateData.correctAttempts = (updateData.correctAttempts || 0) + 1;
+          updateData.correct_attempts = (updateData.correct_attempts || 0) + 1;
         }
       }
     }

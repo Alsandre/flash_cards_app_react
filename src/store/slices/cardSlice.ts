@@ -2,7 +2,7 @@ import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import type {PayloadAction} from "@reduxjs/toolkit";
 import type {Card} from "../../types/card-schema";
 import {DEFAULT_CARD_VALUES} from "../../types/card-schema";
-import {cardRepo} from "../../services/repositoryService";
+import {getCardRepo} from "../../services/repositoryService";
 
 export interface CardsState {
   cards: Card[];
@@ -17,9 +17,24 @@ const initialState: CardsState = {
 };
 
 // Async Thunks
-export const loadCards = createAsyncThunk("cards/loadCards", async (_, {rejectWithValue}) => {
+export const loadCards = createAsyncThunk("cards/loadCards", async (_, {rejectWithValue, getState}) => {
   try {
-    const cards = await cardRepo.findAll();
+    // Check if user is authenticated before proceeding
+    const state = getState() as any;
+    if (!state.auth.user) {
+      console.log("🔍 [CardSlice] User not authenticated, skipping card loading");
+      return [];
+    }
+
+    // Check if repositories are initialized before proceeding
+    try {
+      getCardRepo(); // This will throw if not initialized
+    } catch (error) {
+      console.log("🔍 [CardSlice] Repositories not yet initialized, skipping card loading");
+      return [];
+    }
+
+    const cards = await getCardRepo().findAll();
     return cards;
   } catch (error) {
     return rejectWithValue(error instanceof Error ? error.message : "Failed to load cards");

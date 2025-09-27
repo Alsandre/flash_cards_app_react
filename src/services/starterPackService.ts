@@ -1,11 +1,7 @@
 import {STARTER_PACK, STARTER_CARDS_GROUP_ID, STARTER_PACK_VERSION} from "../data/starterPack";
-import {GroupRepository} from "../repositories/groupRepository";
-import {CardRepository} from "../repositories/cardRepository";
+import {getGroupRepo, getCardRepo} from "./repositoryService";
 import type {Group} from "../types/group-schema";
 import type {Card} from "../types/card-schema";
-
-const groupRepo = new GroupRepository();
-const cardRepo = new CardRepository();
 
 export class StarterPackService {
   /**
@@ -16,7 +12,7 @@ export class StarterPackService {
     console.log("🔍 [StarterPack] ensureStarterPackExists() called");
     try {
       // Check if starter pack group already exists
-      const existingGroup = await groupRepo.findById(STARTER_CARDS_GROUP_ID);
+      const existingGroup = await getGroupRepo().findById(STARTER_CARDS_GROUP_ID);
       console.log("🔍 [StarterPack] Existing group found:", !!existingGroup, existingGroup?.id);
 
       if (existingGroup) {
@@ -35,7 +31,7 @@ export class StarterPackService {
         console.log("🔍 [StarterPack] Version and source correct, using existing group");
 
         // Group exists, get its cards
-        const cards = await cardRepo.findByGroupId(STARTER_CARDS_GROUP_ID);
+        const cards = await getCardRepo().findByGroupId(STARTER_CARDS_GROUP_ID);
 
         // If cards are missing, recreate them
         if (cards.length === 0) {
@@ -53,8 +49,8 @@ export class StarterPackService {
       console.error("Error ensuring starter pack exists:", error);
       // If it's a constraint error (duplicate key), the group already exists
       if (error instanceof Error && error.message.includes("Key already exists")) {
-        const existingGroup = await groupRepo.findById(STARTER_CARDS_GROUP_ID);
-        const cards = await cardRepo.findByGroupId(STARTER_CARDS_GROUP_ID);
+        const existingGroup = await getGroupRepo().findById(STARTER_CARDS_GROUP_ID);
+        const cards = await getCardRepo().findByGroupId(STARTER_CARDS_GROUP_ID);
         if (existingGroup) {
           return {group: existingGroup, cards};
         }
@@ -69,7 +65,7 @@ export class StarterPackService {
    */
   private static async createStarterPack(): Promise<{group: Group; cards: Card[]}> {
     // Create the group with fixed ID
-    const group = await groupRepo.create(STARTER_PACK.group, STARTER_CARDS_GROUP_ID); // Use fixed ID
+    const group = await getGroupRepo().create(STARTER_PACK.group, STARTER_CARDS_GROUP_ID); // Use fixed ID
 
     // Create all cards
     const cards = await this.createStarterCards(group);
@@ -85,7 +81,7 @@ export class StarterPackService {
     const cards: Card[] = [];
 
     for (const cardData of STARTER_PACK.cards) {
-      const card = await cardRepo.create({
+      const card = await getCardRepo().create({
         ...cardData,
         groupId: group.id,
         createdAt: now,
@@ -95,7 +91,7 @@ export class StarterPackService {
     }
 
     // Update group card count
-    await groupRepo.update(group.id, {
+    await getGroupRepo().update(group.id, {
       cardCount: cards.length,
     });
 
@@ -114,10 +110,10 @@ export class StarterPackService {
    */
   static async getStarterPack(): Promise<{group: Group; cards: Card[]} | null> {
     try {
-      const group = await groupRepo.findById(STARTER_CARDS_GROUP_ID);
+      const group = await getGroupRepo().findById(STARTER_CARDS_GROUP_ID);
       if (!group) return null;
 
-      const cards = await cardRepo.findByGroupId(STARTER_CARDS_GROUP_ID);
+      const cards = await getCardRepo().findByGroupId(STARTER_CARDS_GROUP_ID);
       return {group, cards};
     } catch (error) {
       console.error("Error getting starter pack:", error);
@@ -131,15 +127,15 @@ export class StarterPackService {
   static async recreateStarterPack(): Promise<{group: Group; cards: Card[]}> {
     try {
       // Delete existing starter pack if it exists
-      const existingGroup = await groupRepo.findById(STARTER_CARDS_GROUP_ID);
+      const existingGroup = await getGroupRepo().findById(STARTER_CARDS_GROUP_ID);
       if (existingGroup) {
         // Delete all cards first
-        const existingCards = await cardRepo.findByGroupId(STARTER_CARDS_GROUP_ID);
+        const existingCards = await getCardRepo().findByGroupId(STARTER_CARDS_GROUP_ID);
         for (const card of existingCards) {
-          await cardRepo.delete(card.id);
+          await getCardRepo().delete(card.id);
         }
         // Delete the group
-        await groupRepo.delete(STARTER_CARDS_GROUP_ID);
+        await getGroupRepo().delete(STARTER_CARDS_GROUP_ID);
       }
     } catch (error) {
       console.warn("Error cleaning up existing starter pack:", error);

@@ -2,9 +2,9 @@ import type {Group} from "../types/group-schema";
 import type {Card} from "../types/card-schema";
 import {DEFAULT_CARD_VALUES} from "../types/card-schema";
 
-// Special starter pack for ქეთი ❤️
-export const STARTER_PACK_ID = "starter-pack-for-keti";
-export const STARTER_CARDS_GROUP_ID = "motivational-german-for-keti";
+// Special starter pack for ქეთი ❤️ - Using fixed UUIDs for consistency
+export const STARTER_PACK_ID = "00000000-0000-0000-0000-000000000001";
+export const STARTER_CARDS_GROUP_ID = "00000000-0000-0000-0000-000000000002";
 export const STARTER_PACK_VERSION = "1.2"; // Update this when content changes
 
 export const STARTER_PACK: {

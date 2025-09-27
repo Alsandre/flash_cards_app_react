@@ -18,66 +18,45 @@ export const selectSyncProgress = createSelector([selectSyncState], (sync) => sy
 
 export const selectSyncStage = createSelector([selectSyncState], (sync) => sync.syncProgress.stage);
 
-// Network status selectors
-export const selectNetworkStatus = createSelector([selectSyncState], (sync) => sync.networkStatus);
+// Removed network status and background sync selectors - no longer needed
 
-export const selectIsOnline = createSelector([selectNetworkStatus], (networkStatus) => networkStatus === "online");
-
-// Background sync selectors
-export const selectBackgroundSyncEnabled = createSelector([selectSyncState], (sync) => sync.backgroundSyncEnabled);
-
-export const selectLastBackgroundSync = createSelector([selectSyncState], (sync) => sync.lastBackgroundSync);
-
-// Queue selectors
-export const selectPendingOperations = createSelector([selectSyncState], (sync) => sync.pendingOperations);
-
-export const selectHasPendingOperations = createSelector([selectPendingOperations], (pendingOps) => pendingOps > 0);
+// Removed queue selectors - no longer needed
 
 // Composite selectors
-export const selectSyncStatus = createSelector([selectIsSyncing, selectIsInitialSyncComplete, selectSyncError, selectIsOnline], (isSyncing, isInitialComplete, error, isOnline) => ({
+export const selectSyncStatus = createSelector([selectIsSyncing, selectIsInitialSyncComplete, selectSyncError], (isSyncing, isInitialComplete, error) => ({
   isSyncing,
   isInitialComplete,
   hasError: !!error,
   error,
-  isOnline,
+  isOnline: true, // Always online for Supabase-only architecture
 }));
 
-export const selectShouldShowSyncIndicator = createSelector([selectIsSyncing, selectHasPendingOperations, selectSyncError], (isSyncing, hasPending, error) => isSyncing || hasPending || !!error);
+export const selectShouldShowSyncIndicator = createSelector([selectIsSyncing, selectSyncError], (isSyncing, error) => isSyncing || !!error);
 
 // Human-readable sync status
-export const selectSyncStatusText = createSelector([selectSyncStatus, selectSyncStage, selectPendingOperations], (status, stage, pendingOps) => {
-  if (!status.isOnline) {
-    return "Offline";
-  }
-
+export const selectSyncStatusText = createSelector([selectSyncStatus, selectSyncStage], (status, stage) => {
   if (status.hasError) {
-    return "Sync failed";
+    return "Error";
   }
 
   if (status.isSyncing) {
     if (stage === "groups") {
-      return "Syncing groups...";
+      return "Loading groups...";
     } else if (stage === "cards") {
-      return "Syncing cards...";
+      return "Loading cards...";
     } else {
-      return "Syncing...";
+      return "Loading...";
     }
   }
 
-  if (pendingOps > 0) {
-    return `${pendingOps} pending`;
-  }
-
   if (!status.isInitialComplete) {
-    return "Not synced";
+    return "Not ready";
   }
 
-  return "Synced";
+  return "Ready";
 });
 
 // Sync stats selector
-export const selectSyncStats = createSelector([selectLastSyncTime, selectLastBackgroundSync, selectPendingOperations], (lastSync, lastBackground, pending) => ({
+export const selectSyncStats = createSelector([selectLastSyncTime], (lastSync) => ({
   lastSyncTime: lastSync ? new Date(lastSync) : null,
-  lastBackgroundSync: lastBackground ? new Date(lastBackground) : null,
-  pendingOperations: pending,
 }));

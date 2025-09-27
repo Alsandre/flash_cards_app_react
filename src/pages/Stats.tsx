@@ -6,7 +6,7 @@ import {selectAllCards} from "../store/selectors/cardSelectors";
 import {loadGroups} from "../store/slices/groupSlice";
 import {loadCards} from "../store/slices/cardSlice";
 import {Card, LoadingSpinner} from "../components/ui";
-import {SessionRepository} from "../repositories/sessionRepository";
+// import {SessionRepository} from "../repositories/sessionRepository"; // TODO: Implement with Supabase
 import type {StudySession, CardRating} from "../types/session-schema";
 
 interface SessionStats {
@@ -56,13 +56,10 @@ export const Stats: React.FC = () => {
           dispatch(loadCards());
         }
 
-        // Load session data
-        const sessionRepo = new SessionRepository();
-        const allSessions = await sessionRepo.findAll();
-        const allRatings = await sessionRepo.getAllRatings();
-
-        setSessions(allSessions);
-        setRatings(allRatings);
+        // TODO: Implement session tracking with Supabase
+        // For now, disable session-based statistics
+        setSessions([]);
+        setRatings([]);
       } catch (error) {
         console.error("Failed to load stats data:", error);
       } finally {

@@ -1,0 +1,11 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+**ISSUE WITH INTEGRATED TERMINAL**
+- terminal does not work properly
+- instead of relying its response, when comman output is required run a command that writes output to a file `terminal.txt` then read the file to get the output
+- always use the `terminal.txt` file to get the output of the command
+- terminal.txt content should not be overwritten unless user explicitly purges it
