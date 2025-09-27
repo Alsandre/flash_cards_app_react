@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {useParams, Link, useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../store/hooks";
 import {selectAllGroups, selectGroupsLoading, selectGroupsError} from "../store/selectors/groupSelectors";
@@ -6,10 +6,12 @@ import {deleteGroup, groupActions, loadGroups} from "../store/slices/groupSlice"
 import {selectAllCards} from "../store/selectors/cardSelectors";
 import {loadCards, deleteCard} from "../store/slices/cardSlice";
 import {Button, Card, LoadingSpinner} from "../components/ui";
+import {BulkImportModal} from "../components/forms/BulkImportModal";
 
 export const GroupDetail: React.FC = () => {
   const {groupId} = useParams<{groupId: string}>();
   const navigate = useNavigate();
+  const [isBulkImportOpen, setIsBulkImportOpen] = useState(false);
 
   // Use simple selectors to prevent re-renders
   const dispatch = useAppDispatch();
@@ -60,6 +62,11 @@ export const GroupDetail: React.FC = () => {
         console.error("Failed to delete card:", error);
       }
     }
+  };
+
+  const handleBulkImportSuccess = () => {
+    // No need to refresh here - BulkImportModal handles Redux refresh internally
+    console.log('✅ [GroupDetail] Bulk import completed successfully');
   };
 
   if (!groupId) {
@@ -125,6 +132,12 @@ export const GroupDetail: React.FC = () => {
         <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0">
           <Button asChild>
             <Link to={`/groups/${groupId}/cards/new`}>+ Add Card</Link>
+          </Button>
+          <Button 
+            variant="secondary" 
+            onClick={() => setIsBulkImportOpen(true)}
+          >
+            📁 Bulk Import
           </Button>
           {group.cardCount > 0 && (
             <>
@@ -254,6 +267,14 @@ export const GroupDetail: React.FC = () => {
           </Button>
         </div>
       </Card>
+
+      {/* Bulk Import Modal */}
+      <BulkImportModal
+        isOpen={isBulkImportOpen}
+        groupId={groupId}
+        onClose={() => setIsBulkImportOpen(false)}
+        onSuccess={handleBulkImportSuccess}
+      />
     </div>
   );
 };
