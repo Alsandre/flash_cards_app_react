@@ -20,7 +20,17 @@ export const Dashboard: React.FC = () => {
   const [isSelectMode, setIsSelectMode] = useState(false);
 
   // Filter out starter pack for selection (can't be deleted)
-  const selectableGroups = groups.filter((group) => !StarterPackService.isStarterPack(group.id));
+  const selectableGroups = groups.filter((group) => {
+    const isStarterPack = StarterPackService.isStarterPack(group);
+    if (isStarterPack) {
+      console.log(`🎯 [Dashboard] Filtering out starter pack from selectable groups:`, {
+        groupId: group.id,
+        groupName: group.name,
+        source: group.source
+      });
+    }
+    return !isStarterPack;
+  });
 
   useEffect(() => {
     dispatch(loadGroups());
@@ -29,7 +39,24 @@ export const Dashboard: React.FC = () => {
 
   const handleDeleteGroup = async (groupId: string, groupName: string) => {
     // Prevent deletion of starter pack
-    if (StarterPackService.isStarterPack(groupId)) {
+    const group = groups.find(g => g.id === groupId);
+    console.log(`🗑️ [Dashboard] Delete group attempt:`, {
+      groupId,
+      groupName,
+      found: !!group,
+      group: group ? {
+        id: group.id,
+        name: group.name,
+        source: group.source
+      } : null
+    });
+    
+    if (group && StarterPackService.isStarterPack(group)) {
+      console.log(`🚫 [Dashboard] Preventing deletion of starter pack:`, {
+        groupId: group.id,
+        groupName: group.name,
+        source: group.source
+      });
       alert("This special collection cannot be deleted! It's always here for you ❤️");
       return;
     }
@@ -155,7 +182,14 @@ export const Dashboard: React.FC = () => {
       ) : (
         <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {groups.map((group) => {
-            const isStarterPack = StarterPackService.isStarterPack(group.id);
+            const isStarterPack = StarterPackService.isStarterPack(group);
+            console.log(`🎨 [Dashboard] Rendering group card:`, {
+              groupId: group.id,
+              groupName: group.name,
+              source: group.source,
+              isStarterPack,
+              cardCount: group.cardCount
+            });
             return (
               <Card key={group.id} variant="interactive" className={`group ${isStarterPack ? "ring-2 ring-pink-300 dark:ring-pink-600 bg-gradient-to-br from-pink-100 to-rose-100 dark:from-pink-900/60 dark:to-rose-900/60 shadow-lg shadow-pink-200/40 dark:shadow-pink-900/30 animate-pulse-subtle" : ""}`}>
                 <div className="mb-4 flex items-start justify-between">

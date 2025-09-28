@@ -120,19 +120,27 @@ export const StudySession: React.FC = () => {
     [dispatch]
   );
 
-  const handleNoteUpdate = useCallback((cardId: string, note: string) => {
-    // TODO: Handle note updates - could be saved to card or session notes
-    // This could be enhanced to save to card.userNote
-  }, []);
+  const handleNoteUpdate = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (_cardId: string, _note: string) => {
+      // TODO: Handle note updates - could be saved to card or session notes
+      // This could be enhanced to save to card.userNote
+    },
+    []
+  );
 
   const toggleTheme = () => {
     dispatch(uiActions.setTheme(theme === "light" ? "dark" : "light"));
   };
 
-  const handleCardChange = useCallback((index: number) => {
-    // Card navigation is now handled by Redux session actions
-    // This callback is mainly for any additional side effects
-  }, []);
+  const handleCardChange = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (_index: number) => {
+      // Card navigation is now handled by Redux session actions
+      // This callback is mainly for any additional side effects
+    },
+    []
+  );
 
   const handleEndSession = async () => {
     if (!isSessionActive) return;
