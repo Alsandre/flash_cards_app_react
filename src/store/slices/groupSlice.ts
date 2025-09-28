@@ -1,7 +1,6 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import type {Group} from "../../types/group-schema";
 import {getGroupRepo} from "../../services/repositoryService";
-import {StarterPackService} from "../../services/starterPackService";
 
 export interface GroupsState {
   groups: Group[];
@@ -17,49 +16,25 @@ const initialState: GroupsState = {
 
 // Async Thunks
 export const loadGroups = createAsyncThunk("groups/loadGroups", async (_, {rejectWithValue, getState}) => {
-  console.log(`🔄 [GroupSlice] Starting loadGroups process...`);
 
   try {
     // Check if user is authenticated before proceeding
     const state = getState() as {auth: {user: {id: string; email: string} | null}};
-    console.log(`🔄 [GroupSlice] User authentication check:`, {
-      isAuthenticated: !!state.auth.user,
-      userId: state.auth.user?.id
-    });
 
     if (!state.auth.user) {
-      console.log(`🔄 [GroupSlice] No authenticated user, returning empty array`);
       return [];
     }
 
     // Check if repositories are initialized before proceeding
     try {
       getGroupRepo(); // This will throw if not initialized
-      console.log(`🔄 [GroupSlice] Repository initialization check: SUCCESS`);
-    } catch (error) {
-      console.log(`🔄 [GroupSlice] Repository initialization check: FAILED`, error);
+    } catch {
       return [];
     }
 
-    console.log(`🔄 [GroupSlice] Fetching groups from repository...`);
     const groups = await getGroupRepo().getGroupsWithCardCounts();
-    console.log(`🔄 [GroupSlice] Groups loaded successfully:`, {
-      totalGroups: groups.length,
-      groupSummary: groups.map(g => ({
-        id: g.id,
-        name: g.name,
-        source: g.source,
-        cardCount: g.cardCount
-      }))
-    });
-
-    // Debug validation of our refactoring
-    console.log(`🔄 [GroupSlice] Running refactoring validation...`);
-    StarterPackService.debugValidateRefactoring(groups);
-
     return groups;
   } catch (error) {
-    console.error(`❌ [GroupSlice] Error loading groups:`, error);
     return rejectWithValue(error instanceof Error ? error.message : "Failed to load groups");
   }
 });
