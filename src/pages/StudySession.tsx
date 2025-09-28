@@ -122,8 +122,7 @@ export const StudySession: React.FC = () => {
 
   const handleNoteUpdate = useCallback((cardId: string, note: string) => {
     // TODO: Handle note updates - could be saved to card or session notes
-    // For now, just log it (this could be enhanced to save to card.userNote)
-    console.log(`Note updated for card ${cardId}:`, note);
+    // This could be enhanced to save to card.userNote
   }, []);
 
   const toggleTheme = () => {
@@ -133,7 +132,6 @@ export const StudySession: React.FC = () => {
   const handleCardChange = useCallback((index: number) => {
     // Card navigation is now handled by Redux session actions
     // This callback is mainly for any additional side effects
-    console.log(`Card changed to index: ${index}`);
   }, []);
 
   const handleEndSession = async () => {

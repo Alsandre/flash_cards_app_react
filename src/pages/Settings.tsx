@@ -30,8 +30,7 @@ export const Settings: React.FC = () => {
     try {
       const result = await BackupService.getBackups();
       if (result.success) {
-        console.log("Available backups:", result.backups);
-        alert(`Found ${result.backups?.length || 0} backup(s). Check console for details.`);
+        alert(`Found ${result.backups?.length || 0} backup(s).`);
       } else {
         alert("Failed to get backups: " + result.error);
       }

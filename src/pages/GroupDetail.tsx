@@ -13,8 +13,6 @@ export const GroupDetail: React.FC = () => {
   const navigate = useNavigate();
   const [isBulkImportOpen, setIsBulkImportOpen] = useState(false);
   
-  // Debug component re-renders
-  console.log('🏗️ [GroupDetail] Component render - groupId:', groupId, 'isBulkImportOpen:', isBulkImportOpen);
 
   // Use simple selectors to prevent re-renders
   const dispatch = useAppDispatch();
@@ -68,8 +66,7 @@ export const GroupDetail: React.FC = () => {
   };
 
   const handleBulkImportSuccess = () => {
-    console.log('✅ [GroupDetail] Bulk import completed successfully');
-    // Note: Redux updates now happen only when user clicks "Finish Import"
+    // Bulk import completed - Redux updates happen when user clicks "Finish Import"
   };
 
   if (!groupId) {

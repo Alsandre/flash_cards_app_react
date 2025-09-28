@@ -65,7 +65,6 @@ export const ExploreSession: React.FC = () => {
     }));
 
     // TODO: In future, could save rating to database or session storage
-    console.log(`Card ${cardId} rated as: ${rating}`);
   }, []);
 
   const handleCardChange = useCallback(

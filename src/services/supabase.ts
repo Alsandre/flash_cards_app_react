@@ -25,7 +25,6 @@ export class BackupService {
     try {
       // TODO: Implement Supabase-based backup
       // For now, backups are handled by Supabase directly
-      console.log("ℹ️ Backup not needed - data is stored in Supabase cloud");
       return {success: true};
     } catch (error) {
       console.error("❌ Backup failed:", error);
@@ -61,7 +60,6 @@ export class BackupService {
     try {
       // TODO: Implement Supabase-based restore
       // For now, data restoration is not needed as data lives in Supabase
-      console.log("ℹ️ Restore not needed - data is stored in Supabase cloud");
       return {success: true};
     } catch (error) {
       console.error("❌ Restore failed:", error);

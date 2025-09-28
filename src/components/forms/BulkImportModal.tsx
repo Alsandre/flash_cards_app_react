@@ -7,8 +7,6 @@ import { DEFAULT_CARD_VALUES } from '../../types/card-schema';
 import { Button } from '../ui/Button';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
 
-// Debug tracking for component lifecycle
-let componentInstanceId = 0;
 
 interface BulkImportModalProps {
   isOpen: boolean;
@@ -42,9 +40,6 @@ const BulkImportModalComponent: React.FC<BulkImportModalProps> = ({
   onClose,
   onSuccess,
 }) => {
-  // Assign unique ID to track component recreation
-  const [instanceId] = useState(() => ++componentInstanceId);
-  console.log(`🏗️ [BulkImport-${instanceId}] Component render - isOpen: ${isOpen}, groupId: ${groupId}`);
   
   const dispatch = useAppDispatch();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -63,32 +58,14 @@ const BulkImportModalComponent: React.FC<BulkImportModalProps> = ({
     isComplete: false,
   });
 
-  // Debug progress changes and potential recreation triggers
-  useEffect(() => {
-    console.log(`📊 [BulkImport-${instanceId}] Progress changed:`, {
-      isRunning: progress.isRunning,
-      isComplete: progress.isComplete,
-      completed: progress.completed,
-      total: progress.total
-    });
-  }, [progress, instanceId]);
 
-  // Reset state when modal opens/closes - CRITICAL DEBUG POINT
+  // Reset state when modal opens/closes
   useEffect(() => {
-    console.log(`🔄 [BulkImport-${instanceId}] Modal isOpen changed to: ${isOpen}`);
-    console.log(`🔄 [BulkImport-${instanceId}] Current progress.isRunning: ${progress.isRunning}`);
-    console.log(`🔄 [BulkImport-${instanceId}] This effect triggered by:`, { isOpen, 'progress.isRunning': progress.isRunning });
-    
     if (!isOpen) {
-      console.log(`🧹 [BulkImport-${instanceId}] Modal closed - checking if we should reset state`);
-      
       // Don't reset if import is currently running
       if (progress.isRunning) {
-        console.log(`⚠️ [BulkImport-${instanceId}] Import is running - NOT resetting state to prevent abort`);
         return;
       }
-      
-      console.log(`🧹 [BulkImport-${instanceId}] Safe to reset modal state`);
       
       setUploadedCards([]);
       setValidationError('');
@@ -105,25 +82,17 @@ const BulkImportModalComponent: React.FC<BulkImportModalProps> = ({
         fileInputRef.current.value = '';
       }
     }
-  }, [isOpen, progress.isRunning, instanceId]);
+  }, [isOpen, progress.isRunning]);
 
-  // Track component mounting/unmounting - CRITICAL FOR RECREATION DETECTION
+  // Cleanup on unmount
   useEffect(() => {
-    console.log(`🏗️ [BulkImport-${instanceId}] Component mounted`);
     return () => {
-      console.log(`💥 [BulkImport-${instanceId}] Component unmounting`);
-      console.log(`💥 [BulkImport-${instanceId}] isImportRunningRef.current: ${isImportRunningRef.current}`);
-      console.log(`💥 [BulkImport-${instanceId}] RECREATION DETECTED - Previous instance being destroyed`);
-      
       // Use ref instead of state to get immediate value
       if (abortControllerRef.current && !isImportRunningRef.current) {
-        console.log(`🧹 [BulkImport-${instanceId}] Component unmounting - aborting controller (import not running)`);
         abortControllerRef.current.abort();
-      } else if (abortControllerRef.current && isImportRunningRef.current) {
-        console.log(`⚠️ [BulkImport-${instanceId}] Component unmounting but import is running - NOT aborting to prevent interference`);
       }
     };
-  }, [instanceId]);
+  }, []);
 
   const validateCardData = (item: unknown): item is CardData => {
     if (typeof item !== 'object' || item === null) {
@@ -218,18 +187,12 @@ const BulkImportModalComponent: React.FC<BulkImportModalProps> = ({
   };
 
   const handleStartImport = async () => {
-    console.log(`🚀 [BulkImport-${instanceId}] Starting import process`);
-    console.log(`📊 [BulkImport-${instanceId}] Cards to import: ${uploadedCards.length}`);
-    console.log(`🎯 [BulkImport-${instanceId}] Target groupId: ${groupId}`);
-
     if (uploadedCards.length === 0) {
-      console.log(`❌ [BulkImport-${instanceId}] No cards to import, aborting`);
       return;
     }
 
     abortControllerRef.current = new AbortController();
     isImportRunningRef.current = true;
-    console.log(`🎮 [BulkImport-${instanceId}] AbortController created, isImportRunningRef set to true`);
     
     const initialProgress = {
       total: uploadedCards.length,
@@ -241,13 +204,11 @@ const BulkImportModalComponent: React.FC<BulkImportModalProps> = ({
       isComplete: false,
     };
     
-    console.log(`📈 [BulkImport-${instanceId}] Setting initial progress - isRunning: true`);
     setProgress(initialProgress);
 
     for (let i = 0; i < uploadedCards.length; i++) {
       // Check if cancelled
       if (abortControllerRef.current.signal.aborted) {
-        console.log(`🛑 [BulkImport-${instanceId}] AbortController signal is aborted!`);
         isImportRunningRef.current = false;
         setProgress(prev => ({
           ...prev,
@@ -286,8 +247,6 @@ const BulkImportModalComponent: React.FC<BulkImportModalProps> = ({
       }
     }
 
-    console.log(`🏁 [BulkImport-${instanceId}] All cards processed, marking as complete`);
-    
     // Mark as complete
     isImportRunningRef.current = false;
     setProgress(prev => ({
@@ -296,46 +255,32 @@ const BulkImportModalComponent: React.FC<BulkImportModalProps> = ({
       isComplete: true,
     }));
 
-    // CRITICAL DEBUG: Update group card count like manual card creation does
-    console.log(`🔢 [BulkImport-${instanceId}] CRITICAL: Updating group card count`);
+    // Update group card count like manual card creation does
     try {
-      // Get actual current card count from database (like manual card creation)
       const cardRepo = getCardRepo();
       const groupRepo = getGroupRepo();
       
       const currentCards = await cardRepo.findByGroupId(groupId);
       const actualCardCount = currentCards.length;
       
-      console.log(`🔢 [BulkImport-${instanceId}] Current cards in DB for group ${groupId}: ${actualCardCount}`);
-      
       await groupRepo.update(groupId, {
         cardCount: actualCardCount,
       });
-      
-      console.log(`🔢 [BulkImport-${instanceId}] Group card count updated to: ${actualCardCount}`);
     } catch (groupUpdateError) {
-      console.error(`❌ [BulkImport-${instanceId}] Failed to update group card count:`, groupUpdateError);
+      console.error('Failed to update group card count:', groupUpdateError);
     }
-
-    console.log(`✨ [BulkImport-${instanceId}] Import process completed - waiting for user to finish`);
-    // NOTE: No automatic Redux dispatches or onSuccess callback
-    // User must click "Finish Import" to complete the process
   };
 
   const handleCancel = () => {
-    console.log(`🛑 [BulkImport-${instanceId}] Cancel button clicked`);
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
   };
 
   const handleClose = () => {
-    console.log(`🚪 [BulkImport-${instanceId}] Close requested, isRunning: ${progress.isRunning}`);
     if (progress.isRunning) {
-      console.log(`⚠️ [BulkImport-${instanceId}] Prevented close during import`);
       return;
     }
-    console.log(`✅ [BulkImport-${instanceId}] Calling onClose`);
     onClose();
   };
 
@@ -515,18 +460,13 @@ const BulkImportModalComponent: React.FC<BulkImportModalProps> = ({
 
             <Button 
               onClick={(e) => {
-                console.log(`🏁 [BulkImport-${instanceId}] Finish Import button clicked`);
-                console.log(`🔄 [BulkImport-${instanceId}] Now dispatching Redux updates`);
                 e.stopPropagation();
                 
                 // Dispatch Redux updates to refresh the UI
                 dispatch(loadCards());
                 dispatch(loadGroups());
                 
-                console.log(`📞 [BulkImport-${instanceId}] Calling onSuccess callback`);
                 onSuccess();
-                
-                console.log(`🚪 [BulkImport-${instanceId}] Closing modal after successful finish`);
                 handleClose();
               }} 
               className="w-full"

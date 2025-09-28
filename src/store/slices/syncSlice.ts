@@ -43,7 +43,6 @@ export const performInitialSync = createAsyncThunk("sync/performInitialSync", as
     const {loadGroups} = await import("./groupSlice");
     const {loadCards} = await import("./cardSlice");
     
-    console.log("🔄 Starting initial data sync from Supabase");
     
     // Load groups and cards
     await dispatch(loadGroups());
@@ -63,7 +62,6 @@ export const performBackgroundSync = createAsyncThunk("sync/performBackgroundSyn
   try {
     // TODO: Implement background sync with Supabase if needed
     // For now, background sync is not needed as operations are direct to Supabase
-    console.log("ℹ️ Background sync not needed - using direct Supabase operations");
     
     return {
       stats: {groups: 0, cards: 0},
@@ -78,7 +76,6 @@ export const forceSync = createAsyncThunk("sync/forceSync", async (_, {rejectWit
   try {
     // TODO: Implement force sync with Supabase if needed
     // For now, force sync is not needed as operations are direct to Supabase
-    console.log("ℹ️ Force sync not needed - using direct Supabase operations");
     
     return {
       stats: {groups: 0, cards: 0},
